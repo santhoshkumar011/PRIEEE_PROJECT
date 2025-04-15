@@ -155,6 +155,14 @@ exports.Prisma.SessionScalarFieldEnum = {
   expiry: 'expiry'
 };
 
+exports.Prisma.OtpScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  otp: 'otp',
+  expiry: 'expiry',
+  status: 'status'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -187,11 +195,17 @@ exports.TaskStatus = exports.$Enums.TaskStatus = {
   DONE: 'DONE'
 };
 
+exports.OTPStatus = exports.$Enums.OTPStatus = {
+  VERIFIED: 'VERIFIED',
+  PENDING: 'PENDING'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Project: 'Project',
   Task: 'Task',
-  Session: 'Session'
+  Session: 'Session',
+  Otp: 'Otp'
 };
 
 /**
