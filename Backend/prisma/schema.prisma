@@ -35,7 +35,8 @@ enum TaskStatus {
 model User {
   id          Int       @id @default(autoincrement())
   username    String    @unique
-  password    String
+  salt String
+  hash String
   role        Role
   lastLogin   DateTime? 
   lastLogout  DateTime?
