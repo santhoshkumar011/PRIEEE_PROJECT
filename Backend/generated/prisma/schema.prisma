@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PROJECT_MANAGER
+  TEAM_LEADER
+  DEVELOPER
+}
+
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  password   String
+  role       Role
+  lastLogin  DateTime?
+  lastLogout DateTime?
+
+  managedProjects Project[] @relation("ManagerProjects")
+  ledProjects     Project[] @relation("LeaderProjects")
+  assignedTasks   Task[]
+}
+
+model Project {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  storyPoints Int?
+  status      ProjectStatus @default(NOT_STARTED)
+  createdAt   DateTime      @default(now())
+
+  managerId    Int
+  teamLeaderId Int
+
+  manager    User @relation("ManagerProjects", fields: [managerId], references: [id])
+  teamLeader User @relation("LeaderProjects", fields: [teamLeaderId], references: [id])
+
+  tasks Task[]
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(PENDING)
+  updatedAt   DateTime   @default(now())
+
+  projectId  Int
+  assignedTo Int
+
+  project   Project @relation(fields: [projectId], references: [id])
+  developer User    @relation(fields: [assignedTo], references: [id])
+}
