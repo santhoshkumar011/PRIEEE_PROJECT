@@ -44,6 +44,7 @@ model User {
   managedProjects     Project[] @relation("ManagerProjects")
   ledProjects         Project[] @relation("LeaderProjects")
   assignedTasks       Task[]
+  session             Session?
 }
 
 model Project {
@@ -75,5 +76,16 @@ model Task {
 
   project     Project    @relation(fields: [projectId], references: [id])
   developer   User       @relation(fields: [assignedTo], references: [id])
+}
+
+
+model Session {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  session String
+  expiry DateTime
+
+  //relationships
+  user User @relation(fields: [userId],references:[id])
 }
 
