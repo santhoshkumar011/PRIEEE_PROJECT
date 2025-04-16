@@ -1,8 +1,8 @@
 const { PrismaClient } = require('../generated/prisma');
-const { hashChecker } = require('../hashAndOtp/hashChecker');
-const { hashGenerator } = require('../hashAndOtp/hashGenerator');
-const { OtpGenerator } = require('../hashAndOtp/OtpGenerator');
-const { SendEmail } = require('../sendEmail/email');
+const { hashChecker } = require('../General/hashChecker');
+const { hashGenerator } = require('../General/hashGenerator');
+const { OtpGenerator } = require('../General/OtpGenerator');
+const { SendEmail } = require('../General/sendEmail');
 
 const prisma = new PrismaClient();
 
