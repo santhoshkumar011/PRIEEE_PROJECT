@@ -32,6 +32,11 @@ enum TaskStatus {
   DONE
 }
 
+enum OTPStatus{
+  VERIFIED
+  PENDING
+}
+
 model User {
   id          Int       @id @default(autoincrement())
   username    String    @unique
@@ -40,11 +45,13 @@ model User {
   role        Role
   lastLogin   DateTime? 
   lastLogout  DateTime?
+  email       String
 
   managedProjects     Project[] @relation("ManagerProjects")
   ledProjects         Project[] @relation("LeaderProjects")
   assignedTasks       Task[]
   session             Session?
+  otp                 Otp?
 }
 
 model Project {
@@ -89,3 +96,13 @@ model Session {
   user User @relation(fields: [userId],references:[id])
 }
 
+model Otp {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  otp String 
+  expiry DateTime
+  status OTPStatus @default(PENDING)
+
+  //relationships
+  user User @relation(fields: [userId],references:[id])
+}
