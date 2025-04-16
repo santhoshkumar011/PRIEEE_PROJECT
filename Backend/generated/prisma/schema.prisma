@@ -45,6 +45,7 @@ model User {
   role       Role
   lastLogin  DateTime?
   lastLogout DateTime?
+  email      String
 
   managedProjects Project[] @relation("ManagerProjects")
   ledProjects     Project[] @relation("LeaderProjects")

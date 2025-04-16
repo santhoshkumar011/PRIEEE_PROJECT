@@ -124,7 +124,8 @@ exports.Prisma.UserScalarFieldEnum = {
   hash: 'hash',
   role: 'role',
   lastLogin: 'lastLogin',
-  lastLogout: 'lastLogout'
+  lastLogout: 'lastLogout',
+  email: 'email'
 };
 
 exports.Prisma.ProjectScalarFieldEnum = {

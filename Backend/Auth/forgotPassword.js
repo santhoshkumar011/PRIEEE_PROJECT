@@ -18,6 +18,7 @@ async function forgotPassword(req,res) {
             res.status(200).json({
                 err:"Wrong user name"
             })
+            return
         }
         else{
             const otp = OtpGenerator();
@@ -32,24 +33,28 @@ async function forgotPassword(req,res) {
                 })
             }
             else{
-                const del = await prisma.oTPStudent.deleteMany({
+                const del = await prisma.otp.deleteMany({
                     where:{
-                        uname:student2.uname
+                        userId:user2.id
                     }
                 })
-                const update = await prisma.oTPStudent.create({
+                const update = await prisma.otp.create({
                     data:{
                         expiry:exp,
                         otp:otp,
                         status:"PENDING",
-                        ...student2,
+                        userId:user2.id
                     }
                 });
                 res.status(200).json({
                     msg:"Successful"
                 })
+                return
             }
         }
+        res.status(200).json({
+            err:"Otp send panna mudila"
+        })
     }
     catch(error){
         console.log(error);
