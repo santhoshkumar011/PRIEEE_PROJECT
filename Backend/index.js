@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/v1/login-signup', router)
 
 app.listen(port, () => {
-  console.log(`Signup and Login is running at http://localhost:${port}`);
+  console.log(`Backend is running at http://localhost:${port}`);
 })
 
 app.post("/hi",(req,res)=>{

@@ -2,6 +2,7 @@ const { forgotPassword } = require("../Auth/forgotPassword");
 const { login } = require("../Auth/login");
 const { verifyOTPforLogin } = require("../Auth/otpVerify");
 const { resetPassword } = require("../Auth/resetPassword");
+const { Router } = require("express");
 
 
 const router = new Router();
