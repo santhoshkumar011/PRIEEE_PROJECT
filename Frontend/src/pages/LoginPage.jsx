@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast, Toaster } from 'sonner';
 import "../main.scss"
+import Cookies from "js-cookie";
+
 
 const LoginPage = () => {
   const [mode, setMode] = useState('login'); // 'login' or 'forgotPassword'
@@ -69,6 +71,7 @@ const LoginPage = () => {
   async function handleLogin() {
 
     let status = false
+    let dt = {}
     
 
     const dummy =  await new Promise ((resolve)=>{
@@ -95,7 +98,7 @@ const LoginPage = () => {
           dt = data
           console.log("i must be first")
           resolve()
-          return (`Navigating to question`)
+          return (`Login successful.. !!`)
         },
         error: (err) => {
           resolve()
@@ -109,9 +112,9 @@ const LoginPage = () => {
       })
     }) 
     console.log("i must be second")
-    setBtnVisible(true)
     if(status){
-      nav(`/${uname}/question/${qname}`);
+      Cookies.set('session',dt?.session,{expires: 10/24})
+      nav(`/${dt?.uname}`);
     } 
     
   }

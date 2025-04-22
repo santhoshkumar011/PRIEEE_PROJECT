@@ -8,16 +8,34 @@ async function login(req,res) {
 
     try{
         const prisma = new PrismaClient();
-        const uname = req.body.uname;
-        const pwd = req.body.pwd;
-        const dbval = await prisma.user.findFirst({
+        const email = req.body.email;
+        const pwd = req.body.password;
+        const dbval = await prisma.auth.findFirst({
             where:{
-                username:uname
+                email:email
             },
             select:{
                 salt:true,
                 hash:true,
-                id:true
+                id:true,
+                manager:{
+                    select:{
+                        id:true,
+                        username:true
+                    }
+                },
+                dev:{
+                    select:{
+                        id:true,
+                        username:true
+                    }
+                },
+                leader:{
+                    select:{
+                        id:true,
+                        username:true
+                    }
+                }
             }
         })
         const res = await hashChecker(dbval.salt , dbval.hash , pwd)
@@ -32,7 +50,7 @@ async function login(req,res) {
         const utc = new Date();
         const exp = new Date(utc.getTime()+7.5*60*60*1000);
     
-        const session = await hashGenerator(toString(uname)+toString(exp))
+        const session = await hashGenerator(toString(email)+toString(exp))
     
     
         if(session.err){
@@ -48,10 +66,20 @@ async function login(req,res) {
                 session:session.hash
             }
         }) 
-    
+        const now = new Date(utc.getTime()+5.5*60*60*1000);
+
+        await prisma.user.updateMany({
+            where:{
+                id:dbval.id
+            },
+            data:{
+                lastLogin:now
+            }
+        })
         res.status(200).json({
             msg:"Successful",
-            session:session.hash
+            session:session.hash,
+            uname:dbval.username
         })
     }
     catch(err){
