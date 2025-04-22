@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast, Toaster } from 'sonner';
 import "../main.scss"
 
 const LoginPage = () => {
@@ -8,6 +9,8 @@ const LoginPage = () => {
   const [timer, setTimer] = useState(60);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [showPassword, setShowPassword] = useState(false);
+  const [email , setEmail ] = useState("");
+  const [passowrd, setPassword] = useState("");
   
   // Handle timer for OTP
   useEffect(() => {
@@ -60,6 +63,59 @@ const LoginPage = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  
+
+
+  async function handleLogin() {
+
+    let status = false
+    
+
+    const dummy =  await new Promise ((resolve)=>{
+      toast.promise(new Promise((resolve,reject)=>{
+        fetch("http://localhost:6000/login", {
+          method: "POST",
+          body: JSON.stringify({ email: email , password: passowrd }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((resp) => resp.json())
+        .then((data)=>{
+          if(data.err){
+            throw new Error(data.err)
+          }
+          resolve(data)
+        })
+        .catch((err)=> reject(err))
+      }),{
+        loading: "Logging in ...",
+        success: (data)=>{
+          status = true
+          dt = data
+          console.log("i must be first")
+          resolve()
+          return (`Navigating to question`)
+        },
+        error: (err) => {
+          resolve()
+          return (`${err}`)
+        },
+        style: {
+          fontSize:"1.125rem",
+          fontWeight:300,
+          padding:20
+        }
+      })
+    }) 
+    console.log("i must be second")
+    setBtnVisible(true)
+    if(status){
+      nav(`/${uname}/question/${qname}`);
+    } 
+    
+  }
+
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center" style={{ 
@@ -184,6 +240,7 @@ const LoginPage = () => {
                   type="email"
                   className="w-full bg-[#2a2a2a] border border-[#514d4d] rounded-md pl-10 p-3 focus:ring-2 focus:ring-[#fe4848] focus:border-transparent outline-none transition placeholder-gray-400 text-gray-400"
                   placeholder="e.g abc@gmail.com"
+                  onChange={(e)=>{setEmail(e.target.value)}}
                 />
               </div>
             </div>
@@ -212,6 +269,7 @@ const LoginPage = () => {
                       type={showPassword ? "text" : "password"}
                       className="w-full bg-[#2a2a2a] border border-[#514d4d] rounded-md pl-10 p-3 focus:ring-2 focus:ring-[#fe4848] focus:border-transparent outline-none transition placeholder-gray-400 text-gray-400"
                       placeholder="Enter your password"
+                      onChange={(e)=>{setPassword(e.target.value)}}
                     />
                     <motion.div 
                       whileHover={{ scale: 1.1 }}
