@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [timer, setTimer] = useState(60);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [showPassword, setShowPassword] = useState(false);
   
   // Handle timer for OTP
   useEffect(() => {
@@ -47,16 +48,29 @@ const LoginPage = () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
+  // Handle resend OTP
+  const handleResendOTP = () => {
+    if (timer === 0) {
+      setTimer(60);
+      // Here you would usually call an API to resend the OTP
+    }
+  };
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#3c3c3c]" style={{ 
-      background: 'linear-gradient(135deg, #2a2a2a  0%, #040404 100%)'
+    <div className="min-h-screen w-full flex items-center justify-center" style={{ 
+      background: 'linear-gradient(135deg, #2a2a2a 0%, #040404 100%)'
     }}>
       {/* Main content container */}
       <div className="w-full h-screen flex">
         {/* Left side content */}
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
           className="hidden lg:flex lg:w-1/2 p-16 flex-col justify-between text-white"
         >
@@ -67,9 +81,15 @@ const LoginPage = () => {
               transition={{ duration: 0.5 }}
               className="flex items-center"
             >
-              <svg viewBox="0 0 24 24" className="w-10 h-10 text-[#fe4848] fill-current">
+              <motion.svg 
+                viewBox="0 0 24 24" 
+                className="w-10 h-10 text-[#fe4848] fill-current"
+                initial={{ rotate: -10 }}
+                animate={{ rotate: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-              </svg>
+              </motion.svg>
               <h2 className="text-2xl font-bold ml-3 text-white">ProjectFlow</h2>
             </motion.div>
             
@@ -140,8 +160,7 @@ const LoginPage = () => {
         {/* Right side form */}
         <motion.div 
           layout
-          className=" p-8 md:p-16 w-full lg:w-1/2 text-white flex items-center justify-center"
-          
+          className="p-8 md:p-16 w-full lg:w-1/2 text-white flex items-center justify-center"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -160,10 +179,10 @@ const LoginPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <input
+                <motion.input
                   id="email"
                   type="email"
-                  className="w-full bg-[#2a2a2a] border border-[#514d4d] rounded-md pl-10 p-3 focus:ring-2 focus:ring-[#514d4d] focus:border-transparent outline-none transition placeholder-gray-400 text-gray-400"
+                  className="w-full bg-[#2a2a2a] border border-[#514d4d] rounded-md pl-10 p-3 focus:ring-2 focus:ring-[#fe4848] focus:border-transparent outline-none transition placeholder-gray-400 text-gray-400"
                   placeholder="e.g abc@gmail.com"
                 />
               </div>
@@ -188,18 +207,34 @@ const LoginPage = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
                     </div>
-                    <input
+                    <motion.input
                       id="password"
-                      type="password"
-                      className="w-full bg-[#2a2a2a] border border-[#514d4d] rounded-md pl-10 p-3 focus:ring-2 focus:ring-[#514d4d] focus:border-transparent outline-none transition placeholder-gray-400 text-gray-400"
+                      type={showPassword ? "text" : "password"}
+                      className="w-full bg-[#2a2a2a] border border-[#514d4d] rounded-md pl-10 p-3 focus:ring-2 focus:ring-[#fe4848] focus:border-transparent outline-none transition placeholder-gray-400 text-gray-400"
                       placeholder="Enter your password"
                     />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                      <svg className="h-5 w-5 text-gray-500 cursor-pointer hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3"
+                      onClick={togglePasswordVisibility}
+                    >
+                      <svg 
+                        className="h-5 w-5 text-gray-500 cursor-pointer hover:text-gray-300" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        {showPassword ? (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        ) : (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        )}
+                        {!showPassword && (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        )}
                       </svg>
-                    </div>
+                    </motion.div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">Minimum length is 8 characters</p>
                 </motion.div>
@@ -217,7 +252,7 @@ const LoginPage = () => {
                   Remember me
                 </label>
               </div>
-              <button
+              <motion.button
                 onClick={() => {
                   setMode(mode === 'login' ? 'forgotPassword' : 'login');
                   setOtpSent(false);
@@ -225,7 +260,7 @@ const LoginPage = () => {
                 className="text-sm text-[#ff8282] basic-1"
               >
                 {mode === 'login' ? 'Forgot password?' : 'Remember password?'}
-              </button>
+              </motion.button>
             </div>
             
             <motion.button
@@ -236,27 +271,23 @@ const LoginPage = () => {
                   setTimer(60);
                 }
               }}
-              className="w-full bg-[#ff5252] hover:bg-[#ff3d3d] text-gray-300 font-medium py-3 px-4 rounded-md transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
-              whileHover={{ scale: 1.02 }}
+              className="w-full bg-[#ff3d3d] hover:bg-[#ff2f2f] text-gray-200 font-medium py-3 px-4 rounded-md transition focus:outline-none"
+              whileHover={{ scale: 1.02, backgroundColor: "#ff2020" }}
               whileTap={{ scale: 0.98 }}
             >
               {mode === 'login' ? 'Login' : (otpSent ? 'Verify OTP' : 'Send OTP')}
             </motion.button>
             
-            <div className="mt-6 text-center text-sm text-gray-400">
-              <p>
-                By creating an account, you agree to the 
-                <a href="#" className="text-yellow-400 hover:text-yellow-300 ml-1">Terms of Service</a>.
-                We'll occasionally send you account-related emails.
-              </p>
-            </div>
-            
             <div className="mt-6 text-center">
               <p className="text-gray-400 text-sm">
-                Already have an account? 
-                <a href="#" className="text-yellow-400 hover:text-yellow-300 ml-1">
-                  Login
-                </a>
+                Request for an account? 
+                <motion.a 
+                  whileHover={{ scale: 1.05 }}
+                  href="#" 
+                  className="text-[#ff8282] basic-1 ml-1"
+                >
+                  Click Here
+                </motion.a>
               </p>
             </div>
           </motion.div>
@@ -270,25 +301,27 @@ const LoginPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900/70"
+            className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900/70 backdrop-blur-sm"
             onClick={(e) => e.target === e.currentTarget && setOtpSent(false)}
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-gray-800 rounded-md p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-700"
+              className="bg-[#1a1a1a] rounded-md p-8 max-w-md w-full mx-4 shadow-2xl border border-[#514d4d]"
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-white">Verify Your Identity</h3>
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setOtpSent(false)} 
                   className="text-gray-400 hover:text-white"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
-                </button>
+                </motion.button>
               </div>
               
               <p className="text-gray-300 mb-6">
@@ -301,7 +334,7 @@ const LoginPage = () => {
                 </label>
                 <div className="flex justify-between mb-4">
                   {otp.map((digit, index) => (
-                    <input
+                    <motion.input
                       key={index}
                       id={`otp-${index}`}
                       type="text"
@@ -309,30 +342,36 @@ const LoginPage = () => {
                       value={digit}
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                      className="w-12 h-12 text-center bg-gray-700 border border-gray-600 rounded-md text-white text-xl font-medium focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition"
+                      className="w-12 h-12 text-center bg-[#2a2a2a] border border-[#514d4d] rounded-md text-white text-xl font-medium focus:ring-2 focus:ring-[#fe4848] focus:border-transparent outline-none transition"
+                      whileFocus={{ scale: 1.05 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
                     />
                   ))}
                 </div>
                 <div className="text-sm text-gray-400 flex justify-between items-center">
                   <div className="flex items-center">
-                    <svg className="w-4 h-4 mr-1 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 mr-1 text-[#fe4848]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <span>Expires in {formatTime(timer)}</span>
                   </div>
-                  <button 
-                    className={`text-yellow-400 hover:text-yellow-300 ${timer === 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
+                  <motion.button 
+                    whileHover={{ scale: timer === 0 ? 1.05 : 1 }}
+                    className={`text-[#fe4848] hover:text-[#ff8282] ${timer === 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
                     disabled={timer > 0}
+                    onClick={handleResendOTP}
                   >
                     Resend OTP
-                  </button>
+                  </motion.button>
                 </div>
               </div>
               
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, backgroundColor: "#ff2020" }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium py-3 px-4 rounded-md transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+                className="w-full bg-[#ff3d3d] hover:bg-[#ff2f2f] text-white font-medium py-3 px-4 rounded-md transition focus:outline-none focus:ring-2 focus:ring-[#fe4848] focus:ring-opacity-50"
               >
                 Verify OTP
               </motion.button>
