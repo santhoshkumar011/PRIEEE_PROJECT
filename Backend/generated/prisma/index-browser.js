@@ -121,7 +121,8 @@ exports.Prisma.AuthScalarFieldEnum = {
   id: 'id',
   email: 'email',
   salt: 'salt',
-  hash: 'hash'
+  hash: 'hash',
+  role: 'role'
 };
 
 exports.Prisma.ProjectManagerScalarFieldEnum = {
@@ -185,9 +186,7 @@ exports.Prisma.OtpScalarFieldEnum = {
   otp: 'otp',
   expiry: 'expiry',
   status: 'status',
-  managerId: 'managerId',
-  leaderId: 'leaderId',
-  developerId: 'developerId'
+  authId: 'authId'
 };
 
 exports.Prisma.SortOrder = {
@@ -204,6 +203,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Role = exports.$Enums.Role = {
+  DEVELOPER: 'DEVELOPER',
+  TEAM_LEADER: 'TEAM_LEADER',
+  PROJECT_MANAGER: 'PROJECT_MANAGER'
+};
+
 exports.ProjectStatus = exports.$Enums.ProjectStatus = {
   NOT_STARTED: 'NOT_STARTED',
   IN_PROGRESS: 'IN_PROGRESS',

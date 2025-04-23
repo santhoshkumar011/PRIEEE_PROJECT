@@ -83,6 +83,15 @@ export const OTPStatus: {
 
 export type OTPStatus = (typeof OTPStatus)[keyof typeof OTPStatus]
 
+
+export const Role: {
+  DEVELOPER: 'DEVELOPER',
+  TEAM_LEADER: 'TEAM_LEADER',
+  PROJECT_MANAGER: 'PROJECT_MANAGER'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
 }
 
 export type ProjectStatus = $Enums.ProjectStatus
@@ -96,6 +105,10 @@ export const TaskStatus: typeof $Enums.TaskStatus
 export type OTPStatus = $Enums.OTPStatus
 
 export const OTPStatus: typeof $Enums.OTPStatus
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1715,6 +1728,7 @@ export namespace Prisma {
     email: string | null
     salt: string | null
     hash: string | null
+    role: $Enums.Role | null
   }
 
   export type AuthMaxAggregateOutputType = {
@@ -1722,6 +1736,7 @@ export namespace Prisma {
     email: string | null
     salt: string | null
     hash: string | null
+    role: $Enums.Role | null
   }
 
   export type AuthCountAggregateOutputType = {
@@ -1729,6 +1744,7 @@ export namespace Prisma {
     email: number
     salt: number
     hash: number
+    role: number
     _all: number
   }
 
@@ -1746,6 +1762,7 @@ export namespace Prisma {
     email?: true
     salt?: true
     hash?: true
+    role?: true
   }
 
   export type AuthMaxAggregateInputType = {
@@ -1753,6 +1770,7 @@ export namespace Prisma {
     email?: true
     salt?: true
     hash?: true
+    role?: true
   }
 
   export type AuthCountAggregateInputType = {
@@ -1760,6 +1778,7 @@ export namespace Prisma {
     email?: true
     salt?: true
     hash?: true
+    role?: true
     _all?: true
   }
 
@@ -1854,6 +1873,7 @@ export namespace Prisma {
     email: string
     salt: string
     hash: string
+    role: $Enums.Role
     _count: AuthCountAggregateOutputType | null
     _avg: AuthAvgAggregateOutputType | null
     _sum: AuthSumAggregateOutputType | null
@@ -1880,6 +1900,8 @@ export namespace Prisma {
     email?: boolean
     salt?: boolean
     hash?: boolean
+    role?: boolean
+    otp?: boolean | Auth$otpArgs<ExtArgs>
     manager?: boolean | Auth$managerArgs<ExtArgs>
     leader?: boolean | Auth$leaderArgs<ExtArgs>
     dev?: boolean | Auth$devArgs<ExtArgs>
@@ -1890,6 +1912,7 @@ export namespace Prisma {
     email?: boolean
     salt?: boolean
     hash?: boolean
+    role?: boolean
   }, ExtArgs["result"]["auth"]>
 
   export type AuthSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1897,6 +1920,7 @@ export namespace Prisma {
     email?: boolean
     salt?: boolean
     hash?: boolean
+    role?: boolean
   }, ExtArgs["result"]["auth"]>
 
   export type AuthSelectScalar = {
@@ -1904,10 +1928,12 @@ export namespace Prisma {
     email?: boolean
     salt?: boolean
     hash?: boolean
+    role?: boolean
   }
 
-  export type AuthOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "salt" | "hash", ExtArgs["result"]["auth"]>
+  export type AuthOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "salt" | "hash" | "role", ExtArgs["result"]["auth"]>
   export type AuthInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    otp?: boolean | Auth$otpArgs<ExtArgs>
     manager?: boolean | Auth$managerArgs<ExtArgs>
     leader?: boolean | Auth$leaderArgs<ExtArgs>
     dev?: boolean | Auth$devArgs<ExtArgs>
@@ -1918,6 +1944,7 @@ export namespace Prisma {
   export type $AuthPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Auth"
     objects: {
+      otp: Prisma.$OtpPayload<ExtArgs> | null
       manager: Prisma.$ProjectManagerPayload<ExtArgs> | null
       leader: Prisma.$TeamLeaderPayload<ExtArgs> | null
       dev: Prisma.$DeveloperPayload<ExtArgs> | null
@@ -1927,6 +1954,7 @@ export namespace Prisma {
       email: string
       salt: string
       hash: string
+      role: $Enums.Role
     }, ExtArgs["result"]["auth"]>
     composites: {}
   }
@@ -2321,6 +2349,7 @@ export namespace Prisma {
    */
   export interface Prisma__AuthClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    otp<T extends Auth$otpArgs<ExtArgs> = {}>(args?: Subset<T, Auth$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     manager<T extends Auth$managerArgs<ExtArgs> = {}>(args?: Subset<T, Auth$managerArgs<ExtArgs>>): Prisma__ProjectManagerClient<$Result.GetResult<Prisma.$ProjectManagerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     leader<T extends Auth$leaderArgs<ExtArgs> = {}>(args?: Subset<T, Auth$leaderArgs<ExtArgs>>): Prisma__TeamLeaderClient<$Result.GetResult<Prisma.$TeamLeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     dev<T extends Auth$devArgs<ExtArgs> = {}>(args?: Subset<T, Auth$devArgs<ExtArgs>>): Prisma__DeveloperClient<$Result.GetResult<Prisma.$DeveloperPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2357,6 +2386,7 @@ export namespace Prisma {
     readonly email: FieldRef<"Auth", 'String'>
     readonly salt: FieldRef<"Auth", 'String'>
     readonly hash: FieldRef<"Auth", 'String'>
+    readonly role: FieldRef<"Auth", 'Role'>
   }
     
 
@@ -2745,6 +2775,25 @@ export namespace Prisma {
   }
 
   /**
+   * Auth.otp
+   */
+  export type Auth$otpArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Otp
+     */
+    select?: OtpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Otp
+     */
+    omit?: OtpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtpInclude<ExtArgs> | null
+    where?: OtpWhereInput
+  }
+
+  /**
    * Auth.manager
    */
   export type Auth$managerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3026,7 +3075,6 @@ export namespace Prisma {
     projects?: boolean | ProjectManager$projectsArgs<ExtArgs>
     teamLeaders?: boolean | ProjectManager$teamLeadersArgs<ExtArgs>
     session?: boolean | ProjectManager$sessionArgs<ExtArgs>
-    otp?: boolean | ProjectManager$otpArgs<ExtArgs>
     _count?: boolean | ProjectManagerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["projectManager"]>
 
@@ -3062,7 +3110,6 @@ export namespace Prisma {
     projects?: boolean | ProjectManager$projectsArgs<ExtArgs>
     teamLeaders?: boolean | ProjectManager$teamLeadersArgs<ExtArgs>
     session?: boolean | ProjectManager$sessionArgs<ExtArgs>
-    otp?: boolean | ProjectManager$otpArgs<ExtArgs>
     _count?: boolean | ProjectManagerCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectManagerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3079,7 +3126,6 @@ export namespace Prisma {
       projects: Prisma.$ProjectPayload<ExtArgs>[]
       teamLeaders: Prisma.$TeamLeaderPayload<ExtArgs>[]
       session: Prisma.$SessionPayload<ExtArgs> | null
-      otp: Prisma.$OtpPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3485,7 +3531,6 @@ export namespace Prisma {
     projects<T extends ProjectManager$projectsArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamLeaders<T extends ProjectManager$teamLeadersArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$teamLeadersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamLeaderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     session<T extends ProjectManager$sessionArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$sessionArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    otp<T extends ProjectManager$otpArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3983,25 +4028,6 @@ export namespace Prisma {
   }
 
   /**
-   * ProjectManager.otp
-   */
-  export type ProjectManager$otpArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Otp
-     */
-    select?: OtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Otp
-     */
-    omit?: OtpOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OtpInclude<ExtArgs> | null
-    where?: OtpWhereInput
-  }
-
-  /**
    * ProjectManager without action
    */
   export type ProjectManagerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4239,7 +4265,6 @@ export namespace Prisma {
     manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
     developers?: boolean | TeamLeader$developersArgs<ExtArgs>
     session?: boolean | TeamLeader$sessionArgs<ExtArgs>
-    otp?: boolean | TeamLeader$otpArgs<ExtArgs>
     _count?: boolean | TeamLeaderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamLeader"]>
 
@@ -4281,7 +4306,6 @@ export namespace Prisma {
     manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
     developers?: boolean | TeamLeader$developersArgs<ExtArgs>
     session?: boolean | TeamLeader$sessionArgs<ExtArgs>
-    otp?: boolean | TeamLeader$otpArgs<ExtArgs>
     _count?: boolean | TeamLeaderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeamLeaderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4301,7 +4325,6 @@ export namespace Prisma {
       manager: Prisma.$ProjectManagerPayload<ExtArgs>
       developers: Prisma.$DeveloperPayload<ExtArgs>[]
       session: Prisma.$SessionPayload<ExtArgs> | null
-      otp: Prisma.$OtpPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4709,7 +4732,6 @@ export namespace Prisma {
     manager<T extends ProjectManagerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManagerDefaultArgs<ExtArgs>>): Prisma__ProjectManagerClient<$Result.GetResult<Prisma.$ProjectManagerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     developers<T extends TeamLeader$developersArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$developersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeveloperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     session<T extends TeamLeader$sessionArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$sessionArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    otp<T extends TeamLeader$otpArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5208,25 +5230,6 @@ export namespace Prisma {
   }
 
   /**
-   * TeamLeader.otp
-   */
-  export type TeamLeader$otpArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Otp
-     */
-    select?: OtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Otp
-     */
-    omit?: OtpOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OtpInclude<ExtArgs> | null
-    where?: OtpWhereInput
-  }
-
-  /**
    * TeamLeader without action
    */
   export type TeamLeaderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5463,7 +5466,6 @@ export namespace Prisma {
     tasks?: boolean | Developer$tasksArgs<ExtArgs>
     teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
     session?: boolean | Developer$sessionArgs<ExtArgs>
-    otp?: boolean | Developer$otpArgs<ExtArgs>
     _count?: boolean | DeveloperCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["developer"]>
 
@@ -5504,7 +5506,6 @@ export namespace Prisma {
     tasks?: boolean | Developer$tasksArgs<ExtArgs>
     teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
     session?: boolean | Developer$sessionArgs<ExtArgs>
-    otp?: boolean | Developer$otpArgs<ExtArgs>
     _count?: boolean | DeveloperCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DeveloperIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5523,7 +5524,6 @@ export namespace Prisma {
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       teamLeader: Prisma.$TeamLeaderPayload<ExtArgs>
       session: Prisma.$SessionPayload<ExtArgs> | null
-      otp: Prisma.$OtpPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5930,7 +5930,6 @@ export namespace Prisma {
     tasks<T extends Developer$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Developer$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamLeader<T extends TeamLeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeaderDefaultArgs<ExtArgs>>): Prisma__TeamLeaderClient<$Result.GetResult<Prisma.$TeamLeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     session<T extends Developer$sessionArgs<ExtArgs> = {}>(args?: Subset<T, Developer$sessionArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    otp<T extends Developer$otpArgs<ExtArgs> = {}>(args?: Subset<T, Developer$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6402,25 +6401,6 @@ export namespace Prisma {
      */
     include?: SessionInclude<ExtArgs> | null
     where?: SessionWhereInput
-  }
-
-  /**
-   * Developer.otp
-   */
-  export type Developer$otpArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Otp
-     */
-    select?: OtpSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Otp
-     */
-    omit?: OtpOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OtpInclude<ExtArgs> | null
-    where?: OtpWhereInput
   }
 
   /**
@@ -9961,16 +9941,12 @@ export namespace Prisma {
 
   export type OtpAvgAggregateOutputType = {
     id: number | null
-    managerId: number | null
-    leaderId: number | null
-    developerId: number | null
+    authId: number | null
   }
 
   export type OtpSumAggregateOutputType = {
     id: number | null
-    managerId: number | null
-    leaderId: number | null
-    developerId: number | null
+    authId: number | null
   }
 
   export type OtpMinAggregateOutputType = {
@@ -9978,9 +9954,7 @@ export namespace Prisma {
     otp: string | null
     expiry: Date | null
     status: $Enums.OTPStatus | null
-    managerId: number | null
-    leaderId: number | null
-    developerId: number | null
+    authId: number | null
   }
 
   export type OtpMaxAggregateOutputType = {
@@ -9988,9 +9962,7 @@ export namespace Prisma {
     otp: string | null
     expiry: Date | null
     status: $Enums.OTPStatus | null
-    managerId: number | null
-    leaderId: number | null
-    developerId: number | null
+    authId: number | null
   }
 
   export type OtpCountAggregateOutputType = {
@@ -9998,25 +9970,19 @@ export namespace Prisma {
     otp: number
     expiry: number
     status: number
-    managerId: number
-    leaderId: number
-    developerId: number
+    authId: number
     _all: number
   }
 
 
   export type OtpAvgAggregateInputType = {
     id?: true
-    managerId?: true
-    leaderId?: true
-    developerId?: true
+    authId?: true
   }
 
   export type OtpSumAggregateInputType = {
     id?: true
-    managerId?: true
-    leaderId?: true
-    developerId?: true
+    authId?: true
   }
 
   export type OtpMinAggregateInputType = {
@@ -10024,9 +9990,7 @@ export namespace Prisma {
     otp?: true
     expiry?: true
     status?: true
-    managerId?: true
-    leaderId?: true
-    developerId?: true
+    authId?: true
   }
 
   export type OtpMaxAggregateInputType = {
@@ -10034,9 +9998,7 @@ export namespace Prisma {
     otp?: true
     expiry?: true
     status?: true
-    managerId?: true
-    leaderId?: true
-    developerId?: true
+    authId?: true
   }
 
   export type OtpCountAggregateInputType = {
@@ -10044,9 +10006,7 @@ export namespace Prisma {
     otp?: true
     expiry?: true
     status?: true
-    managerId?: true
-    leaderId?: true
-    developerId?: true
+    authId?: true
     _all?: true
   }
 
@@ -10141,9 +10101,7 @@ export namespace Prisma {
     otp: string
     expiry: Date
     status: $Enums.OTPStatus
-    managerId: number | null
-    leaderId: number | null
-    developerId: number | null
+    authId: number | null
     _count: OtpCountAggregateOutputType | null
     _avg: OtpAvgAggregateOutputType | null
     _sum: OtpSumAggregateOutputType | null
@@ -10170,12 +10128,8 @@ export namespace Prisma {
     otp?: boolean
     expiry?: boolean
     status?: boolean
-    managerId?: boolean
-    leaderId?: boolean
-    developerId?: boolean
-    manager?: boolean | Otp$managerArgs<ExtArgs>
-    leader?: boolean | Otp$leaderArgs<ExtArgs>
-    developer?: boolean | Otp$developerArgs<ExtArgs>
+    authId?: boolean
+    auth?: boolean | Otp$authArgs<ExtArgs>
   }, ExtArgs["result"]["otp"]>
 
   export type OtpSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10183,12 +10137,8 @@ export namespace Prisma {
     otp?: boolean
     expiry?: boolean
     status?: boolean
-    managerId?: boolean
-    leaderId?: boolean
-    developerId?: boolean
-    manager?: boolean | Otp$managerArgs<ExtArgs>
-    leader?: boolean | Otp$leaderArgs<ExtArgs>
-    developer?: boolean | Otp$developerArgs<ExtArgs>
+    authId?: boolean
+    auth?: boolean | Otp$authArgs<ExtArgs>
   }, ExtArgs["result"]["otp"]>
 
   export type OtpSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10196,12 +10146,8 @@ export namespace Prisma {
     otp?: boolean
     expiry?: boolean
     status?: boolean
-    managerId?: boolean
-    leaderId?: boolean
-    developerId?: boolean
-    manager?: boolean | Otp$managerArgs<ExtArgs>
-    leader?: boolean | Otp$leaderArgs<ExtArgs>
-    developer?: boolean | Otp$developerArgs<ExtArgs>
+    authId?: boolean
+    auth?: boolean | Otp$authArgs<ExtArgs>
   }, ExtArgs["result"]["otp"]>
 
   export type OtpSelectScalar = {
@@ -10209,43 +10155,31 @@ export namespace Prisma {
     otp?: boolean
     expiry?: boolean
     status?: boolean
-    managerId?: boolean
-    leaderId?: boolean
-    developerId?: boolean
+    authId?: boolean
   }
 
-  export type OtpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "otp" | "expiry" | "status" | "managerId" | "leaderId" | "developerId", ExtArgs["result"]["otp"]>
+  export type OtpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "otp" | "expiry" | "status" | "authId", ExtArgs["result"]["otp"]>
   export type OtpInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    manager?: boolean | Otp$managerArgs<ExtArgs>
-    leader?: boolean | Otp$leaderArgs<ExtArgs>
-    developer?: boolean | Otp$developerArgs<ExtArgs>
+    auth?: boolean | Otp$authArgs<ExtArgs>
   }
   export type OtpIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    manager?: boolean | Otp$managerArgs<ExtArgs>
-    leader?: boolean | Otp$leaderArgs<ExtArgs>
-    developer?: boolean | Otp$developerArgs<ExtArgs>
+    auth?: boolean | Otp$authArgs<ExtArgs>
   }
   export type OtpIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    manager?: boolean | Otp$managerArgs<ExtArgs>
-    leader?: boolean | Otp$leaderArgs<ExtArgs>
-    developer?: boolean | Otp$developerArgs<ExtArgs>
+    auth?: boolean | Otp$authArgs<ExtArgs>
   }
 
   export type $OtpPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Otp"
     objects: {
-      manager: Prisma.$ProjectManagerPayload<ExtArgs> | null
-      leader: Prisma.$TeamLeaderPayload<ExtArgs> | null
-      developer: Prisma.$DeveloperPayload<ExtArgs> | null
+      auth: Prisma.$AuthPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       otp: string
       expiry: Date
       status: $Enums.OTPStatus
-      managerId: number | null
-      leaderId: number | null
-      developerId: number | null
+      authId: number | null
     }, ExtArgs["result"]["otp"]>
     composites: {}
   }
@@ -10640,9 +10574,7 @@ export namespace Prisma {
    */
   export interface Prisma__OtpClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    manager<T extends Otp$managerArgs<ExtArgs> = {}>(args?: Subset<T, Otp$managerArgs<ExtArgs>>): Prisma__ProjectManagerClient<$Result.GetResult<Prisma.$ProjectManagerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    leader<T extends Otp$leaderArgs<ExtArgs> = {}>(args?: Subset<T, Otp$leaderArgs<ExtArgs>>): Prisma__TeamLeaderClient<$Result.GetResult<Prisma.$TeamLeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    developer<T extends Otp$developerArgs<ExtArgs> = {}>(args?: Subset<T, Otp$developerArgs<ExtArgs>>): Prisma__DeveloperClient<$Result.GetResult<Prisma.$DeveloperPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    auth<T extends Otp$authArgs<ExtArgs> = {}>(args?: Subset<T, Otp$authArgs<ExtArgs>>): Prisma__AuthClient<$Result.GetResult<Prisma.$AuthPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10676,9 +10608,7 @@ export namespace Prisma {
     readonly otp: FieldRef<"Otp", 'String'>
     readonly expiry: FieldRef<"Otp", 'DateTime'>
     readonly status: FieldRef<"Otp", 'OTPStatus'>
-    readonly managerId: FieldRef<"Otp", 'Int'>
-    readonly leaderId: FieldRef<"Otp", 'Int'>
-    readonly developerId: FieldRef<"Otp", 'Int'>
+    readonly authId: FieldRef<"Otp", 'Int'>
   }
     
 
@@ -11075,60 +11005,22 @@ export namespace Prisma {
   }
 
   /**
-   * Otp.manager
+   * Otp.auth
    */
-  export type Otp$managerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Otp$authArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProjectManager
+     * Select specific fields to fetch from the Auth
      */
-    select?: ProjectManagerSelect<ExtArgs> | null
+    select?: AuthSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ProjectManager
+     * Omit specific fields from the Auth
      */
-    omit?: ProjectManagerOmit<ExtArgs> | null
+    omit?: AuthOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProjectManagerInclude<ExtArgs> | null
-    where?: ProjectManagerWhereInput
-  }
-
-  /**
-   * Otp.leader
-   */
-  export type Otp$leaderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TeamLeader
-     */
-    select?: TeamLeaderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the TeamLeader
-     */
-    omit?: TeamLeaderOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TeamLeaderInclude<ExtArgs> | null
-    where?: TeamLeaderWhereInput
-  }
-
-  /**
-   * Otp.developer
-   */
-  export type Otp$developerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Developer
-     */
-    select?: DeveloperSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Developer
-     */
-    omit?: DeveloperOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeveloperInclude<ExtArgs> | null
-    where?: DeveloperWhereInput
+    include?: AuthInclude<ExtArgs> | null
+    where?: AuthWhereInput
   }
 
   /**
@@ -11168,7 +11060,8 @@ export namespace Prisma {
     id: 'id',
     email: 'email',
     salt: 'salt',
-    hash: 'hash'
+    hash: 'hash',
+    role: 'role'
   };
 
   export type AuthScalarFieldEnum = (typeof AuthScalarFieldEnum)[keyof typeof AuthScalarFieldEnum]
@@ -11253,9 +11146,7 @@ export namespace Prisma {
     otp: 'otp',
     expiry: 'expiry',
     status: 'status',
-    managerId: 'managerId',
-    leaderId: 'leaderId',
-    developerId: 'developerId'
+    authId: 'authId'
   };
 
   export type OtpScalarFieldEnum = (typeof OtpScalarFieldEnum)[keyof typeof OtpScalarFieldEnum]
@@ -11315,6 +11206,20 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
     
 
 
@@ -11399,6 +11304,8 @@ export namespace Prisma {
     email?: StringFilter<"Auth"> | string
     salt?: StringFilter<"Auth"> | string
     hash?: StringFilter<"Auth"> | string
+    role?: EnumRoleFilter<"Auth"> | $Enums.Role
+    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
     manager?: XOR<ProjectManagerNullableScalarRelationFilter, ProjectManagerWhereInput> | null
     leader?: XOR<TeamLeaderNullableScalarRelationFilter, TeamLeaderWhereInput> | null
     dev?: XOR<DeveloperNullableScalarRelationFilter, DeveloperWhereInput> | null
@@ -11409,6 +11316,8 @@ export namespace Prisma {
     email?: SortOrder
     salt?: SortOrder
     hash?: SortOrder
+    role?: SortOrder
+    otp?: OtpOrderByWithRelationInput
     manager?: ProjectManagerOrderByWithRelationInput
     leader?: TeamLeaderOrderByWithRelationInput
     dev?: DeveloperOrderByWithRelationInput
@@ -11422,6 +11331,8 @@ export namespace Prisma {
     NOT?: AuthWhereInput | AuthWhereInput[]
     salt?: StringFilter<"Auth"> | string
     hash?: StringFilter<"Auth"> | string
+    role?: EnumRoleFilter<"Auth"> | $Enums.Role
+    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
     manager?: XOR<ProjectManagerNullableScalarRelationFilter, ProjectManagerWhereInput> | null
     leader?: XOR<TeamLeaderNullableScalarRelationFilter, TeamLeaderWhereInput> | null
     dev?: XOR<DeveloperNullableScalarRelationFilter, DeveloperWhereInput> | null
@@ -11432,6 +11343,7 @@ export namespace Prisma {
     email?: SortOrder
     salt?: SortOrder
     hash?: SortOrder
+    role?: SortOrder
     _count?: AuthCountOrderByAggregateInput
     _avg?: AuthAvgOrderByAggregateInput
     _max?: AuthMaxOrderByAggregateInput
@@ -11447,6 +11359,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Auth"> | string
     salt?: StringWithAggregatesFilter<"Auth"> | string
     hash?: StringWithAggregatesFilter<"Auth"> | string
+    role?: EnumRoleWithAggregatesFilter<"Auth"> | $Enums.Role
   }
 
   export type ProjectManagerWhereInput = {
@@ -11462,7 +11375,6 @@ export namespace Prisma {
     projects?: ProjectListRelationFilter
     teamLeaders?: TeamLeaderListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
-    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }
 
   export type ProjectManagerOrderByWithRelationInput = {
@@ -11475,7 +11387,6 @@ export namespace Prisma {
     projects?: ProjectOrderByRelationAggregateInput
     teamLeaders?: TeamLeaderOrderByRelationAggregateInput
     session?: SessionOrderByWithRelationInput
-    otp?: OtpOrderByWithRelationInput
   }
 
   export type ProjectManagerWhereUniqueInput = Prisma.AtLeast<{
@@ -11491,7 +11402,6 @@ export namespace Prisma {
     projects?: ProjectListRelationFilter
     teamLeaders?: TeamLeaderListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
-    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }, "id" | "username" | "authId">
 
   export type ProjectManagerOrderByWithAggregationInput = {
@@ -11533,7 +11443,6 @@ export namespace Prisma {
     manager?: XOR<ProjectManagerScalarRelationFilter, ProjectManagerWhereInput>
     developers?: DeveloperListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
-    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }
 
   export type TeamLeaderOrderByWithRelationInput = {
@@ -11548,7 +11457,6 @@ export namespace Prisma {
     manager?: ProjectManagerOrderByWithRelationInput
     developers?: DeveloperOrderByRelationAggregateInput
     session?: SessionOrderByWithRelationInput
-    otp?: OtpOrderByWithRelationInput
   }
 
   export type TeamLeaderWhereUniqueInput = Prisma.AtLeast<{
@@ -11566,7 +11474,6 @@ export namespace Prisma {
     manager?: XOR<ProjectManagerScalarRelationFilter, ProjectManagerWhereInput>
     developers?: DeveloperListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
-    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }, "id" | "username" | "authId">
 
   export type TeamLeaderOrderByWithAggregationInput = {
@@ -11609,7 +11516,6 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     teamLeader?: XOR<TeamLeaderScalarRelationFilter, TeamLeaderWhereInput>
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
-    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }
 
   export type DeveloperOrderByWithRelationInput = {
@@ -11623,7 +11529,6 @@ export namespace Prisma {
     tasks?: TaskOrderByRelationAggregateInput
     teamLeader?: TeamLeaderOrderByWithRelationInput
     session?: SessionOrderByWithRelationInput
-    otp?: OtpOrderByWithRelationInput
   }
 
   export type DeveloperWhereUniqueInput = Prisma.AtLeast<{
@@ -11640,7 +11545,6 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     teamLeader?: XOR<TeamLeaderScalarRelationFilter, TeamLeaderWhereInput>
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
-    otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }, "id" | "username" | "authId">
 
   export type DeveloperOrderByWithAggregationInput = {
@@ -11893,12 +11797,8 @@ export namespace Prisma {
     otp?: StringFilter<"Otp"> | string
     expiry?: DateTimeFilter<"Otp"> | Date | string
     status?: EnumOTPStatusFilter<"Otp"> | $Enums.OTPStatus
-    managerId?: IntNullableFilter<"Otp"> | number | null
-    leaderId?: IntNullableFilter<"Otp"> | number | null
-    developerId?: IntNullableFilter<"Otp"> | number | null
-    manager?: XOR<ProjectManagerNullableScalarRelationFilter, ProjectManagerWhereInput> | null
-    leader?: XOR<TeamLeaderNullableScalarRelationFilter, TeamLeaderWhereInput> | null
-    developer?: XOR<DeveloperNullableScalarRelationFilter, DeveloperWhereInput> | null
+    authId?: IntNullableFilter<"Otp"> | number | null
+    auth?: XOR<AuthNullableScalarRelationFilter, AuthWhereInput> | null
   }
 
   export type OtpOrderByWithRelationInput = {
@@ -11906,38 +11806,28 @@ export namespace Prisma {
     otp?: SortOrder
     expiry?: SortOrder
     status?: SortOrder
-    managerId?: SortOrderInput | SortOrder
-    leaderId?: SortOrderInput | SortOrder
-    developerId?: SortOrderInput | SortOrder
-    manager?: ProjectManagerOrderByWithRelationInput
-    leader?: TeamLeaderOrderByWithRelationInput
-    developer?: DeveloperOrderByWithRelationInput
+    authId?: SortOrderInput | SortOrder
+    auth?: AuthOrderByWithRelationInput
   }
 
   export type OtpWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    managerId?: number
-    leaderId?: number
-    developerId?: number
+    authId?: number
     AND?: OtpWhereInput | OtpWhereInput[]
     OR?: OtpWhereInput[]
     NOT?: OtpWhereInput | OtpWhereInput[]
     otp?: StringFilter<"Otp"> | string
     expiry?: DateTimeFilter<"Otp"> | Date | string
     status?: EnumOTPStatusFilter<"Otp"> | $Enums.OTPStatus
-    manager?: XOR<ProjectManagerNullableScalarRelationFilter, ProjectManagerWhereInput> | null
-    leader?: XOR<TeamLeaderNullableScalarRelationFilter, TeamLeaderWhereInput> | null
-    developer?: XOR<DeveloperNullableScalarRelationFilter, DeveloperWhereInput> | null
-  }, "id" | "managerId" | "leaderId" | "developerId">
+    auth?: XOR<AuthNullableScalarRelationFilter, AuthWhereInput> | null
+  }, "id" | "authId">
 
   export type OtpOrderByWithAggregationInput = {
     id?: SortOrder
     otp?: SortOrder
     expiry?: SortOrder
     status?: SortOrder
-    managerId?: SortOrderInput | SortOrder
-    leaderId?: SortOrderInput | SortOrder
-    developerId?: SortOrderInput | SortOrder
+    authId?: SortOrderInput | SortOrder
     _count?: OtpCountOrderByAggregateInput
     _avg?: OtpAvgOrderByAggregateInput
     _max?: OtpMaxOrderByAggregateInput
@@ -11953,15 +11843,15 @@ export namespace Prisma {
     otp?: StringWithAggregatesFilter<"Otp"> | string
     expiry?: DateTimeWithAggregatesFilter<"Otp"> | Date | string
     status?: EnumOTPStatusWithAggregatesFilter<"Otp"> | $Enums.OTPStatus
-    managerId?: IntNullableWithAggregatesFilter<"Otp"> | number | null
-    leaderId?: IntNullableWithAggregatesFilter<"Otp"> | number | null
-    developerId?: IntNullableWithAggregatesFilter<"Otp"> | number | null
+    authId?: IntNullableWithAggregatesFilter<"Otp"> | number | null
   }
 
   export type AuthCreateInput = {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpCreateNestedOneWithoutAuthInput
     manager?: ProjectManagerCreateNestedOneWithoutAuthInput
     leader?: TeamLeaderCreateNestedOneWithoutAuthInput
     dev?: DeveloperCreateNestedOneWithoutAuthInput
@@ -11972,6 +11862,8 @@ export namespace Prisma {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpUncheckedCreateNestedOneWithoutAuthInput
     manager?: ProjectManagerUncheckedCreateNestedOneWithoutAuthInput
     leader?: TeamLeaderUncheckedCreateNestedOneWithoutAuthInput
     dev?: DeveloperUncheckedCreateNestedOneWithoutAuthInput
@@ -11981,6 +11873,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUpdateOneWithoutAuthNestedInput
     manager?: ProjectManagerUpdateOneWithoutAuthNestedInput
     leader?: TeamLeaderUpdateOneWithoutAuthNestedInput
     dev?: DeveloperUpdateOneWithoutAuthNestedInput
@@ -11991,6 +11885,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUncheckedUpdateOneWithoutAuthNestedInput
     manager?: ProjectManagerUncheckedUpdateOneWithoutAuthNestedInput
     leader?: TeamLeaderUncheckedUpdateOneWithoutAuthNestedInput
     dev?: DeveloperUncheckedUpdateOneWithoutAuthNestedInput
@@ -12001,12 +11897,14 @@ export namespace Prisma {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
   }
 
   export type AuthUpdateManyMutationInput = {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type AuthUncheckedUpdateManyInput = {
@@ -12014,6 +11912,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type ProjectManagerCreateInput = {
@@ -12024,7 +11923,6 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutManagerInput
     teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
-    otp?: OtpCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerUncheckedCreateInput = {
@@ -12036,7 +11934,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
-    otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerUpdateInput = {
@@ -12047,7 +11944,6 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
-    otp?: OtpUpdateOneWithoutManagerNestedInput
   }
 
   export type ProjectManagerUncheckedUpdateInput = {
@@ -12059,7 +11955,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
 
   export type ProjectManagerCreateManyInput = {
@@ -12093,7 +11988,6 @@ export namespace Prisma {
     manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
     developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
-    otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUncheckedCreateInput = {
@@ -12106,7 +12000,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
     developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
-    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUpdateInput = {
@@ -12118,7 +12011,6 @@ export namespace Prisma {
     manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
     developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateInput = {
@@ -12131,7 +12023,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
     developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderCreateManyInput = {
@@ -12166,7 +12057,6 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
     teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
-    otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperUncheckedCreateInput = {
@@ -12178,7 +12068,6 @@ export namespace Prisma {
     teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
-    otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperUpdateInput = {
@@ -12189,7 +12078,6 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperUncheckedUpdateInput = {
@@ -12201,7 +12089,6 @@ export namespace Prisma {
     teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperCreateManyInput = {
@@ -12430,9 +12317,7 @@ export namespace Prisma {
     otp: string
     expiry: Date | string
     status?: $Enums.OTPStatus
-    manager?: ProjectManagerCreateNestedOneWithoutOtpInput
-    leader?: TeamLeaderCreateNestedOneWithoutOtpInput
-    developer?: DeveloperCreateNestedOneWithoutOtpInput
+    auth?: AuthCreateNestedOneWithoutOtpInput
   }
 
   export type OtpUncheckedCreateInput = {
@@ -12440,18 +12325,14 @@ export namespace Prisma {
     otp: string
     expiry: Date | string
     status?: $Enums.OTPStatus
-    managerId?: number | null
-    leaderId?: number | null
-    developerId?: number | null
+    authId?: number | null
   }
 
   export type OtpUpdateInput = {
     otp?: StringFieldUpdateOperationsInput | string
     expiry?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    manager?: ProjectManagerUpdateOneWithoutOtpNestedInput
-    leader?: TeamLeaderUpdateOneWithoutOtpNestedInput
-    developer?: DeveloperUpdateOneWithoutOtpNestedInput
+    auth?: AuthUpdateOneWithoutOtpNestedInput
   }
 
   export type OtpUncheckedUpdateInput = {
@@ -12459,9 +12340,7 @@ export namespace Prisma {
     otp?: StringFieldUpdateOperationsInput | string
     expiry?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    managerId?: NullableIntFieldUpdateOperationsInput | number | null
-    leaderId?: NullableIntFieldUpdateOperationsInput | number | null
-    developerId?: NullableIntFieldUpdateOperationsInput | number | null
+    authId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type OtpCreateManyInput = {
@@ -12469,9 +12348,7 @@ export namespace Prisma {
     otp: string
     expiry: Date | string
     status?: $Enums.OTPStatus
-    managerId?: number | null
-    leaderId?: number | null
-    developerId?: number | null
+    authId?: number | null
   }
 
   export type OtpUpdateManyMutationInput = {
@@ -12485,9 +12362,7 @@ export namespace Prisma {
     otp?: StringFieldUpdateOperationsInput | string
     expiry?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    managerId?: NullableIntFieldUpdateOperationsInput | number | null
-    leaderId?: NullableIntFieldUpdateOperationsInput | number | null
-    developerId?: NullableIntFieldUpdateOperationsInput | number | null
+    authId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -12516,6 +12391,18 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type OtpNullableScalarRelationFilter = {
+    is?: OtpWhereInput | null
+    isNot?: OtpWhereInput | null
+  }
+
   export type ProjectManagerNullableScalarRelationFilter = {
     is?: ProjectManagerWhereInput | null
     isNot?: ProjectManagerWhereInput | null
@@ -12536,6 +12423,7 @@ export namespace Prisma {
     email?: SortOrder
     salt?: SortOrder
     hash?: SortOrder
+    role?: SortOrder
   }
 
   export type AuthAvgOrderByAggregateInput = {
@@ -12547,6 +12435,7 @@ export namespace Prisma {
     email?: SortOrder
     salt?: SortOrder
     hash?: SortOrder
+    role?: SortOrder
   }
 
   export type AuthMinOrderByAggregateInput = {
@@ -12554,6 +12443,7 @@ export namespace Prisma {
     email?: SortOrder
     salt?: SortOrder
     hash?: SortOrder
+    role?: SortOrder
   }
 
   export type AuthSumOrderByAggregateInput = {
@@ -12594,6 +12484,16 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -12625,11 +12525,6 @@ export namespace Prisma {
   export type SessionNullableScalarRelationFilter = {
     is?: SessionWhereInput | null
     isNot?: SessionWhereInput | null
-  }
-
-  export type OtpNullableScalarRelationFilter = {
-    is?: OtpWhereInput | null
-    isNot?: OtpWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -13067,21 +12962,22 @@ export namespace Prisma {
     not?: NestedEnumOTPStatusFilter<$PrismaModel> | $Enums.OTPStatus
   }
 
+  export type AuthNullableScalarRelationFilter = {
+    is?: AuthWhereInput | null
+    isNot?: AuthWhereInput | null
+  }
+
   export type OtpCountOrderByAggregateInput = {
     id?: SortOrder
     otp?: SortOrder
     expiry?: SortOrder
     status?: SortOrder
-    managerId?: SortOrder
-    leaderId?: SortOrder
-    developerId?: SortOrder
+    authId?: SortOrder
   }
 
   export type OtpAvgOrderByAggregateInput = {
     id?: SortOrder
-    managerId?: SortOrder
-    leaderId?: SortOrder
-    developerId?: SortOrder
+    authId?: SortOrder
   }
 
   export type OtpMaxOrderByAggregateInput = {
@@ -13089,9 +12985,7 @@ export namespace Prisma {
     otp?: SortOrder
     expiry?: SortOrder
     status?: SortOrder
-    managerId?: SortOrder
-    leaderId?: SortOrder
-    developerId?: SortOrder
+    authId?: SortOrder
   }
 
   export type OtpMinOrderByAggregateInput = {
@@ -13099,16 +12993,12 @@ export namespace Prisma {
     otp?: SortOrder
     expiry?: SortOrder
     status?: SortOrder
-    managerId?: SortOrder
-    leaderId?: SortOrder
-    developerId?: SortOrder
+    authId?: SortOrder
   }
 
   export type OtpSumOrderByAggregateInput = {
     id?: SortOrder
-    managerId?: SortOrder
-    leaderId?: SortOrder
-    developerId?: SortOrder
+    authId?: SortOrder
   }
 
   export type EnumOTPStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -13119,6 +13009,12 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumOTPStatusFilter<$PrismaModel>
     _max?: NestedEnumOTPStatusFilter<$PrismaModel>
+  }
+
+  export type OtpCreateNestedOneWithoutAuthInput = {
+    create?: XOR<OtpCreateWithoutAuthInput, OtpUncheckedCreateWithoutAuthInput>
+    connectOrCreate?: OtpCreateOrConnectWithoutAuthInput
+    connect?: OtpWhereUniqueInput
   }
 
   export type ProjectManagerCreateNestedOneWithoutAuthInput = {
@@ -13137,6 +13033,12 @@ export namespace Prisma {
     create?: XOR<DeveloperCreateWithoutAuthInput, DeveloperUncheckedCreateWithoutAuthInput>
     connectOrCreate?: DeveloperCreateOrConnectWithoutAuthInput
     connect?: DeveloperWhereUniqueInput
+  }
+
+  export type OtpUncheckedCreateNestedOneWithoutAuthInput = {
+    create?: XOR<OtpCreateWithoutAuthInput, OtpUncheckedCreateWithoutAuthInput>
+    connectOrCreate?: OtpCreateOrConnectWithoutAuthInput
+    connect?: OtpWhereUniqueInput
   }
 
   export type ProjectManagerUncheckedCreateNestedOneWithoutAuthInput = {
@@ -13159,6 +13061,20 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
+  }
+
+  export type OtpUpdateOneWithoutAuthNestedInput = {
+    create?: XOR<OtpCreateWithoutAuthInput, OtpUncheckedCreateWithoutAuthInput>
+    connectOrCreate?: OtpCreateOrConnectWithoutAuthInput
+    upsert?: OtpUpsertWithoutAuthInput
+    disconnect?: OtpWhereInput | boolean
+    delete?: OtpWhereInput | boolean
+    connect?: OtpWhereUniqueInput
+    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutAuthInput, OtpUpdateWithoutAuthInput>, OtpUncheckedUpdateWithoutAuthInput>
   }
 
   export type ProjectManagerUpdateOneWithoutAuthNestedInput = {
@@ -13197,6 +13113,16 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type OtpUncheckedUpdateOneWithoutAuthNestedInput = {
+    create?: XOR<OtpCreateWithoutAuthInput, OtpUncheckedCreateWithoutAuthInput>
+    connectOrCreate?: OtpCreateOrConnectWithoutAuthInput
+    upsert?: OtpUpsertWithoutAuthInput
+    disconnect?: OtpWhereInput | boolean
+    delete?: OtpWhereInput | boolean
+    connect?: OtpWhereUniqueInput
+    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutAuthInput, OtpUpdateWithoutAuthInput>, OtpUncheckedUpdateWithoutAuthInput>
   }
 
   export type ProjectManagerUncheckedUpdateOneWithoutAuthNestedInput = {
@@ -13255,12 +13181,6 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput
   }
 
-  export type OtpCreateNestedOneWithoutManagerInput = {
-    create?: XOR<OtpCreateWithoutManagerInput, OtpUncheckedCreateWithoutManagerInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutManagerInput
-    connect?: OtpWhereUniqueInput
-  }
-
   export type ProjectUncheckedCreateNestedManyWithoutManagerInput = {
     create?: XOR<ProjectCreateWithoutManagerInput, ProjectUncheckedCreateWithoutManagerInput> | ProjectCreateWithoutManagerInput[] | ProjectUncheckedCreateWithoutManagerInput[]
     connectOrCreate?: ProjectCreateOrConnectWithoutManagerInput | ProjectCreateOrConnectWithoutManagerInput[]
@@ -13279,12 +13199,6 @@ export namespace Prisma {
     create?: XOR<SessionCreateWithoutManagerInput, SessionUncheckedCreateWithoutManagerInput>
     connectOrCreate?: SessionCreateOrConnectWithoutManagerInput
     connect?: SessionWhereUniqueInput
-  }
-
-  export type OtpUncheckedCreateNestedOneWithoutManagerInput = {
-    create?: XOR<OtpCreateWithoutManagerInput, OtpUncheckedCreateWithoutManagerInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutManagerInput
-    connect?: OtpWhereUniqueInput
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -13337,16 +13251,6 @@ export namespace Prisma {
     update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutManagerInput, SessionUpdateWithoutManagerInput>, SessionUncheckedUpdateWithoutManagerInput>
   }
 
-  export type OtpUpdateOneWithoutManagerNestedInput = {
-    create?: XOR<OtpCreateWithoutManagerInput, OtpUncheckedCreateWithoutManagerInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutManagerInput
-    upsert?: OtpUpsertWithoutManagerInput
-    disconnect?: OtpWhereInput | boolean
-    delete?: OtpWhereInput | boolean
-    connect?: OtpWhereUniqueInput
-    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutManagerInput, OtpUpdateWithoutManagerInput>, OtpUncheckedUpdateWithoutManagerInput>
-  }
-
   export type ProjectUncheckedUpdateManyWithoutManagerNestedInput = {
     create?: XOR<ProjectCreateWithoutManagerInput, ProjectUncheckedCreateWithoutManagerInput> | ProjectCreateWithoutManagerInput[] | ProjectUncheckedCreateWithoutManagerInput[]
     connectOrCreate?: ProjectCreateOrConnectWithoutManagerInput | ProjectCreateOrConnectWithoutManagerInput[]
@@ -13385,16 +13289,6 @@ export namespace Prisma {
     update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutManagerInput, SessionUpdateWithoutManagerInput>, SessionUncheckedUpdateWithoutManagerInput>
   }
 
-  export type OtpUncheckedUpdateOneWithoutManagerNestedInput = {
-    create?: XOR<OtpCreateWithoutManagerInput, OtpUncheckedCreateWithoutManagerInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutManagerInput
-    upsert?: OtpUpsertWithoutManagerInput
-    disconnect?: OtpWhereInput | boolean
-    delete?: OtpWhereInput | boolean
-    connect?: OtpWhereUniqueInput
-    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutManagerInput, OtpUpdateWithoutManagerInput>, OtpUncheckedUpdateWithoutManagerInput>
-  }
-
   export type AuthCreateNestedOneWithoutLeaderInput = {
     create?: XOR<AuthCreateWithoutLeaderInput, AuthUncheckedCreateWithoutLeaderInput>
     connectOrCreate?: AuthCreateOrConnectWithoutLeaderInput
@@ -13427,12 +13321,6 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput
   }
 
-  export type OtpCreateNestedOneWithoutLeaderInput = {
-    create?: XOR<OtpCreateWithoutLeaderInput, OtpUncheckedCreateWithoutLeaderInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutLeaderInput
-    connect?: OtpWhereUniqueInput
-  }
-
   export type ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput = {
     create?: XOR<ProjectCreateWithoutTeamLeaderInput, ProjectUncheckedCreateWithoutTeamLeaderInput> | ProjectCreateWithoutTeamLeaderInput[] | ProjectUncheckedCreateWithoutTeamLeaderInput[]
     connectOrCreate?: ProjectCreateOrConnectWithoutTeamLeaderInput | ProjectCreateOrConnectWithoutTeamLeaderInput[]
@@ -13451,12 +13339,6 @@ export namespace Prisma {
     create?: XOR<SessionCreateWithoutLeaderInput, SessionUncheckedCreateWithoutLeaderInput>
     connectOrCreate?: SessionCreateOrConnectWithoutLeaderInput
     connect?: SessionWhereUniqueInput
-  }
-
-  export type OtpUncheckedCreateNestedOneWithoutLeaderInput = {
-    create?: XOR<OtpCreateWithoutLeaderInput, OtpUncheckedCreateWithoutLeaderInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutLeaderInput
-    connect?: OtpWhereUniqueInput
   }
 
   export type AuthUpdateOneRequiredWithoutLeaderNestedInput = {
@@ -13513,16 +13395,6 @@ export namespace Prisma {
     update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutLeaderInput, SessionUpdateWithoutLeaderInput>, SessionUncheckedUpdateWithoutLeaderInput>
   }
 
-  export type OtpUpdateOneWithoutLeaderNestedInput = {
-    create?: XOR<OtpCreateWithoutLeaderInput, OtpUncheckedCreateWithoutLeaderInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutLeaderInput
-    upsert?: OtpUpsertWithoutLeaderInput
-    disconnect?: OtpWhereInput | boolean
-    delete?: OtpWhereInput | boolean
-    connect?: OtpWhereUniqueInput
-    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutLeaderInput, OtpUpdateWithoutLeaderInput>, OtpUncheckedUpdateWithoutLeaderInput>
-  }
-
   export type ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput = {
     create?: XOR<ProjectCreateWithoutTeamLeaderInput, ProjectUncheckedCreateWithoutTeamLeaderInput> | ProjectCreateWithoutTeamLeaderInput[] | ProjectUncheckedCreateWithoutTeamLeaderInput[]
     connectOrCreate?: ProjectCreateOrConnectWithoutTeamLeaderInput | ProjectCreateOrConnectWithoutTeamLeaderInput[]
@@ -13561,16 +13433,6 @@ export namespace Prisma {
     update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutLeaderInput, SessionUpdateWithoutLeaderInput>, SessionUncheckedUpdateWithoutLeaderInput>
   }
 
-  export type OtpUncheckedUpdateOneWithoutLeaderNestedInput = {
-    create?: XOR<OtpCreateWithoutLeaderInput, OtpUncheckedCreateWithoutLeaderInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutLeaderInput
-    upsert?: OtpUpsertWithoutLeaderInput
-    disconnect?: OtpWhereInput | boolean
-    delete?: OtpWhereInput | boolean
-    connect?: OtpWhereUniqueInput
-    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutLeaderInput, OtpUpdateWithoutLeaderInput>, OtpUncheckedUpdateWithoutLeaderInput>
-  }
-
   export type AuthCreateNestedOneWithoutDevInput = {
     create?: XOR<AuthCreateWithoutDevInput, AuthUncheckedCreateWithoutDevInput>
     connectOrCreate?: AuthCreateOrConnectWithoutDevInput
@@ -13596,12 +13458,6 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput
   }
 
-  export type OtpCreateNestedOneWithoutDeveloperInput = {
-    create?: XOR<OtpCreateWithoutDeveloperInput, OtpUncheckedCreateWithoutDeveloperInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutDeveloperInput
-    connect?: OtpWhereUniqueInput
-  }
-
   export type TaskUncheckedCreateNestedManyWithoutDeveloperInput = {
     create?: XOR<TaskCreateWithoutDeveloperInput, TaskUncheckedCreateWithoutDeveloperInput> | TaskCreateWithoutDeveloperInput[] | TaskUncheckedCreateWithoutDeveloperInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutDeveloperInput | TaskCreateOrConnectWithoutDeveloperInput[]
@@ -13613,12 +13469,6 @@ export namespace Prisma {
     create?: XOR<SessionCreateWithoutDeveloperInput, SessionUncheckedCreateWithoutDeveloperInput>
     connectOrCreate?: SessionCreateOrConnectWithoutDeveloperInput
     connect?: SessionWhereUniqueInput
-  }
-
-  export type OtpUncheckedCreateNestedOneWithoutDeveloperInput = {
-    create?: XOR<OtpCreateWithoutDeveloperInput, OtpUncheckedCreateWithoutDeveloperInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutDeveloperInput
-    connect?: OtpWhereUniqueInput
   }
 
   export type AuthUpdateOneRequiredWithoutDevNestedInput = {
@@ -13661,16 +13511,6 @@ export namespace Prisma {
     update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutDeveloperInput, SessionUpdateWithoutDeveloperInput>, SessionUncheckedUpdateWithoutDeveloperInput>
   }
 
-  export type OtpUpdateOneWithoutDeveloperNestedInput = {
-    create?: XOR<OtpCreateWithoutDeveloperInput, OtpUncheckedCreateWithoutDeveloperInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutDeveloperInput
-    upsert?: OtpUpsertWithoutDeveloperInput
-    disconnect?: OtpWhereInput | boolean
-    delete?: OtpWhereInput | boolean
-    connect?: OtpWhereUniqueInput
-    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutDeveloperInput, OtpUpdateWithoutDeveloperInput>, OtpUncheckedUpdateWithoutDeveloperInput>
-  }
-
   export type TaskUncheckedUpdateManyWithoutDeveloperNestedInput = {
     create?: XOR<TaskCreateWithoutDeveloperInput, TaskUncheckedCreateWithoutDeveloperInput> | TaskCreateWithoutDeveloperInput[] | TaskUncheckedCreateWithoutDeveloperInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutDeveloperInput | TaskCreateOrConnectWithoutDeveloperInput[]
@@ -13693,16 +13533,6 @@ export namespace Prisma {
     delete?: SessionWhereInput | boolean
     connect?: SessionWhereUniqueInput
     update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutDeveloperInput, SessionUpdateWithoutDeveloperInput>, SessionUncheckedUpdateWithoutDeveloperInput>
-  }
-
-  export type OtpUncheckedUpdateOneWithoutDeveloperNestedInput = {
-    create?: XOR<OtpCreateWithoutDeveloperInput, OtpUncheckedCreateWithoutDeveloperInput>
-    connectOrCreate?: OtpCreateOrConnectWithoutDeveloperInput
-    upsert?: OtpUpsertWithoutDeveloperInput
-    disconnect?: OtpWhereInput | boolean
-    delete?: OtpWhereInput | boolean
-    connect?: OtpWhereUniqueInput
-    update?: XOR<XOR<OtpUpdateToOneWithWhereWithoutDeveloperInput, OtpUpdateWithoutDeveloperInput>, OtpUncheckedUpdateWithoutDeveloperInput>
   }
 
   export type ProjectManagerCreateNestedOneWithoutProjectsInput = {
@@ -13875,56 +13705,24 @@ export namespace Prisma {
     update?: XOR<XOR<DeveloperUpdateToOneWithWhereWithoutSessionInput, DeveloperUpdateWithoutSessionInput>, DeveloperUncheckedUpdateWithoutSessionInput>
   }
 
-  export type ProjectManagerCreateNestedOneWithoutOtpInput = {
-    create?: XOR<ProjectManagerCreateWithoutOtpInput, ProjectManagerUncheckedCreateWithoutOtpInput>
-    connectOrCreate?: ProjectManagerCreateOrConnectWithoutOtpInput
-    connect?: ProjectManagerWhereUniqueInput
-  }
-
-  export type TeamLeaderCreateNestedOneWithoutOtpInput = {
-    create?: XOR<TeamLeaderCreateWithoutOtpInput, TeamLeaderUncheckedCreateWithoutOtpInput>
-    connectOrCreate?: TeamLeaderCreateOrConnectWithoutOtpInput
-    connect?: TeamLeaderWhereUniqueInput
-  }
-
-  export type DeveloperCreateNestedOneWithoutOtpInput = {
-    create?: XOR<DeveloperCreateWithoutOtpInput, DeveloperUncheckedCreateWithoutOtpInput>
-    connectOrCreate?: DeveloperCreateOrConnectWithoutOtpInput
-    connect?: DeveloperWhereUniqueInput
+  export type AuthCreateNestedOneWithoutOtpInput = {
+    create?: XOR<AuthCreateWithoutOtpInput, AuthUncheckedCreateWithoutOtpInput>
+    connectOrCreate?: AuthCreateOrConnectWithoutOtpInput
+    connect?: AuthWhereUniqueInput
   }
 
   export type EnumOTPStatusFieldUpdateOperationsInput = {
     set?: $Enums.OTPStatus
   }
 
-  export type ProjectManagerUpdateOneWithoutOtpNestedInput = {
-    create?: XOR<ProjectManagerCreateWithoutOtpInput, ProjectManagerUncheckedCreateWithoutOtpInput>
-    connectOrCreate?: ProjectManagerCreateOrConnectWithoutOtpInput
-    upsert?: ProjectManagerUpsertWithoutOtpInput
-    disconnect?: ProjectManagerWhereInput | boolean
-    delete?: ProjectManagerWhereInput | boolean
-    connect?: ProjectManagerWhereUniqueInput
-    update?: XOR<XOR<ProjectManagerUpdateToOneWithWhereWithoutOtpInput, ProjectManagerUpdateWithoutOtpInput>, ProjectManagerUncheckedUpdateWithoutOtpInput>
-  }
-
-  export type TeamLeaderUpdateOneWithoutOtpNestedInput = {
-    create?: XOR<TeamLeaderCreateWithoutOtpInput, TeamLeaderUncheckedCreateWithoutOtpInput>
-    connectOrCreate?: TeamLeaderCreateOrConnectWithoutOtpInput
-    upsert?: TeamLeaderUpsertWithoutOtpInput
-    disconnect?: TeamLeaderWhereInput | boolean
-    delete?: TeamLeaderWhereInput | boolean
-    connect?: TeamLeaderWhereUniqueInput
-    update?: XOR<XOR<TeamLeaderUpdateToOneWithWhereWithoutOtpInput, TeamLeaderUpdateWithoutOtpInput>, TeamLeaderUncheckedUpdateWithoutOtpInput>
-  }
-
-  export type DeveloperUpdateOneWithoutOtpNestedInput = {
-    create?: XOR<DeveloperCreateWithoutOtpInput, DeveloperUncheckedCreateWithoutOtpInput>
-    connectOrCreate?: DeveloperCreateOrConnectWithoutOtpInput
-    upsert?: DeveloperUpsertWithoutOtpInput
-    disconnect?: DeveloperWhereInput | boolean
-    delete?: DeveloperWhereInput | boolean
-    connect?: DeveloperWhereUniqueInput
-    update?: XOR<XOR<DeveloperUpdateToOneWithWhereWithoutOtpInput, DeveloperUpdateWithoutOtpInput>, DeveloperUncheckedUpdateWithoutOtpInput>
+  export type AuthUpdateOneWithoutOtpNestedInput = {
+    create?: XOR<AuthCreateWithoutOtpInput, AuthUncheckedCreateWithoutOtpInput>
+    connectOrCreate?: AuthCreateOrConnectWithoutOtpInput
+    upsert?: AuthUpsertWithoutOtpInput
+    disconnect?: AuthWhereInput | boolean
+    delete?: AuthWhereInput | boolean
+    connect?: AuthWhereUniqueInput
+    update?: XOR<XOR<AuthUpdateToOneWithWhereWithoutOtpInput, AuthUpdateWithoutOtpInput>, AuthUncheckedUpdateWithoutOtpInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -13950,6 +13748,13 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -13994,6 +13799,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -14166,6 +13981,24 @@ export namespace Prisma {
     _max?: NestedEnumOTPStatusFilter<$PrismaModel>
   }
 
+  export type OtpCreateWithoutAuthInput = {
+    otp: string
+    expiry: Date | string
+    status?: $Enums.OTPStatus
+  }
+
+  export type OtpUncheckedCreateWithoutAuthInput = {
+    id?: number
+    otp: string
+    expiry: Date | string
+    status?: $Enums.OTPStatus
+  }
+
+  export type OtpCreateOrConnectWithoutAuthInput = {
+    where: OtpWhereUniqueInput
+    create: XOR<OtpCreateWithoutAuthInput, OtpUncheckedCreateWithoutAuthInput>
+  }
+
   export type ProjectManagerCreateWithoutAuthInput = {
     username: string
     lastLogin?: Date | string | null
@@ -14173,7 +14006,6 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutManagerInput
     teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
-    otp?: OtpCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerUncheckedCreateWithoutAuthInput = {
@@ -14184,7 +14016,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
-    otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerCreateOrConnectWithoutAuthInput = {
@@ -14200,7 +14031,6 @@ export namespace Prisma {
     manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
     developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
-    otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUncheckedCreateWithoutAuthInput = {
@@ -14212,7 +14042,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
     developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
-    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderCreateOrConnectWithoutAuthInput = {
@@ -14227,7 +14056,6 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
     teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
-    otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperUncheckedCreateWithoutAuthInput = {
@@ -14238,12 +14066,35 @@ export namespace Prisma {
     teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
-    otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperCreateOrConnectWithoutAuthInput = {
     where: DeveloperWhereUniqueInput
     create: XOR<DeveloperCreateWithoutAuthInput, DeveloperUncheckedCreateWithoutAuthInput>
+  }
+
+  export type OtpUpsertWithoutAuthInput = {
+    update: XOR<OtpUpdateWithoutAuthInput, OtpUncheckedUpdateWithoutAuthInput>
+    create: XOR<OtpCreateWithoutAuthInput, OtpUncheckedCreateWithoutAuthInput>
+    where?: OtpWhereInput
+  }
+
+  export type OtpUpdateToOneWithWhereWithoutAuthInput = {
+    where?: OtpWhereInput
+    data: XOR<OtpUpdateWithoutAuthInput, OtpUncheckedUpdateWithoutAuthInput>
+  }
+
+  export type OtpUpdateWithoutAuthInput = {
+    otp?: StringFieldUpdateOperationsInput | string
+    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
+  }
+
+  export type OtpUncheckedUpdateWithoutAuthInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    otp?: StringFieldUpdateOperationsInput | string
+    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
   }
 
   export type ProjectManagerUpsertWithoutAuthInput = {
@@ -14264,7 +14115,6 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
-    otp?: OtpUpdateOneWithoutManagerNestedInput
   }
 
   export type ProjectManagerUncheckedUpdateWithoutAuthInput = {
@@ -14275,7 +14125,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
 
   export type TeamLeaderUpsertWithoutAuthInput = {
@@ -14297,7 +14146,6 @@ export namespace Prisma {
     manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
     developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateWithoutAuthInput = {
@@ -14309,7 +14157,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
     developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
   export type DeveloperUpsertWithoutAuthInput = {
@@ -14330,7 +14177,6 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperUncheckedUpdateWithoutAuthInput = {
@@ -14341,13 +14187,14 @@ export namespace Prisma {
     teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
 
   export type AuthCreateWithoutManagerInput = {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpCreateNestedOneWithoutAuthInput
     leader?: TeamLeaderCreateNestedOneWithoutAuthInput
     dev?: DeveloperCreateNestedOneWithoutAuthInput
   }
@@ -14357,6 +14204,8 @@ export namespace Prisma {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpUncheckedCreateNestedOneWithoutAuthInput
     leader?: TeamLeaderUncheckedCreateNestedOneWithoutAuthInput
     dev?: DeveloperUncheckedCreateNestedOneWithoutAuthInput
   }
@@ -14405,7 +14254,6 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
     developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
-    otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUncheckedCreateWithoutManagerInput = {
@@ -14417,7 +14265,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
     developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
-    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderCreateOrConnectWithoutManagerInput = {
@@ -14450,28 +14297,6 @@ export namespace Prisma {
     create: XOR<SessionCreateWithoutManagerInput, SessionUncheckedCreateWithoutManagerInput>
   }
 
-  export type OtpCreateWithoutManagerInput = {
-    otp: string
-    expiry: Date | string
-    status?: $Enums.OTPStatus
-    leader?: TeamLeaderCreateNestedOneWithoutOtpInput
-    developer?: DeveloperCreateNestedOneWithoutOtpInput
-  }
-
-  export type OtpUncheckedCreateWithoutManagerInput = {
-    id?: number
-    otp: string
-    expiry: Date | string
-    status?: $Enums.OTPStatus
-    leaderId?: number | null
-    developerId?: number | null
-  }
-
-  export type OtpCreateOrConnectWithoutManagerInput = {
-    where: OtpWhereUniqueInput
-    create: XOR<OtpCreateWithoutManagerInput, OtpUncheckedCreateWithoutManagerInput>
-  }
-
   export type AuthUpsertWithoutManagerInput = {
     update: XOR<AuthUpdateWithoutManagerInput, AuthUncheckedUpdateWithoutManagerInput>
     create: XOR<AuthCreateWithoutManagerInput, AuthUncheckedCreateWithoutManagerInput>
@@ -14487,6 +14312,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUpdateOneWithoutAuthNestedInput
     leader?: TeamLeaderUpdateOneWithoutAuthNestedInput
     dev?: DeveloperUpdateOneWithoutAuthNestedInput
   }
@@ -14496,6 +14323,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUncheckedUpdateOneWithoutAuthNestedInput
     leader?: TeamLeaderUncheckedUpdateOneWithoutAuthNestedInput
     dev?: DeveloperUncheckedUpdateOneWithoutAuthNestedInput
   }
@@ -14584,38 +14413,12 @@ export namespace Prisma {
     developerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type OtpUpsertWithoutManagerInput = {
-    update: XOR<OtpUpdateWithoutManagerInput, OtpUncheckedUpdateWithoutManagerInput>
-    create: XOR<OtpCreateWithoutManagerInput, OtpUncheckedCreateWithoutManagerInput>
-    where?: OtpWhereInput
-  }
-
-  export type OtpUpdateToOneWithWhereWithoutManagerInput = {
-    where?: OtpWhereInput
-    data: XOR<OtpUpdateWithoutManagerInput, OtpUncheckedUpdateWithoutManagerInput>
-  }
-
-  export type OtpUpdateWithoutManagerInput = {
-    otp?: StringFieldUpdateOperationsInput | string
-    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    leader?: TeamLeaderUpdateOneWithoutOtpNestedInput
-    developer?: DeveloperUpdateOneWithoutOtpNestedInput
-  }
-
-  export type OtpUncheckedUpdateWithoutManagerInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    otp?: StringFieldUpdateOperationsInput | string
-    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    leaderId?: NullableIntFieldUpdateOperationsInput | number | null
-    developerId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
   export type AuthCreateWithoutLeaderInput = {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpCreateNestedOneWithoutAuthInput
     manager?: ProjectManagerCreateNestedOneWithoutAuthInput
     dev?: DeveloperCreateNestedOneWithoutAuthInput
   }
@@ -14625,6 +14428,8 @@ export namespace Prisma {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpUncheckedCreateNestedOneWithoutAuthInput
     manager?: ProjectManagerUncheckedCreateNestedOneWithoutAuthInput
     dev?: DeveloperUncheckedCreateNestedOneWithoutAuthInput
   }
@@ -14672,7 +14477,6 @@ export namespace Prisma {
     auth: AuthCreateNestedOneWithoutManagerInput
     projects?: ProjectCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
-    otp?: OtpCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerUncheckedCreateWithoutTeamLeadersInput = {
@@ -14683,7 +14487,6 @@ export namespace Prisma {
     authId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
-    otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerCreateOrConnectWithoutTeamLeadersInput = {
@@ -14698,7 +14501,6 @@ export namespace Prisma {
     auth: AuthCreateNestedOneWithoutDevInput
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
-    otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperUncheckedCreateWithoutTeamLeaderInput = {
@@ -14709,7 +14511,6 @@ export namespace Prisma {
     authId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
-    otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperCreateOrConnectWithoutTeamLeaderInput = {
@@ -14742,28 +14543,6 @@ export namespace Prisma {
     create: XOR<SessionCreateWithoutLeaderInput, SessionUncheckedCreateWithoutLeaderInput>
   }
 
-  export type OtpCreateWithoutLeaderInput = {
-    otp: string
-    expiry: Date | string
-    status?: $Enums.OTPStatus
-    manager?: ProjectManagerCreateNestedOneWithoutOtpInput
-    developer?: DeveloperCreateNestedOneWithoutOtpInput
-  }
-
-  export type OtpUncheckedCreateWithoutLeaderInput = {
-    id?: number
-    otp: string
-    expiry: Date | string
-    status?: $Enums.OTPStatus
-    managerId?: number | null
-    developerId?: number | null
-  }
-
-  export type OtpCreateOrConnectWithoutLeaderInput = {
-    where: OtpWhereUniqueInput
-    create: XOR<OtpCreateWithoutLeaderInput, OtpUncheckedCreateWithoutLeaderInput>
-  }
-
   export type AuthUpsertWithoutLeaderInput = {
     update: XOR<AuthUpdateWithoutLeaderInput, AuthUncheckedUpdateWithoutLeaderInput>
     create: XOR<AuthCreateWithoutLeaderInput, AuthUncheckedCreateWithoutLeaderInput>
@@ -14779,6 +14558,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUpdateOneWithoutAuthNestedInput
     manager?: ProjectManagerUpdateOneWithoutAuthNestedInput
     dev?: DeveloperUpdateOneWithoutAuthNestedInput
   }
@@ -14788,6 +14569,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUncheckedUpdateOneWithoutAuthNestedInput
     manager?: ProjectManagerUncheckedUpdateOneWithoutAuthNestedInput
     dev?: DeveloperUncheckedUpdateOneWithoutAuthNestedInput
   }
@@ -14826,7 +14609,6 @@ export namespace Prisma {
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
     projects?: ProjectUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
-    otp?: OtpUpdateOneWithoutManagerNestedInput
   }
 
   export type ProjectManagerUncheckedUpdateWithoutTeamLeadersInput = {
@@ -14837,7 +14619,6 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
 
   export type DeveloperUpsertWithWhereUniqueWithoutTeamLeaderInput = {
@@ -14894,38 +14675,12 @@ export namespace Prisma {
     developerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type OtpUpsertWithoutLeaderInput = {
-    update: XOR<OtpUpdateWithoutLeaderInput, OtpUncheckedUpdateWithoutLeaderInput>
-    create: XOR<OtpCreateWithoutLeaderInput, OtpUncheckedCreateWithoutLeaderInput>
-    where?: OtpWhereInput
-  }
-
-  export type OtpUpdateToOneWithWhereWithoutLeaderInput = {
-    where?: OtpWhereInput
-    data: XOR<OtpUpdateWithoutLeaderInput, OtpUncheckedUpdateWithoutLeaderInput>
-  }
-
-  export type OtpUpdateWithoutLeaderInput = {
-    otp?: StringFieldUpdateOperationsInput | string
-    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    manager?: ProjectManagerUpdateOneWithoutOtpNestedInput
-    developer?: DeveloperUpdateOneWithoutOtpNestedInput
-  }
-
-  export type OtpUncheckedUpdateWithoutLeaderInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    otp?: StringFieldUpdateOperationsInput | string
-    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    managerId?: NullableIntFieldUpdateOperationsInput | number | null
-    developerId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
   export type AuthCreateWithoutDevInput = {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpCreateNestedOneWithoutAuthInput
     manager?: ProjectManagerCreateNestedOneWithoutAuthInput
     leader?: TeamLeaderCreateNestedOneWithoutAuthInput
   }
@@ -14935,6 +14690,8 @@ export namespace Prisma {
     email: string
     salt: string
     hash: string
+    role?: $Enums.Role
+    otp?: OtpUncheckedCreateNestedOneWithoutAuthInput
     manager?: ProjectManagerUncheckedCreateNestedOneWithoutAuthInput
     leader?: TeamLeaderUncheckedCreateNestedOneWithoutAuthInput
   }
@@ -14979,7 +14736,6 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
     manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
     session?: SessionCreateNestedOneWithoutLeaderInput
-    otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUncheckedCreateWithoutDevelopersInput = {
@@ -14991,7 +14747,6 @@ export namespace Prisma {
     managerId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
-    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderCreateOrConnectWithoutDevelopersInput = {
@@ -15019,28 +14774,6 @@ export namespace Prisma {
     create: XOR<SessionCreateWithoutDeveloperInput, SessionUncheckedCreateWithoutDeveloperInput>
   }
 
-  export type OtpCreateWithoutDeveloperInput = {
-    otp: string
-    expiry: Date | string
-    status?: $Enums.OTPStatus
-    manager?: ProjectManagerCreateNestedOneWithoutOtpInput
-    leader?: TeamLeaderCreateNestedOneWithoutOtpInput
-  }
-
-  export type OtpUncheckedCreateWithoutDeveloperInput = {
-    id?: number
-    otp: string
-    expiry: Date | string
-    status?: $Enums.OTPStatus
-    managerId?: number | null
-    leaderId?: number | null
-  }
-
-  export type OtpCreateOrConnectWithoutDeveloperInput = {
-    where: OtpWhereUniqueInput
-    create: XOR<OtpCreateWithoutDeveloperInput, OtpUncheckedCreateWithoutDeveloperInput>
-  }
-
   export type AuthUpsertWithoutDevInput = {
     update: XOR<AuthUpdateWithoutDevInput, AuthUncheckedUpdateWithoutDevInput>
     create: XOR<AuthCreateWithoutDevInput, AuthUncheckedCreateWithoutDevInput>
@@ -15056,6 +14789,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUpdateOneWithoutAuthNestedInput
     manager?: ProjectManagerUpdateOneWithoutAuthNestedInput
     leader?: TeamLeaderUpdateOneWithoutAuthNestedInput
   }
@@ -15065,6 +14800,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    otp?: OtpUncheckedUpdateOneWithoutAuthNestedInput
     manager?: ProjectManagerUncheckedUpdateOneWithoutAuthNestedInput
     leader?: TeamLeaderUncheckedUpdateOneWithoutAuthNestedInput
   }
@@ -15117,7 +14854,6 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
     manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateWithoutDevelopersInput = {
@@ -15129,7 +14865,6 @@ export namespace Prisma {
     managerId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
   export type SessionUpsertWithoutDeveloperInput = {
@@ -15158,34 +14893,6 @@ export namespace Prisma {
     leaderId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type OtpUpsertWithoutDeveloperInput = {
-    update: XOR<OtpUpdateWithoutDeveloperInput, OtpUncheckedUpdateWithoutDeveloperInput>
-    create: XOR<OtpCreateWithoutDeveloperInput, OtpUncheckedCreateWithoutDeveloperInput>
-    where?: OtpWhereInput
-  }
-
-  export type OtpUpdateToOneWithWhereWithoutDeveloperInput = {
-    where?: OtpWhereInput
-    data: XOR<OtpUpdateWithoutDeveloperInput, OtpUncheckedUpdateWithoutDeveloperInput>
-  }
-
-  export type OtpUpdateWithoutDeveloperInput = {
-    otp?: StringFieldUpdateOperationsInput | string
-    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    manager?: ProjectManagerUpdateOneWithoutOtpNestedInput
-    leader?: TeamLeaderUpdateOneWithoutOtpNestedInput
-  }
-
-  export type OtpUncheckedUpdateWithoutDeveloperInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    otp?: StringFieldUpdateOperationsInput | string
-    expiry?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumOTPStatusFieldUpdateOperationsInput | $Enums.OTPStatus
-    managerId?: NullableIntFieldUpdateOperationsInput | number | null
-    leaderId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
   export type ProjectManagerCreateWithoutProjectsInput = {
     username: string
     lastLogin?: Date | string | null
@@ -15193,7 +14900,6 @@ export namespace Prisma {
     auth: AuthCreateNestedOneWithoutManagerInput
     teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
-    otp?: OtpCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerUncheckedCreateWithoutProjectsInput = {
@@ -15204,7 +14910,6 @@ export namespace Prisma {
     authId: number
     teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
-    otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerCreateOrConnectWithoutProjectsInput = {
@@ -15220,7 +14925,6 @@ export namespace Prisma {
     manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
     developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
-    otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUncheckedCreateWithoutProjectsInput = {
@@ -15232,7 +14936,6 @@ export namespace Prisma {
     managerId: number
     developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
-    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderCreateOrConnectWithoutProjectsInput = {
@@ -15285,7 +14988,6 @@ export namespace Prisma {
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
-    otp?: OtpUpdateOneWithoutManagerNestedInput
   }
 
   export type ProjectManagerUncheckedUpdateWithoutProjectsInput = {
@@ -15296,7 +14998,6 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
 
   export type TeamLeaderUpsertWithoutProjectsInput = {
@@ -15318,7 +15019,6 @@ export namespace Prisma {
     manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
     developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateWithoutProjectsInput = {
@@ -15330,7 +15030,6 @@ export namespace Prisma {
     managerId?: IntFieldUpdateOperationsInput | number
     developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
   export type TaskUpsertWithWhereUniqueWithoutProjectInput = {
@@ -15382,7 +15081,6 @@ export namespace Prisma {
     auth: AuthCreateNestedOneWithoutDevInput
     teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
-    otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperUncheckedCreateWithoutTasksInput = {
@@ -15393,7 +15091,6 @@ export namespace Prisma {
     authId: number
     teamLeaderId: number
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
-    otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperCreateOrConnectWithoutTasksInput = {
@@ -15451,7 +15148,6 @@ export namespace Prisma {
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperUncheckedUpdateWithoutTasksInput = {
@@ -15462,7 +15158,6 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     teamLeaderId?: IntFieldUpdateOperationsInput | number
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
 
   export type ProjectManagerCreateWithoutSessionInput = {
@@ -15472,7 +15167,6 @@ export namespace Prisma {
     auth: AuthCreateNestedOneWithoutManagerInput
     projects?: ProjectCreateNestedManyWithoutManagerInput
     teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
-    otp?: OtpCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerUncheckedCreateWithoutSessionInput = {
@@ -15483,7 +15177,6 @@ export namespace Prisma {
     authId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
-    otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
 
   export type ProjectManagerCreateOrConnectWithoutSessionInput = {
@@ -15499,7 +15192,6 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
     manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
     developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
-    otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderUncheckedCreateWithoutSessionInput = {
@@ -15511,7 +15203,6 @@ export namespace Prisma {
     managerId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
     developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
-    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
   export type TeamLeaderCreateOrConnectWithoutSessionInput = {
@@ -15526,7 +15217,6 @@ export namespace Prisma {
     auth: AuthCreateNestedOneWithoutDevInput
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
     teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
-    otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperUncheckedCreateWithoutSessionInput = {
@@ -15537,7 +15227,6 @@ export namespace Prisma {
     authId: number
     teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
-    otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
 
   export type DeveloperCreateOrConnectWithoutSessionInput = {
@@ -15563,7 +15252,6 @@ export namespace Prisma {
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
     projects?: ProjectUpdateManyWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
-    otp?: OtpUpdateOneWithoutManagerNestedInput
   }
 
   export type ProjectManagerUncheckedUpdateWithoutSessionInput = {
@@ -15574,7 +15262,6 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
 
   export type TeamLeaderUpsertWithoutSessionInput = {
@@ -15596,7 +15283,6 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
     manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
     developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
-    otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateWithoutSessionInput = {
@@ -15608,7 +15294,6 @@ export namespace Prisma {
     managerId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
     developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
   export type DeveloperUpsertWithoutSessionInput = {
@@ -15629,7 +15314,6 @@ export namespace Prisma {
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
-    otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperUncheckedUpdateWithoutSessionInput = {
@@ -15640,185 +15324,64 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
 
-  export type ProjectManagerCreateWithoutOtpInput = {
-    username: string
-    lastLogin?: Date | string | null
-    lastLogout?: Date | string | null
-    auth: AuthCreateNestedOneWithoutManagerInput
-    projects?: ProjectCreateNestedManyWithoutManagerInput
-    teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
-    session?: SessionCreateNestedOneWithoutManagerInput
+  export type AuthCreateWithoutOtpInput = {
+    email: string
+    salt: string
+    hash: string
+    role?: $Enums.Role
+    manager?: ProjectManagerCreateNestedOneWithoutAuthInput
+    leader?: TeamLeaderCreateNestedOneWithoutAuthInput
+    dev?: DeveloperCreateNestedOneWithoutAuthInput
   }
 
-  export type ProjectManagerUncheckedCreateWithoutOtpInput = {
+  export type AuthUncheckedCreateWithoutOtpInput = {
     id?: number
-    username: string
-    lastLogin?: Date | string | null
-    lastLogout?: Date | string | null
-    authId: number
-    projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
-    teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
-    session?: SessionUncheckedCreateNestedOneWithoutManagerInput
+    email: string
+    salt: string
+    hash: string
+    role?: $Enums.Role
+    manager?: ProjectManagerUncheckedCreateNestedOneWithoutAuthInput
+    leader?: TeamLeaderUncheckedCreateNestedOneWithoutAuthInput
+    dev?: DeveloperUncheckedCreateNestedOneWithoutAuthInput
   }
 
-  export type ProjectManagerCreateOrConnectWithoutOtpInput = {
-    where: ProjectManagerWhereUniqueInput
-    create: XOR<ProjectManagerCreateWithoutOtpInput, ProjectManagerUncheckedCreateWithoutOtpInput>
+  export type AuthCreateOrConnectWithoutOtpInput = {
+    where: AuthWhereUniqueInput
+    create: XOR<AuthCreateWithoutOtpInput, AuthUncheckedCreateWithoutOtpInput>
   }
 
-  export type TeamLeaderCreateWithoutOtpInput = {
-    username: string
-    lastLogin?: Date | string | null
-    lastLogout?: Date | string | null
-    auth: AuthCreateNestedOneWithoutLeaderInput
-    projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
-    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
-    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
-    session?: SessionCreateNestedOneWithoutLeaderInput
+  export type AuthUpsertWithoutOtpInput = {
+    update: XOR<AuthUpdateWithoutOtpInput, AuthUncheckedUpdateWithoutOtpInput>
+    create: XOR<AuthCreateWithoutOtpInput, AuthUncheckedCreateWithoutOtpInput>
+    where?: AuthWhereInput
   }
 
-  export type TeamLeaderUncheckedCreateWithoutOtpInput = {
-    id?: number
-    username: string
-    lastLogin?: Date | string | null
-    lastLogout?: Date | string | null
-    authId: number
-    managerId: number
-    projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
-    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
-    session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
+  export type AuthUpdateToOneWithWhereWithoutOtpInput = {
+    where?: AuthWhereInput
+    data: XOR<AuthUpdateWithoutOtpInput, AuthUncheckedUpdateWithoutOtpInput>
   }
 
-  export type TeamLeaderCreateOrConnectWithoutOtpInput = {
-    where: TeamLeaderWhereUniqueInput
-    create: XOR<TeamLeaderCreateWithoutOtpInput, TeamLeaderUncheckedCreateWithoutOtpInput>
+  export type AuthUpdateWithoutOtpInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
+    hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    manager?: ProjectManagerUpdateOneWithoutAuthNestedInput
+    leader?: TeamLeaderUpdateOneWithoutAuthNestedInput
+    dev?: DeveloperUpdateOneWithoutAuthNestedInput
   }
 
-  export type DeveloperCreateWithoutOtpInput = {
-    username: string
-    lastLogin?: Date | string | null
-    lastLogout?: Date | string | null
-    auth: AuthCreateNestedOneWithoutDevInput
-    tasks?: TaskCreateNestedManyWithoutDeveloperInput
-    teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
-    session?: SessionCreateNestedOneWithoutDeveloperInput
-  }
-
-  export type DeveloperUncheckedCreateWithoutOtpInput = {
-    id?: number
-    username: string
-    lastLogin?: Date | string | null
-    lastLogout?: Date | string | null
-    authId: number
-    teamLeaderId: number
-    tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
-    session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
-  }
-
-  export type DeveloperCreateOrConnectWithoutOtpInput = {
-    where: DeveloperWhereUniqueInput
-    create: XOR<DeveloperCreateWithoutOtpInput, DeveloperUncheckedCreateWithoutOtpInput>
-  }
-
-  export type ProjectManagerUpsertWithoutOtpInput = {
-    update: XOR<ProjectManagerUpdateWithoutOtpInput, ProjectManagerUncheckedUpdateWithoutOtpInput>
-    create: XOR<ProjectManagerCreateWithoutOtpInput, ProjectManagerUncheckedCreateWithoutOtpInput>
-    where?: ProjectManagerWhereInput
-  }
-
-  export type ProjectManagerUpdateToOneWithWhereWithoutOtpInput = {
-    where?: ProjectManagerWhereInput
-    data: XOR<ProjectManagerUpdateWithoutOtpInput, ProjectManagerUncheckedUpdateWithoutOtpInput>
-  }
-
-  export type ProjectManagerUpdateWithoutOtpInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
-    projects?: ProjectUpdateManyWithoutManagerNestedInput
-    teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
-    session?: SessionUpdateOneWithoutManagerNestedInput
-  }
-
-  export type ProjectManagerUncheckedUpdateWithoutOtpInput = {
+  export type AuthUncheckedUpdateWithoutOtpInput = {
     id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    authId?: IntFieldUpdateOperationsInput | number
-    projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
-    teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
-    session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
-  }
-
-  export type TeamLeaderUpsertWithoutOtpInput = {
-    update: XOR<TeamLeaderUpdateWithoutOtpInput, TeamLeaderUncheckedUpdateWithoutOtpInput>
-    create: XOR<TeamLeaderCreateWithoutOtpInput, TeamLeaderUncheckedCreateWithoutOtpInput>
-    where?: TeamLeaderWhereInput
-  }
-
-  export type TeamLeaderUpdateToOneWithWhereWithoutOtpInput = {
-    where?: TeamLeaderWhereInput
-    data: XOR<TeamLeaderUpdateWithoutOtpInput, TeamLeaderUncheckedUpdateWithoutOtpInput>
-  }
-
-  export type TeamLeaderUpdateWithoutOtpInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
-    projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
-    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
-    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
-    session?: SessionUpdateOneWithoutLeaderNestedInput
-  }
-
-  export type TeamLeaderUncheckedUpdateWithoutOtpInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    authId?: IntFieldUpdateOperationsInput | number
-    managerId?: IntFieldUpdateOperationsInput | number
-    projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
-    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
-    session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
-  }
-
-  export type DeveloperUpsertWithoutOtpInput = {
-    update: XOR<DeveloperUpdateWithoutOtpInput, DeveloperUncheckedUpdateWithoutOtpInput>
-    create: XOR<DeveloperCreateWithoutOtpInput, DeveloperUncheckedCreateWithoutOtpInput>
-    where?: DeveloperWhereInput
-  }
-
-  export type DeveloperUpdateToOneWithWhereWithoutOtpInput = {
-    where?: DeveloperWhereInput
-    data: XOR<DeveloperUpdateWithoutOtpInput, DeveloperUncheckedUpdateWithoutOtpInput>
-  }
-
-  export type DeveloperUpdateWithoutOtpInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    auth?: AuthUpdateOneRequiredWithoutDevNestedInput
-    tasks?: TaskUpdateManyWithoutDeveloperNestedInput
-    teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
-    session?: SessionUpdateOneWithoutDeveloperNestedInput
-  }
-
-  export type DeveloperUncheckedUpdateWithoutOtpInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    authId?: IntFieldUpdateOperationsInput | number
-    teamLeaderId?: IntFieldUpdateOperationsInput | number
-    tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
-    session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
+    email?: StringFieldUpdateOperationsInput | string
+    salt?: StringFieldUpdateOperationsInput | string
+    hash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    manager?: ProjectManagerUncheckedUpdateOneWithoutAuthNestedInput
+    leader?: TeamLeaderUncheckedUpdateOneWithoutAuthNestedInput
+    dev?: DeveloperUncheckedUpdateOneWithoutAuthNestedInput
   }
 
   export type ProjectCreateManyManagerInput = {
@@ -15878,7 +15441,6 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
     developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateWithoutManagerInput = {
@@ -15890,7 +15452,6 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
     developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
   export type TeamLeaderUncheckedUpdateManyWithoutManagerInput = {
@@ -15957,7 +15518,6 @@ export namespace Prisma {
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperUncheckedUpdateWithoutTeamLeaderInput = {
@@ -15968,7 +15528,6 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
-    otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
 
   export type DeveloperUncheckedUpdateManyWithoutTeamLeaderInput = {

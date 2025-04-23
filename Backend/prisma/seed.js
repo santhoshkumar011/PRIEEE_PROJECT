@@ -6,11 +6,18 @@ async function main() {
     
 
 
-
+    await prisma.auth.updateMany({
+        where:{
+            id:3
+        },
+        data:{
+            role:"TEAM_LEADER"
+        }
+    })
     
 
-    // const op = await prisma.teamLeader.findMany()
-    // // console.log(op)
+    // const op = await prisma.auth.findMany()
+    // console.log(op)
 
     // await prisma.developer.create({
     //     data:{

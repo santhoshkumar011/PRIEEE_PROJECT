@@ -94,7 +94,7 @@ async function login(req,res) {
         }
         else if(dbval.leader?.id){
             id = dbval.leader.id;
-            uname = dbval.leader.uname;
+            uname = dbval.leader.username;
             role = "leader";
             await prisma.teamLeader.updateMany({
                 where:{

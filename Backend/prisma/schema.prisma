@@ -25,11 +25,19 @@ enum OTPStatus {
   PENDING
 }
 
+enum Role {
+  DEVELOPER
+  TEAM_LEADER
+  PROJECT_MANAGER
+}
+
 model Auth {
   id       Int    @id @default(autoincrement())
   email    String @unique
   salt     String
   hash     String
+  role     Role @default(DEVELOPER)
+  otp         Otp?
 
   manager  ProjectManager?
   leader   TeamLeader?
@@ -46,7 +54,7 @@ model ProjectManager {
   projects    Project[]    @relation("ManagerProjects")
   teamLeaders TeamLeader[] // 👈 1-to-many with TeamLeader
   session     Session?
-  otp         Otp?
+  
 }
 
 model TeamLeader {
@@ -61,7 +69,6 @@ model TeamLeader {
   manager     ProjectManager @relation(fields: [managerId], references: [id])
   developers  Developer[]  // 👈 1-to-many with Developer
   session     Session?
-  otp         Otp?
 }
 
 model Developer {
@@ -75,7 +82,6 @@ model Developer {
   teamLeaderId Int         // 👈 FK to TeamLeader
   teamLeader  TeamLeader   @relation(fields: [teamLeaderId], references: [id])
   session     Session?
-  otp         Otp?
 }
 
 
@@ -133,11 +139,8 @@ model Otp {
   expiry   DateTime
   status   OTPStatus @default(PENDING)
 
-  managerId   Int?   @unique
-  leaderId    Int?   @unique
-  developerId Int?   @unique
+  authId   Int?   @unique
 
-  manager     ProjectManager? @relation(fields: [managerId], references: [id])
-  leader      TeamLeader?     @relation(fields: [leaderId], references: [id])
-  developer   Developer?      @relation(fields: [developerId], references: [id])
+  auth     Auth? @relation(fields: [authId],references: [id])
+
 }

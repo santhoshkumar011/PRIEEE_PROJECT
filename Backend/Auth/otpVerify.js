@@ -6,14 +6,34 @@ const prisma = new PrismaClient();
 
 async function verifyOTPforLogin(req,res) {
     try{
-        const st = await prisma.user.findFirst({
+        const st = await prisma.auth.findFirst({
             where:{
-                username:req.body.uname
+            email:req.body.email
+            },
+            include:{
+                manager:{
+                    select:{
+                        id:true,
+                        username:true
+                    }
+                },
+                dev:{
+                    select:{
+                        id:true,
+                        username:true
+                    }
+                },
+                leader:{
+                    select:{
+                        id:true,
+                        username:true
+                    }
+                }
             }
         })
         const user = await prisma.otp.findFirst({
             where:{
-                userId:st.id
+                authId:st.id
             }
         })
         if(!st || !user){
@@ -31,28 +51,92 @@ async function verifyOTPforLogin(req,res) {
                 const session = await hashGenerator(toString(st.username)+toString(exp));
                 const update = await prisma.otp.updateMany({
                     where:{
-                        userId:st.id
+                        authId:st.id
                     },
                     data:{
-                        status:"APPROVED"
+                        status:"VERIFIED"
                     }
                 })
-                const removeIfExists = await prisma.session.deleteMany({
-                    where:{
-                        userId:st.id
-                    }
-                })
-                const addSession =  await prisma.session.create({
-                    data:{
-                        expiry: exp,
-                        session: session.hash,
-                        userId:st.id
-                    }
-                }) 
+                if(st.dev?.id){
+                    id = st.dev.id;
+                    uname = st.dev.username;
+                    role="dev"
+                    await prisma.developer.updateMany({
+                        where:{
+                            id:id
+                        },
+                        data:{
+                            lastLogin:now
+                        }
+                    })
+                    await prisma.session.deleteMany({
+                        where:{
+                            developerId:id
+                        }
+                    })
+                    await prisma.session.create({
+                        data:{
+                            developerId:id,
+                            expiry:exp,
+                            session:session.hash
+                        }
+                    }) 
+                }
+                else if(st.leader?.id){
+                    id = st.leader.id;
+                    uname = st.leader.username;
+                    role = "leader";
+                    await prisma.teamLeader.updateMany({
+                        where:{
+                            id:id
+                        },
+                        data:{
+                            lastLogin:now
+                        }
+                    })
+                    await prisma.session.deleteMany({
+                        where:{
+                            leaderId:id
+                        }
+                    })
+        
+                    await prisma.session.create({
+                        data:{
+                            leaderId:id,
+                            expiry:exp,
+                            session:session.hash
+                        }
+                    }) 
+                }
+                else if(st.manager?.id){
+                    id = st.manager.id;
+                    uname = st.manager.username;
+                    role = "manager"
+                    await prisma.projectManager.updateMany({
+                        where:{
+                            id:id
+                        },
+                        data:{
+                            lastLogin:now
+                        }
+                    })
+                    await prisma.session.deleteMany({
+                        where:{
+                            managerId:id
+                        }
+                    })
+                    await prisma.session.create({
+                        data:{
+                            managerId:id,
+                            expiry:exp,
+                            session:session.hash
+                        }
+                    }) 
+                }
                 
                 res.status(200).json({
                     msg:"Success",
-                    uname:st.uname,
+                    uname:uname,
                     session:session
                 })
             }

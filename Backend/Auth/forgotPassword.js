@@ -9,14 +9,17 @@ const prisma = new PrismaClient();
 async function forgotPassword(req,res) {
     try{
         
-        const user2 = await prisma.user.findFirst({
+        const user2 = await prisma.auth.findFirst({
             where:{
-                username:req.body.uname
+                email:req.body.email
             }
         })
+
+
+        
         if(!user2){
             res.status(200).json({
-                err:"Wrong user name"
+                err:"Wrong email"
             })
             return
         }
@@ -33,9 +36,10 @@ async function forgotPassword(req,res) {
                 })
             }
             else{
-                const del = await prisma.otp.deleteMany({
+
+                    const del = await prisma.otp.deleteMany({
                     where:{
-                        userId:user2.id
+                        authId:user2.id
                     }
                 })
                 const update = await prisma.otp.create({
@@ -43,9 +47,11 @@ async function forgotPassword(req,res) {
                         expiry:exp,
                         otp:otp,
                         status:"PENDING",
-                        userId:user2.id
+                        authId:user2.id
                     }
                 });
+                
+                
                 res.status(200).json({
                     msg:"Successful"
                 })

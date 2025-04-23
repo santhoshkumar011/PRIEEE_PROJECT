@@ -70,11 +70,200 @@ const LoginPage = () => {
   };
   
 
+  async function verifyOTPHandler() {
+    
+    let status = false
+    let dt = {}
+
+    let check = false;
+
+    let o = ""
+
+    otp.map((num)=>{
+      if(num.length==0){
+        check=true
+      }
+      o+=num
+    })
+
+    if(check){
+      toast.error("Enter a valid otp",{
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+      return
+    }
+    const dummy =  await new Promise ((resolve)=>{
+      toast.promise(new Promise((resolve,reject)=>{
+        fetch("http://localhost:8080/verify-otp", {
+          method: "POST",
+          body: JSON.stringify({ email: email , otp:o }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((resp) => resp.json())
+        .then((data)=>{
+          if(data.err){
+            throw new Error(data.err)
+          }
+          resolve(data)
+        })
+        .catch((err)=> reject(err))
+      }),{
+        loading: "Verifying OTP ...",
+        success: (data)=>{
+          status = true
+          dt = data
+          resolve()
+          return (`Otp is verified.. !!`)
+        },
+        error: (err) => {
+          resolve()
+          return (`${err}`)
+        },
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+    }) 
+    if(status){
+      Cookies.set('session',dt?.session,{expires: 10/24})
+      nav(`/${dt.uname}/change-password`)
+    }    
+
+  }
+
+
+  async function handleOtpRequest() {
+    let status = false
+    let dt = {}
+
+    const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+
+    if(!emailRegex.test(email)){
+      toast.error("Enter a valid email id",{
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+      return
+    }
+    const dummy =  await new Promise ((resolve)=>{
+      toast.promise(new Promise((resolve,reject)=>{
+        fetch("http://localhost:8080/forgot-password", {
+          method: "POST",
+          body: JSON.stringify({ email: email , password: passowrd }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((resp) => resp.json())
+        .then((data)=>{
+          if(data.err){
+            throw new Error(data.err)
+          }
+          resolve(data)
+        })
+        .catch((err)=> reject(err))
+      }),{
+        loading: "Sending OTP to email ...",
+        success: (data)=>{
+          status = true
+          dt = data
+          resolve()
+          return (`OTP sent successfully.. !!`)
+        },
+        error: (err) => {
+          resolve()
+          return (`${err}`)
+        },
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+    }) 
+    if(status){
+      setOtpSent(true);
+      setTimer(60)
+    }     
+
+
+  }
+
+
 
   async function handleLogin() {
 
     let status = false
     let dt = {}
+
+    const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+
+    if(!emailRegex.test(email)){
+      toast.error("Enter a valid email id",{
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+      return
+    }
+
+
+    if(passowrd.length<8 ){
+      toast.error("Enter a valid password",{
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+      return
+    }
+
+
+
     
 
     const dummy =  await new Promise ((resolve)=>{
@@ -108,9 +297,14 @@ const LoginPage = () => {
           return (`${err}`)
         },
         style: {
-          fontSize:"1.125rem",
-          fontWeight:300,
-          padding:20
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
         }
       })
     }) 
@@ -333,12 +527,12 @@ const LoginPage = () => {
               layout
               onClick={() => {
                 if (mode === 'forgotPassword' && !otpSent) {
-                  setOtpSent(true);
-                  setTimer(60);
+                  handleOtpRequest()
                 }
                 else if(mode==='login'){
                   handleLogin()
                 }
+                
               }}
               className="w-full bg-[#ff3d3d] hover:bg-[#ff2f2f] text-gray-200 font-medium py-3 px-4 rounded-md transition focus:outline-none"
               whileHover={{ scale: 1.02, backgroundColor: "#ff2020" }}
@@ -440,6 +634,7 @@ const LoginPage = () => {
               <motion.button
                 whileHover={{ scale: 1.02, backgroundColor: "#ff2020" }}
                 whileTap={{ scale: 0.98 }}
+                onClick={verifyOTPHandler}
                 className="w-full bg-[#ff3d3d] hover:bg-[#ff2f2f] text-white font-medium py-3 px-4 rounded-md transition focus:outline-none focus:ring-2 focus:ring-[#fe4848] focus:ring-opacity-50"
               >
                 Verify OTP
