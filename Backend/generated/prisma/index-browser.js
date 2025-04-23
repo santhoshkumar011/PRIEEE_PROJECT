@@ -137,7 +137,8 @@ exports.Prisma.TeamLeaderScalarFieldEnum = {
   username: 'username',
   lastLogin: 'lastLogin',
   lastLogout: 'lastLogout',
-  authId: 'authId'
+  authId: 'authId',
+  managerId: 'managerId'
 };
 
 exports.Prisma.DeveloperScalarFieldEnum = {
@@ -145,7 +146,8 @@ exports.Prisma.DeveloperScalarFieldEnum = {
   username: 'username',
   lastLogin: 'lastLogin',
   lastLogout: 'lastLogout',
-  authId: 'authId'
+  authId: 'authId',
+  teamLeaderId: 'teamLeaderId'
 };
 
 exports.Prisma.ProjectScalarFieldEnum = {

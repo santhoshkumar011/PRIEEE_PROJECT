@@ -4,13 +4,17 @@ const { router } = require('./router/router');
 
 
 const app = express();
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(cors({
+  origin:["http://localhost:5173", "http://localhost:5174"],
+  credentials:true,
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/v1/login-signup', router)
+app.use('/', router)
 
 app.listen(port, () => {
   console.log(`Backend is running at http://localhost:${port}`);

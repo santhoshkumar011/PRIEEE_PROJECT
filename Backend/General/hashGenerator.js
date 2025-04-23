@@ -18,7 +18,7 @@ async function caller() {
 
 }
 
-caller();
+// caller();
 
 module.exports = {hashGenerator};
 

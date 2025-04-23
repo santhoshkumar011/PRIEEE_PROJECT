@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:KelavanSanjeev@db.ssprduchehvivlehaqkm.supabase.co:5432/postgres"
 }
 
 enum ProjectStatus {
@@ -37,40 +37,50 @@ model Auth {
 }
 
 model ProjectManager {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
-  lastLogin    DateTime?
-  lastLogout   DateTime?
-  authId       Int      @unique
-  auth         Auth     @relation(fields: [authId], references: [id])
-  projects     Project[] @relation("ManagerProjects")
-  session      Session?
-  otp          Otp?
+  id          Int          @id @default(autoincrement())
+  username    String       @unique
+  lastLogin   DateTime?
+  lastLogout  DateTime?
+  authId      Int          @unique
+  auth        Auth         @relation(fields: [authId], references: [id])
+  projects    Project[]    @relation("ManagerProjects")
+  teamLeaders TeamLeader[] // 👈 1-to-many with TeamLeader
+  session     Session?
+  otp         Otp?
 }
 
 model TeamLeader {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
-  lastLogin    DateTime?
-  lastLogout   DateTime?
-  authId       Int      @unique
-  auth         Auth     @relation(fields: [authId], references: [id])
-  projects     Project[] @relation("LeaderProjects")
-  session      Session?
-  otp          Otp?
+  id          Int          @id @default(autoincrement())
+  username    String       @unique
+  lastLogin   DateTime?
+  lastLogout  DateTime?
+  authId      Int          @unique
+  auth        Auth         @relation(fields: [authId], references: [id])
+  projects    Project[]    @relation("LeaderProjects")
+  managerId   Int          // 👈 FK to ProjectManager
+  manager     ProjectManager @relation(fields: [managerId], references: [id])
+  developers  Developer[]  // 👈 1-to-many with Developer
+  session     Session?
+  otp         Otp?
 }
 
 model Developer {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
-  lastLogin    DateTime?
-  lastLogout   DateTime?
-  authId       Int      @unique
-  auth         Auth     @relation(fields: [authId], references: [id])
-  tasks        Task[]
-  session      Session?
-  otp          Otp?
+  id          Int          @id @default(autoincrement())
+  username    String       @unique
+  lastLogin   DateTime?
+  lastLogout  DateTime?
+  authId      Int          @unique
+  auth        Auth         @relation(fields: [authId], references: [id])
+  tasks       Task[]
+  teamLeaderId Int         // 👈 FK to TeamLeader
+  teamLeader  TeamLeader   @relation(fields: [teamLeaderId], references: [id])
+  session     Session?
+  otp         Otp?
 }
+
+
+
+
 
 model Project {
   id            Int            @id @default(autoincrement())

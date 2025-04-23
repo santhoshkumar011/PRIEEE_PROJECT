@@ -1550,10 +1550,12 @@ export namespace Prisma {
 
   export type ProjectManagerCountOutputType = {
     projects: number
+    teamLeaders: number
   }
 
   export type ProjectManagerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     projects?: boolean | ProjectManagerCountOutputTypeCountProjectsArgs
+    teamLeaders?: boolean | ProjectManagerCountOutputTypeCountTeamLeadersArgs
   }
 
   // Custom InputTypes
@@ -1574,6 +1576,13 @@ export namespace Prisma {
     where?: ProjectWhereInput
   }
 
+  /**
+   * ProjectManagerCountOutputType without action
+   */
+  export type ProjectManagerCountOutputTypeCountTeamLeadersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamLeaderWhereInput
+  }
+
 
   /**
    * Count Type TeamLeaderCountOutputType
@@ -1581,10 +1590,12 @@ export namespace Prisma {
 
   export type TeamLeaderCountOutputType = {
     projects: number
+    developers: number
   }
 
   export type TeamLeaderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     projects?: boolean | TeamLeaderCountOutputTypeCountProjectsArgs
+    developers?: boolean | TeamLeaderCountOutputTypeCountDevelopersArgs
   }
 
   // Custom InputTypes
@@ -1603,6 +1614,13 @@ export namespace Prisma {
    */
   export type TeamLeaderCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectWhereInput
+  }
+
+  /**
+   * TeamLeaderCountOutputType without action
+   */
+  export type TeamLeaderCountOutputTypeCountDevelopersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeveloperWhereInput
   }
 
 
@@ -3006,6 +3024,7 @@ export namespace Prisma {
     authId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
     projects?: boolean | ProjectManager$projectsArgs<ExtArgs>
+    teamLeaders?: boolean | ProjectManager$teamLeadersArgs<ExtArgs>
     session?: boolean | ProjectManager$sessionArgs<ExtArgs>
     otp?: boolean | ProjectManager$otpArgs<ExtArgs>
     _count?: boolean | ProjectManagerCountOutputTypeDefaultArgs<ExtArgs>
@@ -3041,6 +3060,7 @@ export namespace Prisma {
   export type ProjectManagerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
     projects?: boolean | ProjectManager$projectsArgs<ExtArgs>
+    teamLeaders?: boolean | ProjectManager$teamLeadersArgs<ExtArgs>
     session?: boolean | ProjectManager$sessionArgs<ExtArgs>
     otp?: boolean | ProjectManager$otpArgs<ExtArgs>
     _count?: boolean | ProjectManagerCountOutputTypeDefaultArgs<ExtArgs>
@@ -3057,6 +3077,7 @@ export namespace Prisma {
     objects: {
       auth: Prisma.$AuthPayload<ExtArgs>
       projects: Prisma.$ProjectPayload<ExtArgs>[]
+      teamLeaders: Prisma.$TeamLeaderPayload<ExtArgs>[]
       session: Prisma.$SessionPayload<ExtArgs> | null
       otp: Prisma.$OtpPayload<ExtArgs> | null
     }
@@ -3462,6 +3483,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     auth<T extends AuthDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AuthDefaultArgs<ExtArgs>>): Prisma__AuthClient<$Result.GetResult<Prisma.$AuthPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     projects<T extends ProjectManager$projectsArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    teamLeaders<T extends ProjectManager$teamLeadersArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$teamLeadersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamLeaderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     session<T extends ProjectManager$sessionArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$sessionArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     otp<T extends ProjectManager$otpArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManager$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -3918,6 +3940,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProjectManager.teamLeaders
+   */
+  export type ProjectManager$teamLeadersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamLeader
+     */
+    select?: TeamLeaderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamLeader
+     */
+    omit?: TeamLeaderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamLeaderInclude<ExtArgs> | null
+    where?: TeamLeaderWhereInput
+    orderBy?: TeamLeaderOrderByWithRelationInput | TeamLeaderOrderByWithRelationInput[]
+    cursor?: TeamLeaderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamLeaderScalarFieldEnum | TeamLeaderScalarFieldEnum[]
+  }
+
+  /**
    * ProjectManager.session
    */
   export type ProjectManager$sessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3989,11 +4035,13 @@ export namespace Prisma {
   export type TeamLeaderAvgAggregateOutputType = {
     id: number | null
     authId: number | null
+    managerId: number | null
   }
 
   export type TeamLeaderSumAggregateOutputType = {
     id: number | null
     authId: number | null
+    managerId: number | null
   }
 
   export type TeamLeaderMinAggregateOutputType = {
@@ -4002,6 +4050,7 @@ export namespace Prisma {
     lastLogin: Date | null
     lastLogout: Date | null
     authId: number | null
+    managerId: number | null
   }
 
   export type TeamLeaderMaxAggregateOutputType = {
@@ -4010,6 +4059,7 @@ export namespace Prisma {
     lastLogin: Date | null
     lastLogout: Date | null
     authId: number | null
+    managerId: number | null
   }
 
   export type TeamLeaderCountAggregateOutputType = {
@@ -4018,6 +4068,7 @@ export namespace Prisma {
     lastLogin: number
     lastLogout: number
     authId: number
+    managerId: number
     _all: number
   }
 
@@ -4025,11 +4076,13 @@ export namespace Prisma {
   export type TeamLeaderAvgAggregateInputType = {
     id?: true
     authId?: true
+    managerId?: true
   }
 
   export type TeamLeaderSumAggregateInputType = {
     id?: true
     authId?: true
+    managerId?: true
   }
 
   export type TeamLeaderMinAggregateInputType = {
@@ -4038,6 +4091,7 @@ export namespace Prisma {
     lastLogin?: true
     lastLogout?: true
     authId?: true
+    managerId?: true
   }
 
   export type TeamLeaderMaxAggregateInputType = {
@@ -4046,6 +4100,7 @@ export namespace Prisma {
     lastLogin?: true
     lastLogout?: true
     authId?: true
+    managerId?: true
   }
 
   export type TeamLeaderCountAggregateInputType = {
@@ -4054,6 +4109,7 @@ export namespace Prisma {
     lastLogin?: true
     lastLogout?: true
     authId?: true
+    managerId?: true
     _all?: true
   }
 
@@ -4149,6 +4205,7 @@ export namespace Prisma {
     lastLogin: Date | null
     lastLogout: Date | null
     authId: number
+    managerId: number
     _count: TeamLeaderCountAggregateOutputType | null
     _avg: TeamLeaderAvgAggregateOutputType | null
     _sum: TeamLeaderSumAggregateOutputType | null
@@ -4176,8 +4233,11 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    managerId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
     projects?: boolean | TeamLeader$projectsArgs<ExtArgs>
+    manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
+    developers?: boolean | TeamLeader$developersArgs<ExtArgs>
     session?: boolean | TeamLeader$sessionArgs<ExtArgs>
     otp?: boolean | TeamLeader$otpArgs<ExtArgs>
     _count?: boolean | TeamLeaderCountOutputTypeDefaultArgs<ExtArgs>
@@ -4189,7 +4249,9 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    managerId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamLeader"]>
 
   export type TeamLeaderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4198,7 +4260,9 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    managerId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teamLeader"]>
 
   export type TeamLeaderSelectScalar = {
@@ -4207,21 +4271,26 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    managerId?: boolean
   }
 
-  export type TeamLeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "lastLogin" | "lastLogout" | "authId", ExtArgs["result"]["teamLeader"]>
+  export type TeamLeaderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "lastLogin" | "lastLogout" | "authId" | "managerId", ExtArgs["result"]["teamLeader"]>
   export type TeamLeaderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
     projects?: boolean | TeamLeader$projectsArgs<ExtArgs>
+    manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
+    developers?: boolean | TeamLeader$developersArgs<ExtArgs>
     session?: boolean | TeamLeader$sessionArgs<ExtArgs>
     otp?: boolean | TeamLeader$otpArgs<ExtArgs>
     _count?: boolean | TeamLeaderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeamLeaderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
   }
   export type TeamLeaderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
   }
 
   export type $TeamLeaderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4229,6 +4298,8 @@ export namespace Prisma {
     objects: {
       auth: Prisma.$AuthPayload<ExtArgs>
       projects: Prisma.$ProjectPayload<ExtArgs>[]
+      manager: Prisma.$ProjectManagerPayload<ExtArgs>
+      developers: Prisma.$DeveloperPayload<ExtArgs>[]
       session: Prisma.$SessionPayload<ExtArgs> | null
       otp: Prisma.$OtpPayload<ExtArgs> | null
     }
@@ -4238,6 +4309,7 @@ export namespace Prisma {
       lastLogin: Date | null
       lastLogout: Date | null
       authId: number
+      managerId: number
     }, ExtArgs["result"]["teamLeader"]>
     composites: {}
   }
@@ -4634,6 +4706,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     auth<T extends AuthDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AuthDefaultArgs<ExtArgs>>): Prisma__AuthClient<$Result.GetResult<Prisma.$AuthPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     projects<T extends TeamLeader$projectsArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    manager<T extends ProjectManagerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectManagerDefaultArgs<ExtArgs>>): Prisma__ProjectManagerClient<$Result.GetResult<Prisma.$ProjectManagerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    developers<T extends TeamLeader$developersArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$developersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeveloperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     session<T extends TeamLeader$sessionArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$sessionArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     otp<T extends TeamLeader$otpArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeader$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -4670,6 +4744,7 @@ export namespace Prisma {
     readonly lastLogin: FieldRef<"TeamLeader", 'DateTime'>
     readonly lastLogout: FieldRef<"TeamLeader", 'DateTime'>
     readonly authId: FieldRef<"TeamLeader", 'Int'>
+    readonly managerId: FieldRef<"TeamLeader", 'Int'>
   }
     
 
@@ -5090,6 +5165,30 @@ export namespace Prisma {
   }
 
   /**
+   * TeamLeader.developers
+   */
+  export type TeamLeader$developersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Developer
+     */
+    select?: DeveloperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Developer
+     */
+    omit?: DeveloperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeveloperInclude<ExtArgs> | null
+    where?: DeveloperWhereInput
+    orderBy?: DeveloperOrderByWithRelationInput | DeveloperOrderByWithRelationInput[]
+    cursor?: DeveloperWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeveloperScalarFieldEnum | DeveloperScalarFieldEnum[]
+  }
+
+  /**
    * TeamLeader.session
    */
   export type TeamLeader$sessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5161,11 +5260,13 @@ export namespace Prisma {
   export type DeveloperAvgAggregateOutputType = {
     id: number | null
     authId: number | null
+    teamLeaderId: number | null
   }
 
   export type DeveloperSumAggregateOutputType = {
     id: number | null
     authId: number | null
+    teamLeaderId: number | null
   }
 
   export type DeveloperMinAggregateOutputType = {
@@ -5174,6 +5275,7 @@ export namespace Prisma {
     lastLogin: Date | null
     lastLogout: Date | null
     authId: number | null
+    teamLeaderId: number | null
   }
 
   export type DeveloperMaxAggregateOutputType = {
@@ -5182,6 +5284,7 @@ export namespace Prisma {
     lastLogin: Date | null
     lastLogout: Date | null
     authId: number | null
+    teamLeaderId: number | null
   }
 
   export type DeveloperCountAggregateOutputType = {
@@ -5190,6 +5293,7 @@ export namespace Prisma {
     lastLogin: number
     lastLogout: number
     authId: number
+    teamLeaderId: number
     _all: number
   }
 
@@ -5197,11 +5301,13 @@ export namespace Prisma {
   export type DeveloperAvgAggregateInputType = {
     id?: true
     authId?: true
+    teamLeaderId?: true
   }
 
   export type DeveloperSumAggregateInputType = {
     id?: true
     authId?: true
+    teamLeaderId?: true
   }
 
   export type DeveloperMinAggregateInputType = {
@@ -5210,6 +5316,7 @@ export namespace Prisma {
     lastLogin?: true
     lastLogout?: true
     authId?: true
+    teamLeaderId?: true
   }
 
   export type DeveloperMaxAggregateInputType = {
@@ -5218,6 +5325,7 @@ export namespace Prisma {
     lastLogin?: true
     lastLogout?: true
     authId?: true
+    teamLeaderId?: true
   }
 
   export type DeveloperCountAggregateInputType = {
@@ -5226,6 +5334,7 @@ export namespace Prisma {
     lastLogin?: true
     lastLogout?: true
     authId?: true
+    teamLeaderId?: true
     _all?: true
   }
 
@@ -5321,6 +5430,7 @@ export namespace Prisma {
     lastLogin: Date | null
     lastLogout: Date | null
     authId: number
+    teamLeaderId: number
     _count: DeveloperCountAggregateOutputType | null
     _avg: DeveloperAvgAggregateOutputType | null
     _sum: DeveloperSumAggregateOutputType | null
@@ -5348,8 +5458,10 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    teamLeaderId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
     tasks?: boolean | Developer$tasksArgs<ExtArgs>
+    teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
     session?: boolean | Developer$sessionArgs<ExtArgs>
     otp?: boolean | Developer$otpArgs<ExtArgs>
     _count?: boolean | DeveloperCountOutputTypeDefaultArgs<ExtArgs>
@@ -5361,7 +5473,9 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    teamLeaderId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["developer"]>
 
   export type DeveloperSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5370,7 +5484,9 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    teamLeaderId?: boolean
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["developer"]>
 
   export type DeveloperSelectScalar = {
@@ -5379,21 +5495,25 @@ export namespace Prisma {
     lastLogin?: boolean
     lastLogout?: boolean
     authId?: boolean
+    teamLeaderId?: boolean
   }
 
-  export type DeveloperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "lastLogin" | "lastLogout" | "authId", ExtArgs["result"]["developer"]>
+  export type DeveloperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "lastLogin" | "lastLogout" | "authId" | "teamLeaderId", ExtArgs["result"]["developer"]>
   export type DeveloperInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
     tasks?: boolean | Developer$tasksArgs<ExtArgs>
+    teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
     session?: boolean | Developer$sessionArgs<ExtArgs>
     otp?: boolean | Developer$otpArgs<ExtArgs>
     _count?: boolean | DeveloperCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DeveloperIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
   }
   export type DeveloperIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth?: boolean | AuthDefaultArgs<ExtArgs>
+    teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
   }
 
   export type $DeveloperPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5401,6 +5521,7 @@ export namespace Prisma {
     objects: {
       auth: Prisma.$AuthPayload<ExtArgs>
       tasks: Prisma.$TaskPayload<ExtArgs>[]
+      teamLeader: Prisma.$TeamLeaderPayload<ExtArgs>
       session: Prisma.$SessionPayload<ExtArgs> | null
       otp: Prisma.$OtpPayload<ExtArgs> | null
     }
@@ -5410,6 +5531,7 @@ export namespace Prisma {
       lastLogin: Date | null
       lastLogout: Date | null
       authId: number
+      teamLeaderId: number
     }, ExtArgs["result"]["developer"]>
     composites: {}
   }
@@ -5806,6 +5928,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     auth<T extends AuthDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AuthDefaultArgs<ExtArgs>>): Prisma__AuthClient<$Result.GetResult<Prisma.$AuthPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tasks<T extends Developer$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Developer$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    teamLeader<T extends TeamLeaderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamLeaderDefaultArgs<ExtArgs>>): Prisma__TeamLeaderClient<$Result.GetResult<Prisma.$TeamLeaderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     session<T extends Developer$sessionArgs<ExtArgs> = {}>(args?: Subset<T, Developer$sessionArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     otp<T extends Developer$otpArgs<ExtArgs> = {}>(args?: Subset<T, Developer$otpArgs<ExtArgs>>): Prisma__OtpClient<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -5842,6 +5965,7 @@ export namespace Prisma {
     readonly lastLogin: FieldRef<"Developer", 'DateTime'>
     readonly lastLogout: FieldRef<"Developer", 'DateTime'>
     readonly authId: FieldRef<"Developer", 'Int'>
+    readonly teamLeaderId: FieldRef<"Developer", 'Int'>
   }
     
 
@@ -11066,7 +11190,8 @@ export namespace Prisma {
     username: 'username',
     lastLogin: 'lastLogin',
     lastLogout: 'lastLogout',
-    authId: 'authId'
+    authId: 'authId',
+    managerId: 'managerId'
   };
 
   export type TeamLeaderScalarFieldEnum = (typeof TeamLeaderScalarFieldEnum)[keyof typeof TeamLeaderScalarFieldEnum]
@@ -11077,7 +11202,8 @@ export namespace Prisma {
     username: 'username',
     lastLogin: 'lastLogin',
     lastLogout: 'lastLogout',
-    authId: 'authId'
+    authId: 'authId',
+    teamLeaderId: 'teamLeaderId'
   };
 
   export type DeveloperScalarFieldEnum = (typeof DeveloperScalarFieldEnum)[keyof typeof DeveloperScalarFieldEnum]
@@ -11334,6 +11460,7 @@ export namespace Prisma {
     authId?: IntFilter<"ProjectManager"> | number
     auth?: XOR<AuthScalarRelationFilter, AuthWhereInput>
     projects?: ProjectListRelationFilter
+    teamLeaders?: TeamLeaderListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
     otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }
@@ -11346,6 +11473,7 @@ export namespace Prisma {
     authId?: SortOrder
     auth?: AuthOrderByWithRelationInput
     projects?: ProjectOrderByRelationAggregateInput
+    teamLeaders?: TeamLeaderOrderByRelationAggregateInput
     session?: SessionOrderByWithRelationInput
     otp?: OtpOrderByWithRelationInput
   }
@@ -11361,6 +11489,7 @@ export namespace Prisma {
     lastLogout?: DateTimeNullableFilter<"ProjectManager"> | Date | string | null
     auth?: XOR<AuthScalarRelationFilter, AuthWhereInput>
     projects?: ProjectListRelationFilter
+    teamLeaders?: TeamLeaderListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
     otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }, "id" | "username" | "authId">
@@ -11398,8 +11527,11 @@ export namespace Prisma {
     lastLogin?: DateTimeNullableFilter<"TeamLeader"> | Date | string | null
     lastLogout?: DateTimeNullableFilter<"TeamLeader"> | Date | string | null
     authId?: IntFilter<"TeamLeader"> | number
+    managerId?: IntFilter<"TeamLeader"> | number
     auth?: XOR<AuthScalarRelationFilter, AuthWhereInput>
     projects?: ProjectListRelationFilter
+    manager?: XOR<ProjectManagerScalarRelationFilter, ProjectManagerWhereInput>
+    developers?: DeveloperListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
     otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }
@@ -11410,8 +11542,11 @@ export namespace Prisma {
     lastLogin?: SortOrderInput | SortOrder
     lastLogout?: SortOrderInput | SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
     auth?: AuthOrderByWithRelationInput
     projects?: ProjectOrderByRelationAggregateInput
+    manager?: ProjectManagerOrderByWithRelationInput
+    developers?: DeveloperOrderByRelationAggregateInput
     session?: SessionOrderByWithRelationInput
     otp?: OtpOrderByWithRelationInput
   }
@@ -11425,8 +11560,11 @@ export namespace Prisma {
     NOT?: TeamLeaderWhereInput | TeamLeaderWhereInput[]
     lastLogin?: DateTimeNullableFilter<"TeamLeader"> | Date | string | null
     lastLogout?: DateTimeNullableFilter<"TeamLeader"> | Date | string | null
+    managerId?: IntFilter<"TeamLeader"> | number
     auth?: XOR<AuthScalarRelationFilter, AuthWhereInput>
     projects?: ProjectListRelationFilter
+    manager?: XOR<ProjectManagerScalarRelationFilter, ProjectManagerWhereInput>
+    developers?: DeveloperListRelationFilter
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
     otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }, "id" | "username" | "authId">
@@ -11437,6 +11575,7 @@ export namespace Prisma {
     lastLogin?: SortOrderInput | SortOrder
     lastLogout?: SortOrderInput | SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
     _count?: TeamLeaderCountOrderByAggregateInput
     _avg?: TeamLeaderAvgOrderByAggregateInput
     _max?: TeamLeaderMaxOrderByAggregateInput
@@ -11453,6 +11592,7 @@ export namespace Prisma {
     lastLogin?: DateTimeNullableWithAggregatesFilter<"TeamLeader"> | Date | string | null
     lastLogout?: DateTimeNullableWithAggregatesFilter<"TeamLeader"> | Date | string | null
     authId?: IntWithAggregatesFilter<"TeamLeader"> | number
+    managerId?: IntWithAggregatesFilter<"TeamLeader"> | number
   }
 
   export type DeveloperWhereInput = {
@@ -11464,8 +11604,10 @@ export namespace Prisma {
     lastLogin?: DateTimeNullableFilter<"Developer"> | Date | string | null
     lastLogout?: DateTimeNullableFilter<"Developer"> | Date | string | null
     authId?: IntFilter<"Developer"> | number
+    teamLeaderId?: IntFilter<"Developer"> | number
     auth?: XOR<AuthScalarRelationFilter, AuthWhereInput>
     tasks?: TaskListRelationFilter
+    teamLeader?: XOR<TeamLeaderScalarRelationFilter, TeamLeaderWhereInput>
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
     otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }
@@ -11476,8 +11618,10 @@ export namespace Prisma {
     lastLogin?: SortOrderInput | SortOrder
     lastLogout?: SortOrderInput | SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
     auth?: AuthOrderByWithRelationInput
     tasks?: TaskOrderByRelationAggregateInput
+    teamLeader?: TeamLeaderOrderByWithRelationInput
     session?: SessionOrderByWithRelationInput
     otp?: OtpOrderByWithRelationInput
   }
@@ -11491,8 +11635,10 @@ export namespace Prisma {
     NOT?: DeveloperWhereInput | DeveloperWhereInput[]
     lastLogin?: DateTimeNullableFilter<"Developer"> | Date | string | null
     lastLogout?: DateTimeNullableFilter<"Developer"> | Date | string | null
+    teamLeaderId?: IntFilter<"Developer"> | number
     auth?: XOR<AuthScalarRelationFilter, AuthWhereInput>
     tasks?: TaskListRelationFilter
+    teamLeader?: XOR<TeamLeaderScalarRelationFilter, TeamLeaderWhereInput>
     session?: XOR<SessionNullableScalarRelationFilter, SessionWhereInput> | null
     otp?: XOR<OtpNullableScalarRelationFilter, OtpWhereInput> | null
   }, "id" | "username" | "authId">
@@ -11503,6 +11649,7 @@ export namespace Prisma {
     lastLogin?: SortOrderInput | SortOrder
     lastLogout?: SortOrderInput | SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
     _count?: DeveloperCountOrderByAggregateInput
     _avg?: DeveloperAvgOrderByAggregateInput
     _max?: DeveloperMaxOrderByAggregateInput
@@ -11519,6 +11666,7 @@ export namespace Prisma {
     lastLogin?: DateTimeNullableWithAggregatesFilter<"Developer"> | Date | string | null
     lastLogout?: DateTimeNullableWithAggregatesFilter<"Developer"> | Date | string | null
     authId?: IntWithAggregatesFilter<"Developer"> | number
+    teamLeaderId?: IntWithAggregatesFilter<"Developer"> | number
   }
 
   export type ProjectWhereInput = {
@@ -11874,6 +12022,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutManagerInput
     projects?: ProjectCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
     otp?: OtpCreateNestedOneWithoutManagerInput
   }
@@ -11885,6 +12034,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     authId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
     otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
@@ -11895,6 +12045,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
     projects?: ProjectUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
     otp?: OtpUpdateOneWithoutManagerNestedInput
   }
@@ -11906,6 +12057,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
     otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
@@ -11938,6 +12090,8 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutLeaderInput
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
+    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
+    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
     otp?: OtpCreateNestedOneWithoutLeaderInput
   }
@@ -11948,7 +12102,9 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    managerId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
+    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
     otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
@@ -11959,6 +12115,8 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
+    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
+    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
     otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
@@ -11969,7 +12127,9 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    managerId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
     otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
@@ -11980,6 +12140,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    managerId: number
   }
 
   export type TeamLeaderUpdateManyMutationInput = {
@@ -11994,6 +12155,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    managerId?: IntFieldUpdateOperationsInput | number
   }
 
   export type DeveloperCreateInput = {
@@ -12002,6 +12164,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutDevInput
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
+    teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
     otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
@@ -12012,6 +12175,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
     otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
@@ -12023,6 +12187,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
+    teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
     otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
@@ -12033,6 +12198,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
     otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
@@ -12044,6 +12210,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    teamLeaderId: number
   }
 
   export type DeveloperUpdateManyMutationInput = {
@@ -12058,6 +12225,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    teamLeaderId?: IntFieldUpdateOperationsInput | number
   }
 
   export type ProjectCreateInput = {
@@ -12448,6 +12616,12 @@ export namespace Prisma {
     none?: ProjectWhereInput
   }
 
+  export type TeamLeaderListRelationFilter = {
+    every?: TeamLeaderWhereInput
+    some?: TeamLeaderWhereInput
+    none?: TeamLeaderWhereInput
+  }
+
   export type SessionNullableScalarRelationFilter = {
     is?: SessionWhereInput | null
     isNot?: SessionWhereInput | null
@@ -12464,6 +12638,10 @@ export namespace Prisma {
   }
 
   export type ProjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TeamLeaderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12515,17 +12693,34 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type ProjectManagerScalarRelationFilter = {
+    is?: ProjectManagerWhereInput
+    isNot?: ProjectManagerWhereInput
+  }
+
+  export type DeveloperListRelationFilter = {
+    every?: DeveloperWhereInput
+    some?: DeveloperWhereInput
+    none?: DeveloperWhereInput
+  }
+
+  export type DeveloperOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type TeamLeaderCountOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
     lastLogin?: SortOrder
     lastLogout?: SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
   }
 
   export type TeamLeaderAvgOrderByAggregateInput = {
     id?: SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
   }
 
   export type TeamLeaderMaxOrderByAggregateInput = {
@@ -12534,6 +12729,7 @@ export namespace Prisma {
     lastLogin?: SortOrder
     lastLogout?: SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
   }
 
   export type TeamLeaderMinOrderByAggregateInput = {
@@ -12542,17 +12738,24 @@ export namespace Prisma {
     lastLogin?: SortOrder
     lastLogout?: SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
   }
 
   export type TeamLeaderSumOrderByAggregateInput = {
     id?: SortOrder
     authId?: SortOrder
+    managerId?: SortOrder
   }
 
   export type TaskListRelationFilter = {
     every?: TaskWhereInput
     some?: TaskWhereInput
     none?: TaskWhereInput
+  }
+
+  export type TeamLeaderScalarRelationFilter = {
+    is?: TeamLeaderWhereInput
+    isNot?: TeamLeaderWhereInput
   }
 
   export type TaskOrderByRelationAggregateInput = {
@@ -12565,11 +12768,13 @@ export namespace Prisma {
     lastLogin?: SortOrder
     lastLogout?: SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
   }
 
   export type DeveloperAvgOrderByAggregateInput = {
     id?: SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
   }
 
   export type DeveloperMaxOrderByAggregateInput = {
@@ -12578,6 +12783,7 @@ export namespace Prisma {
     lastLogin?: SortOrder
     lastLogout?: SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
   }
 
   export type DeveloperMinOrderByAggregateInput = {
@@ -12586,11 +12792,13 @@ export namespace Prisma {
     lastLogin?: SortOrder
     lastLogout?: SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
   }
 
   export type DeveloperSumOrderByAggregateInput = {
     id?: SortOrder
     authId?: SortOrder
+    teamLeaderId?: SortOrder
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -12635,16 +12843,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type ProjectManagerScalarRelationFilter = {
-    is?: ProjectManagerWhereInput
-    isNot?: ProjectManagerWhereInput
-  }
-
-  export type TeamLeaderScalarRelationFilter = {
-    is?: TeamLeaderWhereInput
-    isNot?: TeamLeaderWhereInput
   }
 
   export type ProjectCountOrderByAggregateInput = {
@@ -13044,6 +13242,13 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
+  export type TeamLeaderCreateNestedManyWithoutManagerInput = {
+    create?: XOR<TeamLeaderCreateWithoutManagerInput, TeamLeaderUncheckedCreateWithoutManagerInput> | TeamLeaderCreateWithoutManagerInput[] | TeamLeaderUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: TeamLeaderCreateOrConnectWithoutManagerInput | TeamLeaderCreateOrConnectWithoutManagerInput[]
+    createMany?: TeamLeaderCreateManyManagerInputEnvelope
+    connect?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+  }
+
   export type SessionCreateNestedOneWithoutManagerInput = {
     create?: XOR<SessionCreateWithoutManagerInput, SessionUncheckedCreateWithoutManagerInput>
     connectOrCreate?: SessionCreateOrConnectWithoutManagerInput
@@ -13061,6 +13266,13 @@ export namespace Prisma {
     connectOrCreate?: ProjectCreateOrConnectWithoutManagerInput | ProjectCreateOrConnectWithoutManagerInput[]
     createMany?: ProjectCreateManyManagerInputEnvelope
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type TeamLeaderUncheckedCreateNestedManyWithoutManagerInput = {
+    create?: XOR<TeamLeaderCreateWithoutManagerInput, TeamLeaderUncheckedCreateWithoutManagerInput> | TeamLeaderCreateWithoutManagerInput[] | TeamLeaderUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: TeamLeaderCreateOrConnectWithoutManagerInput | TeamLeaderCreateOrConnectWithoutManagerInput[]
+    createMany?: TeamLeaderCreateManyManagerInputEnvelope
+    connect?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
   }
 
   export type SessionUncheckedCreateNestedOneWithoutManagerInput = {
@@ -13101,6 +13313,20 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type TeamLeaderUpdateManyWithoutManagerNestedInput = {
+    create?: XOR<TeamLeaderCreateWithoutManagerInput, TeamLeaderUncheckedCreateWithoutManagerInput> | TeamLeaderCreateWithoutManagerInput[] | TeamLeaderUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: TeamLeaderCreateOrConnectWithoutManagerInput | TeamLeaderCreateOrConnectWithoutManagerInput[]
+    upsert?: TeamLeaderUpsertWithWhereUniqueWithoutManagerInput | TeamLeaderUpsertWithWhereUniqueWithoutManagerInput[]
+    createMany?: TeamLeaderCreateManyManagerInputEnvelope
+    set?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    disconnect?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    delete?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    connect?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    update?: TeamLeaderUpdateWithWhereUniqueWithoutManagerInput | TeamLeaderUpdateWithWhereUniqueWithoutManagerInput[]
+    updateMany?: TeamLeaderUpdateManyWithWhereWithoutManagerInput | TeamLeaderUpdateManyWithWhereWithoutManagerInput[]
+    deleteMany?: TeamLeaderScalarWhereInput | TeamLeaderScalarWhereInput[]
+  }
+
   export type SessionUpdateOneWithoutManagerNestedInput = {
     create?: XOR<SessionCreateWithoutManagerInput, SessionUncheckedCreateWithoutManagerInput>
     connectOrCreate?: SessionCreateOrConnectWithoutManagerInput
@@ -13133,6 +13359,20 @@ export namespace Prisma {
     update?: ProjectUpdateWithWhereUniqueWithoutManagerInput | ProjectUpdateWithWhereUniqueWithoutManagerInput[]
     updateMany?: ProjectUpdateManyWithWhereWithoutManagerInput | ProjectUpdateManyWithWhereWithoutManagerInput[]
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+  }
+
+  export type TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput = {
+    create?: XOR<TeamLeaderCreateWithoutManagerInput, TeamLeaderUncheckedCreateWithoutManagerInput> | TeamLeaderCreateWithoutManagerInput[] | TeamLeaderUncheckedCreateWithoutManagerInput[]
+    connectOrCreate?: TeamLeaderCreateOrConnectWithoutManagerInput | TeamLeaderCreateOrConnectWithoutManagerInput[]
+    upsert?: TeamLeaderUpsertWithWhereUniqueWithoutManagerInput | TeamLeaderUpsertWithWhereUniqueWithoutManagerInput[]
+    createMany?: TeamLeaderCreateManyManagerInputEnvelope
+    set?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    disconnect?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    delete?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    connect?: TeamLeaderWhereUniqueInput | TeamLeaderWhereUniqueInput[]
+    update?: TeamLeaderUpdateWithWhereUniqueWithoutManagerInput | TeamLeaderUpdateWithWhereUniqueWithoutManagerInput[]
+    updateMany?: TeamLeaderUpdateManyWithWhereWithoutManagerInput | TeamLeaderUpdateManyWithWhereWithoutManagerInput[]
+    deleteMany?: TeamLeaderScalarWhereInput | TeamLeaderScalarWhereInput[]
   }
 
   export type SessionUncheckedUpdateOneWithoutManagerNestedInput = {
@@ -13168,6 +13408,19 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
+  export type ProjectManagerCreateNestedOneWithoutTeamLeadersInput = {
+    create?: XOR<ProjectManagerCreateWithoutTeamLeadersInput, ProjectManagerUncheckedCreateWithoutTeamLeadersInput>
+    connectOrCreate?: ProjectManagerCreateOrConnectWithoutTeamLeadersInput
+    connect?: ProjectManagerWhereUniqueInput
+  }
+
+  export type DeveloperCreateNestedManyWithoutTeamLeaderInput = {
+    create?: XOR<DeveloperCreateWithoutTeamLeaderInput, DeveloperUncheckedCreateWithoutTeamLeaderInput> | DeveloperCreateWithoutTeamLeaderInput[] | DeveloperUncheckedCreateWithoutTeamLeaderInput[]
+    connectOrCreate?: DeveloperCreateOrConnectWithoutTeamLeaderInput | DeveloperCreateOrConnectWithoutTeamLeaderInput[]
+    createMany?: DeveloperCreateManyTeamLeaderInputEnvelope
+    connect?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+  }
+
   export type SessionCreateNestedOneWithoutLeaderInput = {
     create?: XOR<SessionCreateWithoutLeaderInput, SessionUncheckedCreateWithoutLeaderInput>
     connectOrCreate?: SessionCreateOrConnectWithoutLeaderInput
@@ -13185,6 +13438,13 @@ export namespace Prisma {
     connectOrCreate?: ProjectCreateOrConnectWithoutTeamLeaderInput | ProjectCreateOrConnectWithoutTeamLeaderInput[]
     createMany?: ProjectCreateManyTeamLeaderInputEnvelope
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput = {
+    create?: XOR<DeveloperCreateWithoutTeamLeaderInput, DeveloperUncheckedCreateWithoutTeamLeaderInput> | DeveloperCreateWithoutTeamLeaderInput[] | DeveloperUncheckedCreateWithoutTeamLeaderInput[]
+    connectOrCreate?: DeveloperCreateOrConnectWithoutTeamLeaderInput | DeveloperCreateOrConnectWithoutTeamLeaderInput[]
+    createMany?: DeveloperCreateManyTeamLeaderInputEnvelope
+    connect?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
   }
 
   export type SessionUncheckedCreateNestedOneWithoutLeaderInput = {
@@ -13221,6 +13481,28 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput = {
+    create?: XOR<ProjectManagerCreateWithoutTeamLeadersInput, ProjectManagerUncheckedCreateWithoutTeamLeadersInput>
+    connectOrCreate?: ProjectManagerCreateOrConnectWithoutTeamLeadersInput
+    upsert?: ProjectManagerUpsertWithoutTeamLeadersInput
+    connect?: ProjectManagerWhereUniqueInput
+    update?: XOR<XOR<ProjectManagerUpdateToOneWithWhereWithoutTeamLeadersInput, ProjectManagerUpdateWithoutTeamLeadersInput>, ProjectManagerUncheckedUpdateWithoutTeamLeadersInput>
+  }
+
+  export type DeveloperUpdateManyWithoutTeamLeaderNestedInput = {
+    create?: XOR<DeveloperCreateWithoutTeamLeaderInput, DeveloperUncheckedCreateWithoutTeamLeaderInput> | DeveloperCreateWithoutTeamLeaderInput[] | DeveloperUncheckedCreateWithoutTeamLeaderInput[]
+    connectOrCreate?: DeveloperCreateOrConnectWithoutTeamLeaderInput | DeveloperCreateOrConnectWithoutTeamLeaderInput[]
+    upsert?: DeveloperUpsertWithWhereUniqueWithoutTeamLeaderInput | DeveloperUpsertWithWhereUniqueWithoutTeamLeaderInput[]
+    createMany?: DeveloperCreateManyTeamLeaderInputEnvelope
+    set?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    disconnect?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    delete?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    connect?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    update?: DeveloperUpdateWithWhereUniqueWithoutTeamLeaderInput | DeveloperUpdateWithWhereUniqueWithoutTeamLeaderInput[]
+    updateMany?: DeveloperUpdateManyWithWhereWithoutTeamLeaderInput | DeveloperUpdateManyWithWhereWithoutTeamLeaderInput[]
+    deleteMany?: DeveloperScalarWhereInput | DeveloperScalarWhereInput[]
+  }
+
   export type SessionUpdateOneWithoutLeaderNestedInput = {
     create?: XOR<SessionCreateWithoutLeaderInput, SessionUncheckedCreateWithoutLeaderInput>
     connectOrCreate?: SessionCreateOrConnectWithoutLeaderInput
@@ -13255,6 +13537,20 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput = {
+    create?: XOR<DeveloperCreateWithoutTeamLeaderInput, DeveloperUncheckedCreateWithoutTeamLeaderInput> | DeveloperCreateWithoutTeamLeaderInput[] | DeveloperUncheckedCreateWithoutTeamLeaderInput[]
+    connectOrCreate?: DeveloperCreateOrConnectWithoutTeamLeaderInput | DeveloperCreateOrConnectWithoutTeamLeaderInput[]
+    upsert?: DeveloperUpsertWithWhereUniqueWithoutTeamLeaderInput | DeveloperUpsertWithWhereUniqueWithoutTeamLeaderInput[]
+    createMany?: DeveloperCreateManyTeamLeaderInputEnvelope
+    set?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    disconnect?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    delete?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    connect?: DeveloperWhereUniqueInput | DeveloperWhereUniqueInput[]
+    update?: DeveloperUpdateWithWhereUniqueWithoutTeamLeaderInput | DeveloperUpdateWithWhereUniqueWithoutTeamLeaderInput[]
+    updateMany?: DeveloperUpdateManyWithWhereWithoutTeamLeaderInput | DeveloperUpdateManyWithWhereWithoutTeamLeaderInput[]
+    deleteMany?: DeveloperScalarWhereInput | DeveloperScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateOneWithoutLeaderNestedInput = {
     create?: XOR<SessionCreateWithoutLeaderInput, SessionUncheckedCreateWithoutLeaderInput>
     connectOrCreate?: SessionCreateOrConnectWithoutLeaderInput
@@ -13286,6 +13582,12 @@ export namespace Prisma {
     connectOrCreate?: TaskCreateOrConnectWithoutDeveloperInput | TaskCreateOrConnectWithoutDeveloperInput[]
     createMany?: TaskCreateManyDeveloperInputEnvelope
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TeamLeaderCreateNestedOneWithoutDevelopersInput = {
+    create?: XOR<TeamLeaderCreateWithoutDevelopersInput, TeamLeaderUncheckedCreateWithoutDevelopersInput>
+    connectOrCreate?: TeamLeaderCreateOrConnectWithoutDevelopersInput
+    connect?: TeamLeaderWhereUniqueInput
   }
 
   export type SessionCreateNestedOneWithoutDeveloperInput = {
@@ -13339,6 +13641,14 @@ export namespace Prisma {
     update?: TaskUpdateWithWhereUniqueWithoutDeveloperInput | TaskUpdateWithWhereUniqueWithoutDeveloperInput[]
     updateMany?: TaskUpdateManyWithWhereWithoutDeveloperInput | TaskUpdateManyWithWhereWithoutDeveloperInput[]
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput = {
+    create?: XOR<TeamLeaderCreateWithoutDevelopersInput, TeamLeaderUncheckedCreateWithoutDevelopersInput>
+    connectOrCreate?: TeamLeaderCreateOrConnectWithoutDevelopersInput
+    upsert?: TeamLeaderUpsertWithoutDevelopersInput
+    connect?: TeamLeaderWhereUniqueInput
+    update?: XOR<XOR<TeamLeaderUpdateToOneWithWhereWithoutDevelopersInput, TeamLeaderUpdateWithoutDevelopersInput>, TeamLeaderUncheckedUpdateWithoutDevelopersInput>
   }
 
   export type SessionUpdateOneWithoutDeveloperNestedInput = {
@@ -13861,6 +14171,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     projects?: ProjectCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
     otp?: OtpCreateNestedOneWithoutManagerInput
   }
@@ -13871,6 +14182,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
     otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
@@ -13885,6 +14197,8 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
+    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
+    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
     otp?: OtpCreateNestedOneWithoutLeaderInput
   }
@@ -13894,7 +14208,9 @@ export namespace Prisma {
     username: string
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
+    managerId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
+    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
     otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
@@ -13909,6 +14225,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
+    teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
     otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
@@ -13918,6 +14235,7 @@ export namespace Prisma {
     username: string
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
+    teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
     otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
@@ -13944,6 +14262,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projects?: ProjectUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
     otp?: OtpUpdateOneWithoutManagerNestedInput
   }
@@ -13954,6 +14273,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
     otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
@@ -13974,6 +14294,8 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
+    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
+    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
     otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
@@ -13983,7 +14305,9 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    managerId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
     otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
@@ -14004,6 +14328,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
+    teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
     otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
@@ -14013,6 +14338,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
     otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
@@ -14068,6 +14394,39 @@ export namespace Prisma {
 
   export type ProjectCreateManyManagerInputEnvelope = {
     data: ProjectCreateManyManagerInput | ProjectCreateManyManagerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamLeaderCreateWithoutManagerInput = {
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    auth: AuthCreateNestedOneWithoutLeaderInput
+    projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
+    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
+    session?: SessionCreateNestedOneWithoutLeaderInput
+    otp?: OtpCreateNestedOneWithoutLeaderInput
+  }
+
+  export type TeamLeaderUncheckedCreateWithoutManagerInput = {
+    id?: number
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    authId: number
+    projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
+    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
+    session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
+    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
+  }
+
+  export type TeamLeaderCreateOrConnectWithoutManagerInput = {
+    where: TeamLeaderWhereUniqueInput
+    create: XOR<TeamLeaderCreateWithoutManagerInput, TeamLeaderUncheckedCreateWithoutManagerInput>
+  }
+
+  export type TeamLeaderCreateManyManagerInputEnvelope = {
+    data: TeamLeaderCreateManyManagerInput | TeamLeaderCreateManyManagerInput[]
     skipDuplicates?: boolean
   }
 
@@ -14169,6 +14528,34 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Project"> | Date | string
     managerId?: IntFilter<"Project"> | number
     leaderId?: IntFilter<"Project"> | number
+  }
+
+  export type TeamLeaderUpsertWithWhereUniqueWithoutManagerInput = {
+    where: TeamLeaderWhereUniqueInput
+    update: XOR<TeamLeaderUpdateWithoutManagerInput, TeamLeaderUncheckedUpdateWithoutManagerInput>
+    create: XOR<TeamLeaderCreateWithoutManagerInput, TeamLeaderUncheckedCreateWithoutManagerInput>
+  }
+
+  export type TeamLeaderUpdateWithWhereUniqueWithoutManagerInput = {
+    where: TeamLeaderWhereUniqueInput
+    data: XOR<TeamLeaderUpdateWithoutManagerInput, TeamLeaderUncheckedUpdateWithoutManagerInput>
+  }
+
+  export type TeamLeaderUpdateManyWithWhereWithoutManagerInput = {
+    where: TeamLeaderScalarWhereInput
+    data: XOR<TeamLeaderUpdateManyMutationInput, TeamLeaderUncheckedUpdateManyWithoutManagerInput>
+  }
+
+  export type TeamLeaderScalarWhereInput = {
+    AND?: TeamLeaderScalarWhereInput | TeamLeaderScalarWhereInput[]
+    OR?: TeamLeaderScalarWhereInput[]
+    NOT?: TeamLeaderScalarWhereInput | TeamLeaderScalarWhereInput[]
+    id?: IntFilter<"TeamLeader"> | number
+    username?: StringFilter<"TeamLeader"> | string
+    lastLogin?: DateTimeNullableFilter<"TeamLeader"> | Date | string | null
+    lastLogout?: DateTimeNullableFilter<"TeamLeader"> | Date | string | null
+    authId?: IntFilter<"TeamLeader"> | number
+    managerId?: IntFilter<"TeamLeader"> | number
   }
 
   export type SessionUpsertWithoutManagerInput = {
@@ -14278,6 +14665,63 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProjectManagerCreateWithoutTeamLeadersInput = {
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    auth: AuthCreateNestedOneWithoutManagerInput
+    projects?: ProjectCreateNestedManyWithoutManagerInput
+    session?: SessionCreateNestedOneWithoutManagerInput
+    otp?: OtpCreateNestedOneWithoutManagerInput
+  }
+
+  export type ProjectManagerUncheckedCreateWithoutTeamLeadersInput = {
+    id?: number
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    authId: number
+    projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    session?: SessionUncheckedCreateNestedOneWithoutManagerInput
+    otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
+  }
+
+  export type ProjectManagerCreateOrConnectWithoutTeamLeadersInput = {
+    where: ProjectManagerWhereUniqueInput
+    create: XOR<ProjectManagerCreateWithoutTeamLeadersInput, ProjectManagerUncheckedCreateWithoutTeamLeadersInput>
+  }
+
+  export type DeveloperCreateWithoutTeamLeaderInput = {
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    auth: AuthCreateNestedOneWithoutDevInput
+    tasks?: TaskCreateNestedManyWithoutDeveloperInput
+    session?: SessionCreateNestedOneWithoutDeveloperInput
+    otp?: OtpCreateNestedOneWithoutDeveloperInput
+  }
+
+  export type DeveloperUncheckedCreateWithoutTeamLeaderInput = {
+    id?: number
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    authId: number
+    tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
+    session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
+    otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
+  }
+
+  export type DeveloperCreateOrConnectWithoutTeamLeaderInput = {
+    where: DeveloperWhereUniqueInput
+    create: XOR<DeveloperCreateWithoutTeamLeaderInput, DeveloperUncheckedCreateWithoutTeamLeaderInput>
+  }
+
+  export type DeveloperCreateManyTeamLeaderInputEnvelope = {
+    data: DeveloperCreateManyTeamLeaderInput | DeveloperCreateManyTeamLeaderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionCreateWithoutLeaderInput = {
     session: string
     expiry: Date | string
@@ -14362,6 +14806,66 @@ export namespace Prisma {
   export type ProjectUpdateManyWithWhereWithoutTeamLeaderInput = {
     where: ProjectScalarWhereInput
     data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutTeamLeaderInput>
+  }
+
+  export type ProjectManagerUpsertWithoutTeamLeadersInput = {
+    update: XOR<ProjectManagerUpdateWithoutTeamLeadersInput, ProjectManagerUncheckedUpdateWithoutTeamLeadersInput>
+    create: XOR<ProjectManagerCreateWithoutTeamLeadersInput, ProjectManagerUncheckedCreateWithoutTeamLeadersInput>
+    where?: ProjectManagerWhereInput
+  }
+
+  export type ProjectManagerUpdateToOneWithWhereWithoutTeamLeadersInput = {
+    where?: ProjectManagerWhereInput
+    data: XOR<ProjectManagerUpdateWithoutTeamLeadersInput, ProjectManagerUncheckedUpdateWithoutTeamLeadersInput>
+  }
+
+  export type ProjectManagerUpdateWithoutTeamLeadersInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
+    projects?: ProjectUpdateManyWithoutManagerNestedInput
+    session?: SessionUpdateOneWithoutManagerNestedInput
+    otp?: OtpUpdateOneWithoutManagerNestedInput
+  }
+
+  export type ProjectManagerUncheckedUpdateWithoutTeamLeadersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authId?: IntFieldUpdateOperationsInput | number
+    projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
+    otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
+  }
+
+  export type DeveloperUpsertWithWhereUniqueWithoutTeamLeaderInput = {
+    where: DeveloperWhereUniqueInput
+    update: XOR<DeveloperUpdateWithoutTeamLeaderInput, DeveloperUncheckedUpdateWithoutTeamLeaderInput>
+    create: XOR<DeveloperCreateWithoutTeamLeaderInput, DeveloperUncheckedCreateWithoutTeamLeaderInput>
+  }
+
+  export type DeveloperUpdateWithWhereUniqueWithoutTeamLeaderInput = {
+    where: DeveloperWhereUniqueInput
+    data: XOR<DeveloperUpdateWithoutTeamLeaderInput, DeveloperUncheckedUpdateWithoutTeamLeaderInput>
+  }
+
+  export type DeveloperUpdateManyWithWhereWithoutTeamLeaderInput = {
+    where: DeveloperScalarWhereInput
+    data: XOR<DeveloperUpdateManyMutationInput, DeveloperUncheckedUpdateManyWithoutTeamLeaderInput>
+  }
+
+  export type DeveloperScalarWhereInput = {
+    AND?: DeveloperScalarWhereInput | DeveloperScalarWhereInput[]
+    OR?: DeveloperScalarWhereInput[]
+    NOT?: DeveloperScalarWhereInput | DeveloperScalarWhereInput[]
+    id?: IntFilter<"Developer"> | number
+    username?: StringFilter<"Developer"> | string
+    lastLogin?: DateTimeNullableFilter<"Developer"> | Date | string | null
+    lastLogout?: DateTimeNullableFilter<"Developer"> | Date | string | null
+    authId?: IntFilter<"Developer"> | number
+    teamLeaderId?: IntFilter<"Developer"> | number
   }
 
   export type SessionUpsertWithoutLeaderInput = {
@@ -14467,6 +14971,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TeamLeaderCreateWithoutDevelopersInput = {
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    auth: AuthCreateNestedOneWithoutLeaderInput
+    projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
+    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
+    session?: SessionCreateNestedOneWithoutLeaderInput
+    otp?: OtpCreateNestedOneWithoutLeaderInput
+  }
+
+  export type TeamLeaderUncheckedCreateWithoutDevelopersInput = {
+    id?: number
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    authId: number
+    managerId: number
+    projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
+    session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
+    otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
+  }
+
+  export type TeamLeaderCreateOrConnectWithoutDevelopersInput = {
+    where: TeamLeaderWhereUniqueInput
+    create: XOR<TeamLeaderCreateWithoutDevelopersInput, TeamLeaderUncheckedCreateWithoutDevelopersInput>
+  }
+
   export type SessionCreateWithoutDeveloperInput = {
     session: string
     expiry: Date | string
@@ -14566,6 +15098,40 @@ export namespace Prisma {
     developerId?: IntFilter<"Task"> | number
   }
 
+  export type TeamLeaderUpsertWithoutDevelopersInput = {
+    update: XOR<TeamLeaderUpdateWithoutDevelopersInput, TeamLeaderUncheckedUpdateWithoutDevelopersInput>
+    create: XOR<TeamLeaderCreateWithoutDevelopersInput, TeamLeaderUncheckedCreateWithoutDevelopersInput>
+    where?: TeamLeaderWhereInput
+  }
+
+  export type TeamLeaderUpdateToOneWithWhereWithoutDevelopersInput = {
+    where?: TeamLeaderWhereInput
+    data: XOR<TeamLeaderUpdateWithoutDevelopersInput, TeamLeaderUncheckedUpdateWithoutDevelopersInput>
+  }
+
+  export type TeamLeaderUpdateWithoutDevelopersInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
+    projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
+    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
+    session?: SessionUpdateOneWithoutLeaderNestedInput
+    otp?: OtpUpdateOneWithoutLeaderNestedInput
+  }
+
+  export type TeamLeaderUncheckedUpdateWithoutDevelopersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authId?: IntFieldUpdateOperationsInput | number
+    managerId?: IntFieldUpdateOperationsInput | number
+    projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
+    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
+  }
+
   export type SessionUpsertWithoutDeveloperInput = {
     update: XOR<SessionUpdateWithoutDeveloperInput, SessionUncheckedUpdateWithoutDeveloperInput>
     create: XOR<SessionCreateWithoutDeveloperInput, SessionUncheckedCreateWithoutDeveloperInput>
@@ -14625,6 +15191,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutManagerInput
+    teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
     otp?: OtpCreateNestedOneWithoutManagerInput
   }
@@ -14635,6 +15202,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
     otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
@@ -14649,6 +15217,8 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutLeaderInput
+    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
+    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
     otp?: OtpCreateNestedOneWithoutLeaderInput
   }
@@ -14659,6 +15229,8 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    managerId: number
+    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
     otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
@@ -14711,6 +15283,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
     otp?: OtpUpdateOneWithoutManagerNestedInput
   }
@@ -14721,6 +15294,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
     otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
@@ -14741,6 +15315,8 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
+    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
+    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
     otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
@@ -14751,6 +15327,8 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    managerId?: IntFieldUpdateOperationsInput | number
+    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
     otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
@@ -14802,6 +15380,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutDevInput
+    teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
     otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
@@ -14812,6 +15391,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    teamLeaderId: number
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
     otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
@@ -14869,6 +15449,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
+    teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
     otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
@@ -14879,6 +15460,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    teamLeaderId?: IntFieldUpdateOperationsInput | number
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
     otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
@@ -14889,6 +15471,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutManagerInput
     projects?: ProjectCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     otp?: OtpCreateNestedOneWithoutManagerInput
   }
 
@@ -14899,6 +15482,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     authId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     otp?: OtpUncheckedCreateNestedOneWithoutManagerInput
   }
 
@@ -14913,6 +15497,8 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutLeaderInput
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
+    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
+    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     otp?: OtpCreateNestedOneWithoutLeaderInput
   }
 
@@ -14922,7 +15508,9 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    managerId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
+    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     otp?: OtpUncheckedCreateNestedOneWithoutLeaderInput
   }
 
@@ -14937,6 +15525,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutDevInput
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
+    teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     otp?: OtpCreateNestedOneWithoutDeveloperInput
   }
 
@@ -14946,6 +15535,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     otp?: OtpUncheckedCreateNestedOneWithoutDeveloperInput
   }
@@ -14972,6 +15562,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
     projects?: ProjectUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     otp?: OtpUpdateOneWithoutManagerNestedInput
   }
 
@@ -14982,6 +15573,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     otp?: OtpUncheckedUpdateOneWithoutManagerNestedInput
   }
 
@@ -15002,6 +15594,8 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
+    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
+    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     otp?: OtpUpdateOneWithoutLeaderNestedInput
   }
 
@@ -15011,7 +15605,9 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    managerId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
@@ -15032,6 +15628,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
+    teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     otp?: OtpUpdateOneWithoutDeveloperNestedInput
   }
 
@@ -15041,6 +15638,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
   }
@@ -15051,6 +15649,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutManagerInput
     projects?: ProjectCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderCreateNestedManyWithoutManagerInput
     session?: SessionCreateNestedOneWithoutManagerInput
   }
 
@@ -15061,6 +15660,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     authId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    teamLeaders?: TeamLeaderUncheckedCreateNestedManyWithoutManagerInput
     session?: SessionUncheckedCreateNestedOneWithoutManagerInput
   }
 
@@ -15075,6 +15675,8 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutLeaderInput
     projects?: ProjectCreateNestedManyWithoutTeamLeaderInput
+    manager: ProjectManagerCreateNestedOneWithoutTeamLeadersInput
+    developers?: DeveloperCreateNestedManyWithoutTeamLeaderInput
     session?: SessionCreateNestedOneWithoutLeaderInput
   }
 
@@ -15084,7 +15686,9 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    managerId: number
     projects?: ProjectUncheckedCreateNestedManyWithoutTeamLeaderInput
+    developers?: DeveloperUncheckedCreateNestedManyWithoutTeamLeaderInput
     session?: SessionUncheckedCreateNestedOneWithoutLeaderInput
   }
 
@@ -15099,6 +15703,7 @@ export namespace Prisma {
     lastLogout?: Date | string | null
     auth: AuthCreateNestedOneWithoutDevInput
     tasks?: TaskCreateNestedManyWithoutDeveloperInput
+    teamLeader: TeamLeaderCreateNestedOneWithoutDevelopersInput
     session?: SessionCreateNestedOneWithoutDeveloperInput
   }
 
@@ -15108,6 +15713,7 @@ export namespace Prisma {
     lastLogin?: Date | string | null
     lastLogout?: Date | string | null
     authId: number
+    teamLeaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutDeveloperInput
     session?: SessionUncheckedCreateNestedOneWithoutDeveloperInput
   }
@@ -15134,6 +15740,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutManagerNestedInput
     projects?: ProjectUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUpdateManyWithoutManagerNestedInput
     session?: SessionUpdateOneWithoutManagerNestedInput
   }
 
@@ -15144,6 +15751,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    teamLeaders?: TeamLeaderUncheckedUpdateManyWithoutManagerNestedInput
     session?: SessionUncheckedUpdateOneWithoutManagerNestedInput
   }
 
@@ -15164,6 +15772,8 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
     projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
+    manager?: ProjectManagerUpdateOneRequiredWithoutTeamLeadersNestedInput
+    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUpdateOneWithoutLeaderNestedInput
   }
 
@@ -15173,7 +15783,9 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    managerId?: IntFieldUpdateOperationsInput | number
     projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
     session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
   }
 
@@ -15194,6 +15806,7 @@ export namespace Prisma {
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auth?: AuthUpdateOneRequiredWithoutDevNestedInput
     tasks?: TaskUpdateManyWithoutDeveloperNestedInput
+    teamLeader?: TeamLeaderUpdateOneRequiredWithoutDevelopersNestedInput
     session?: SessionUpdateOneWithoutDeveloperNestedInput
   }
 
@@ -15203,6 +15816,7 @@ export namespace Prisma {
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authId?: IntFieldUpdateOperationsInput | number
+    teamLeaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
     session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
   }
@@ -15215,6 +15829,14 @@ export namespace Prisma {
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
     leaderId: number
+  }
+
+  export type TeamLeaderCreateManyManagerInput = {
+    id?: number
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    authId: number
   }
 
   export type ProjectUpdateWithoutManagerInput = {
@@ -15248,6 +15870,37 @@ export namespace Prisma {
     leaderId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type TeamLeaderUpdateWithoutManagerInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    auth?: AuthUpdateOneRequiredWithoutLeaderNestedInput
+    projects?: ProjectUpdateManyWithoutTeamLeaderNestedInput
+    developers?: DeveloperUpdateManyWithoutTeamLeaderNestedInput
+    session?: SessionUpdateOneWithoutLeaderNestedInput
+    otp?: OtpUpdateOneWithoutLeaderNestedInput
+  }
+
+  export type TeamLeaderUncheckedUpdateWithoutManagerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authId?: IntFieldUpdateOperationsInput | number
+    projects?: ProjectUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    developers?: DeveloperUncheckedUpdateManyWithoutTeamLeaderNestedInput
+    session?: SessionUncheckedUpdateOneWithoutLeaderNestedInput
+    otp?: OtpUncheckedUpdateOneWithoutLeaderNestedInput
+  }
+
+  export type TeamLeaderUncheckedUpdateManyWithoutManagerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authId?: IntFieldUpdateOperationsInput | number
+  }
+
   export type ProjectCreateManyTeamLeaderInput = {
     id?: number
     name: string
@@ -15256,6 +15909,14 @@ export namespace Prisma {
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
     managerId: number
+  }
+
+  export type DeveloperCreateManyTeamLeaderInput = {
+    id?: number
+    username: string
+    lastLogin?: Date | string | null
+    lastLogout?: Date | string | null
+    authId: number
   }
 
   export type ProjectUpdateWithoutTeamLeaderInput = {
@@ -15287,6 +15948,35 @@ export namespace Prisma {
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     managerId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeveloperUpdateWithoutTeamLeaderInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    auth?: AuthUpdateOneRequiredWithoutDevNestedInput
+    tasks?: TaskUpdateManyWithoutDeveloperNestedInput
+    session?: SessionUpdateOneWithoutDeveloperNestedInput
+    otp?: OtpUpdateOneWithoutDeveloperNestedInput
+  }
+
+  export type DeveloperUncheckedUpdateWithoutTeamLeaderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authId?: IntFieldUpdateOperationsInput | number
+    tasks?: TaskUncheckedUpdateManyWithoutDeveloperNestedInput
+    session?: SessionUncheckedUpdateOneWithoutDeveloperNestedInput
+    otp?: OtpUncheckedUpdateOneWithoutDeveloperNestedInput
+  }
+
+  export type DeveloperUncheckedUpdateManyWithoutTeamLeaderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogout?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authId?: IntFieldUpdateOperationsInput | number
   }
 
   export type TaskCreateManyDeveloperInput = {

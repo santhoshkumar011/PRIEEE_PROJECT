@@ -38,9 +38,9 @@ async function login(req,res) {
                 }
             }
         })
-        const res = await hashChecker(dbval.salt , dbval.hash , pwd)
+        const resp = await hashChecker(dbval.salt , dbval.hash , pwd)
     
-        if(res == 0 ){
+        if(resp == 0 ){
             res.status(200).json({
                 err:"invalid login password mismatch"
             })
@@ -51,35 +51,107 @@ async function login(req,res) {
         const exp = new Date(utc.getTime()+7.5*60*60*1000);
     
         const session = await hashGenerator(toString(email)+toString(exp))
+
+        
     
     
         if(session.err){
             res.status(200).json({
                 err:"Some internal error, try logging again"
             })
+            return
         }
-    
-        await prisma.session.create({
-            data:{
-                userId:dbval.id,
-                expiry:exp,
-                session:session.hash
-            }
-        }) 
         const now = new Date(utc.getTime()+5.5*60*60*1000);
 
-        await prisma.user.updateMany({
-            where:{
-                id:dbval.id
-            },
-            data:{
-                lastLogin:now
-            }
-        })
+        let role = "" ;
+        let id  = ""; 
+        let uname = "";
+
+        if(dbval.dev?.id){
+            id = dbval.dev.id;
+            uname = dbval.dev.username;
+            role="dev"
+            await prisma.developer.updateMany({
+                where:{
+                    id:id
+                },
+                data:{
+                    lastLogin:now
+                }
+            })
+            await prisma.session.deleteMany({
+                where:{
+                    developerId:id
+                }
+            })
+            await prisma.session.create({
+                data:{
+                    developerId:id,
+                    expiry:exp,
+                    session:session.hash
+                }
+            }) 
+        }
+        else if(dbval.leader?.id){
+            id = dbval.leader.id;
+            uname = dbval.leader.uname;
+            role = "leader";
+            await prisma.teamLeader.updateMany({
+                where:{
+                    id:id
+                },
+                data:{
+                    lastLogin:now
+                }
+            })
+            await prisma.session.deleteMany({
+                where:{
+                    leaderId:id
+                }
+            })
+
+            await prisma.session.create({
+                data:{
+                    leaderId:id,
+                    expiry:exp,
+                    session:session.hash
+                }
+            }) 
+        }
+        else if(dbval.manager?.id){
+            id = dbval.manager.id;
+            uname = dbval.manager.username;
+            role = "manager"
+            await prisma.projectManager.updateMany({
+                where:{
+                    id:id
+                },
+                data:{
+                    lastLogin:now
+                }
+            })
+            await prisma.session.deleteMany({
+                where:{
+                    managerId:id
+                }
+            })
+            await prisma.session.create({
+                data:{
+                    managerId:id,
+                    expiry:exp,
+                    session:session.hash
+                }
+            }) 
+        }
+    
+        
+
+
         res.status(200).json({
             msg:"Successful",
             session:session.hash,
-            uname:dbval.username
+            uname:uname,
+            role:role
         })
     }
     catch(err){

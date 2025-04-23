@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { toast, Toaster } from 'sonner';
 import "../main.scss"
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom"
 
 
 const LoginPage = () => {
@@ -13,6 +14,8 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email , setEmail ] = useState("");
   const [passowrd, setPassword] = useState("");
+
+  const nav = useNavigate();
   
   // Handle timer for OTP
   useEffect(() => {
@@ -76,7 +79,7 @@ const LoginPage = () => {
 
     const dummy =  await new Promise ((resolve)=>{
       toast.promise(new Promise((resolve,reject)=>{
-        fetch("http://localhost:6000/login", {
+        fetch("http://localhost:8080/login", {
           method: "POST",
           body: JSON.stringify({ email: email , password: passowrd }),
           headers: {
@@ -124,6 +127,8 @@ const LoginPage = () => {
     <div className="min-h-screen w-full flex items-center justify-center" style={{ 
       background: 'linear-gradient(135deg, #2a2a2a 0%, #040404 100%)'
     }}>
+                <Toaster duration={3000} position="bottom-right"/>
+
       {/* Main content container */}
       <div className="w-full h-screen flex">
         {/* Left side content */}
@@ -330,6 +335,9 @@ const LoginPage = () => {
                 if (mode === 'forgotPassword' && !otpSent) {
                   setOtpSent(true);
                   setTimer(60);
+                }
+                else if(mode==='login'){
+                  handleLogin()
                 }
               }}
               className="w-full bg-[#ff3d3d] hover:bg-[#ff2f2f] text-gray-200 font-medium py-3 px-4 rounded-md transition focus:outline-none"
