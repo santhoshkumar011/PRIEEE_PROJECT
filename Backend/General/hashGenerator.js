@@ -12,5 +12,13 @@ async function hashGenerator(password) {
       }
 }
 
+async function caller() {
+  const op = await hashGenerator("Peter parker");
+  console.log(op)
+
+}
+
+// caller();
+
 module.exports = {hashGenerator};
 

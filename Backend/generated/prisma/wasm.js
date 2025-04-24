@@ -117,15 +117,37 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
+exports.Prisma.AuthScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  salt: 'salt',
+  hash: 'hash'
+};
+
+exports.Prisma.ProjectManagerScalarFieldEnum = {
   id: 'id',
   username: 'username',
-  salt: 'salt',
-  hash: 'hash',
-  role: 'role',
   lastLogin: 'lastLogin',
   lastLogout: 'lastLogout',
-  email: 'email'
+  authId: 'authId'
+};
+
+exports.Prisma.TeamLeaderScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  lastLogin: 'lastLogin',
+  lastLogout: 'lastLogout',
+  authId: 'authId',
+  managerId: 'managerId'
+};
+
+exports.Prisma.DeveloperScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  lastLogin: 'lastLogin',
+  lastLogout: 'lastLogout',
+  authId: 'authId',
+  teamLeaderId: 'teamLeaderId'
 };
 
 exports.Prisma.ProjectScalarFieldEnum = {
@@ -136,7 +158,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   managerId: 'managerId',
-  teamLeaderId: 'teamLeaderId'
+  leaderId: 'leaderId'
 };
 
 exports.Prisma.TaskScalarFieldEnum = {
@@ -146,22 +168,26 @@ exports.Prisma.TaskScalarFieldEnum = {
   status: 'status',
   updatedAt: 'updatedAt',
   projectId: 'projectId',
-  assignedTo: 'assignedTo'
+  developerId: 'developerId'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   session: 'session',
-  expiry: 'expiry'
+  expiry: 'expiry',
+  managerId: 'managerId',
+  leaderId: 'leaderId',
+  developerId: 'developerId'
 };
 
 exports.Prisma.OtpScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   otp: 'otp',
   expiry: 'expiry',
-  status: 'status'
+  status: 'status',
+  managerId: 'managerId',
+  leaderId: 'leaderId',
+  developerId: 'developerId'
 };
 
 exports.Prisma.SortOrder = {
@@ -178,12 +204,6 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.Role = exports.$Enums.Role = {
-  PROJECT_MANAGER: 'PROJECT_MANAGER',
-  TEAM_LEADER: 'TEAM_LEADER',
-  DEVELOPER: 'DEVELOPER'
-};
-
 exports.ProjectStatus = exports.$Enums.ProjectStatus = {
   NOT_STARTED: 'NOT_STARTED',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -202,7 +222,10 @@ exports.OTPStatus = exports.$Enums.OTPStatus = {
 };
 
 exports.Prisma.ModelName = {
-  User: 'User',
+  Auth: 'Auth',
+  ProjectManager: 'ProjectManager',
+  TeamLeader: 'TeamLeader',
+  Developer: 'Developer',
   Project: 'Project',
   Task: 'Task',
   Session: 'Session',

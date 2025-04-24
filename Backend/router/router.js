@@ -1,6 +1,8 @@
 const { forgotPassword } = require("../Auth/forgotPassword");
 const { login } = require("../Auth/login");
+const { verifyOTPforLogin } = require("../Auth/otpVerify");
 const { resetPassword } = require("../Auth/resetPassword");
+const { Router } = require("express");
 
 
 const router = new Router();
@@ -20,6 +22,10 @@ const asyncHandler = (fn) => (req, res, next) => {
   
   router.post('/reset-password', asyncHandler(async (req, res) => {
     await resetPassword(req,res);
+  }));
+
+  router.post('/verify-otp', asyncHandler(async (req, res) => {
+    await verifyOTPforLogin(req,res);
   }));
  
 
