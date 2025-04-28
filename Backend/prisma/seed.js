@@ -2,18 +2,30 @@ const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
 
 async function main() {
-    
-    
 
 
-    await prisma.auth.updateMany({
-        where:{
-            id:7
-        },
+    await prisma.project.create({
         data:{
-            role:"DEVELOPER"
+            name:"Erp Platform",
+            description:"This is the erp portal for REC - A Responsive website for both mobile and phone",
+            storyPoints:500,
+            status:"NOT_STARTED",
+            managerId:1,
+            leaderId:1
         }
     })
+    
+    
+
+
+    // await prisma.auth.updateMany({
+    //     where:{
+    //         id:7
+    //     },
+    //     data:{
+    //         role:"DEVELOPER"
+    //     }
+    // })
     
 
     // const op = await prisma.auth.findMany()

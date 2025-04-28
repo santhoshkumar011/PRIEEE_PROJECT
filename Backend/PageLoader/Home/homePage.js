@@ -44,14 +44,22 @@ async function homePage(req,res) {
                     id:ses.session.managerId
                 },
                 include:{
-                    projects:true
+                    projects:true,
+                    teamLeaders:{
+                        select:{
+                            username:true,
+                            id:true,
+                            lastLogin:true,
+                            
+                        }
+                    }
                 }
             })
 
             res.status(200).json({
                 msg:"Successful",
                 data:data,
-                role:"PM"
+                role:"MG"
             })
 
             return

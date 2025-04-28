@@ -14,7 +14,7 @@ function HomePage(){
     useEffect(()=>{
         fetch("http://localhost:8080/home", {
             method: "POST",
-            body: JSON.stringify({session:Cookies.get(session)}),
+            body: JSON.stringify({session:Cookies.get("session")}),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
@@ -24,7 +24,7 @@ function HomePage(){
             if(data.err){
               throw new Error(data.err)
             }
-            setAllData(data.data)
+            setAllData({...data.data,role:data.role})
           })
           .catch((err)=> {
             alert(err)
@@ -37,11 +37,11 @@ function HomePage(){
     return(
         <div className='w-screen h-screen overflow-hidden'>
             {
-                allData?.type=="DEV"?(
+                allData?.role=="DEV"?(
                     <Developer data={allData}/>
-                ):allData?.type=="TL"?(
+                ):allData?.role=="TL"?(
                     <TeamLeader data={allData}/>
-                ):allData?.type=="MG"?(
+                ):allData?.role=="MG"?(
                     <Manager data={allData}/>
                 ):(
                     <></>
