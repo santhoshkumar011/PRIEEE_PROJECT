@@ -8,10 +8,10 @@ async function main() {
 
     await prisma.auth.updateMany({
         where:{
-            id:3
+            id:7
         },
         data:{
-            role:"TEAM_LEADER"
+            role:"DEVELOPER"
         }
     })
     
@@ -23,7 +23,8 @@ async function main() {
     //     data:{
     //         username:"Safeek",
     //         authId:7,
-    //         teamLeaderId:4
+    //         teamLeaderId:2
+        
     //     }
     // })
 

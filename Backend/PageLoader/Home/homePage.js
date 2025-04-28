@@ -1,8 +1,91 @@
+const { sessionChecker } = require("../../General/sessionChecker");
 const { PrismaClient } = require("../../generated/prisma")
 
 async function homePage(req,res) {
     const prisma = new PrismaClient();
     
+    try{
+        const session = req.body.session;
+        const ses = await sessionChecker(session)
+
+        if(ses.err){
+            res.status(200).json({
+                err:"Invalid session"
+            })
+            return
+        }
+        if(ses.session.developerId){
+
+            const data = await prisma.developer.findFirst({
+                where:{
+                    id:ses.session.developerId
+                },
+                include:{
+                    tasks:{
+                        include:{
+                            project:true
+                        }
+                    }
+                }
+            })
+
+            res.status(200).json({
+                msg:"Successful",
+                data:data,
+                role:"DEV"
+            })
+            return
+
+        }
+        else if(ses.session.managerId){
+
+            const data = await prisma.projectManager.findFirst({
+                where:{
+                    id:ses.session.managerId
+                },
+                include:{
+                    projects:true
+                }
+            })
+
+            res.status(200).json({
+                msg:"Successful",
+                data:data,
+                role:"PM"
+            })
+
+            return
+
+        }
+        else if(ses.session.leaderId){
+
+            const data = await prisma.teamLeader.findFirst({
+                where:{
+                    id:ses.session.leaderId
+                },
+                include:{
+                    projects:true
+                }
+            })
+
+            res.status(200).json({
+                msg:"Successful",
+                data:data,
+                role:"TL"
+            })
+
+        }
+        res.status(200).josn({
+            err:"Nee enna entha category la yum vara matra"
+        })
+    }
+    catch(err){
+        console.log(err);
+        res.status(200).json({
+            err:"Some internal error.. try again"
+        })
+    }
+
 }
 
 module.exports = {

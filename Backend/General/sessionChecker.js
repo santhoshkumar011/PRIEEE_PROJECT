@@ -8,20 +8,15 @@ async function sessionChecker(session) {
             where:{
                 session:session
             },
-            include:{
-                user:{
-                    select:{
-                        role:true
-                    }
-                }
-            }
         })
+        
         const utc = new Date();
         const now = new Date(utc.getTime()+5.5*60*60*1000);
+        
         if(ses){
             const exp = new Date(ses.expiry)
             if(exp>=now){
-                return({msg:"Successful" , uid:ses.userId , role:ses.user.role})
+                return({msg:"Successful" , session:ses})
             }
             await prisma.session.deleteMany({
                 where:{

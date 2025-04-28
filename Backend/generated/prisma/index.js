@@ -238,8 +238,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.6.0",
@@ -252,12 +251,12 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": null,
-        "value": "postgresql://postgres:KelavanSanjeev@db.ssprduchehvivlehaqkm.supabase.co:5432/postgres"
+        "value": "postgresql://postgres:postgres@localhost:5432/postgres"
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = \"postgresql://postgres:KelavanSanjeev@db.ssprduchehvivlehaqkm.supabase.co:5432/postgres\"\n}\n\nenum ProjectStatus {\n  NOT_STARTED\n  IN_PROGRESS\n  COMPLETED\n}\n\nenum TaskStatus {\n  PENDING\n  IN_PROGRESS\n  DONE\n}\n\nenum OTPStatus {\n  VERIFIED\n  PENDING\n}\n\nenum Role {\n  DEVELOPER\n  TEAM_LEADER\n  PROJECT_MANAGER\n}\n\nmodel Auth {\n  id    Int    @id @default(autoincrement())\n  email String @unique\n  salt  String\n  hash  String\n  role  Role   @default(DEVELOPER)\n  otp   Otp?\n\n  manager ProjectManager?\n  leader  TeamLeader?\n  dev     Developer?\n}\n\nmodel ProjectManager {\n  id          Int          @id @default(autoincrement())\n  username    String       @unique\n  lastLogin   DateTime?\n  lastLogout  DateTime?\n  authId      Int          @unique\n  auth        Auth         @relation(fields: [authId], references: [id])\n  projects    Project[]    @relation(\"ManagerProjects\")\n  teamLeaders TeamLeader[] // 👈 1-to-many with TeamLeader\n  session     Session?\n}\n\nmodel TeamLeader {\n  id         Int            @id @default(autoincrement())\n  username   String         @unique\n  lastLogin  DateTime?\n  lastLogout DateTime?\n  authId     Int            @unique\n  auth       Auth           @relation(fields: [authId], references: [id])\n  projects   Project[]      @relation(\"LeaderProjects\")\n  managerId  Int // 👈 FK to ProjectManager\n  manager    ProjectManager @relation(fields: [managerId], references: [id])\n  developers Developer[] // 👈 1-to-many with Developer\n  session    Session?\n}\n\nmodel Developer {\n  id           Int        @id @default(autoincrement())\n  username     String     @unique\n  lastLogin    DateTime?\n  lastLogout   DateTime?\n  authId       Int        @unique\n  auth         Auth       @relation(fields: [authId], references: [id])\n  tasks        Task[]\n  teamLeaderId Int // 👈 FK to TeamLeader\n  teamLeader   TeamLeader @relation(fields: [teamLeaderId], references: [id])\n  session      Session?\n}\n\nmodel Project {\n  id          Int           @id @default(autoincrement())\n  name        String\n  description String?\n  storyPoints Int?\n  status      ProjectStatus @default(NOT_STARTED)\n  createdAt   DateTime      @default(now())\n\n  managerId Int\n  leaderId  Int\n\n  manager    ProjectManager @relation(\"ManagerProjects\", fields: [managerId], references: [id])\n  teamLeader TeamLeader     @relation(\"LeaderProjects\", fields: [leaderId], references: [id])\n\n  tasks Task[]\n}\n\nmodel Task {\n  id          Int        @id @default(autoincrement())\n  title       String\n  description String?\n  status      TaskStatus @default(PENDING)\n  updatedAt   DateTime   @default(now())\n\n  projectId   Int\n  developerId Int\n\n  project   Project   @relation(fields: [projectId], references: [id])\n  developer Developer @relation(fields: [developerId], references: [id])\n}\n\nmodel Session {\n  id      Int      @id @default(autoincrement())\n  session String\n  expiry  DateTime\n\n  managerId   Int? @unique\n  leaderId    Int? @unique\n  developerId Int? @unique\n\n  manager   ProjectManager? @relation(fields: [managerId], references: [id])\n  leader    TeamLeader?     @relation(fields: [leaderId], references: [id])\n  developer Developer?      @relation(fields: [developerId], references: [id])\n}\n\nmodel Otp {\n  id     Int       @id @default(autoincrement())\n  otp    String\n  expiry DateTime\n  status OTPStatus @default(PENDING)\n\n  authId Int? @unique\n\n  auth Auth? @relation(fields: [authId], references: [id])\n}\n",
-  "inlineSchemaHash": "15ca91986f6fd3a206b8b886f0f927f1f98ba1b58275388757d6385c15307368",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = \"postgresql://postgres:postgres@localhost:5432/postgres\"\n}\n\nenum ProjectStatus {\n  NOT_STARTED\n  IN_PROGRESS\n  COMPLETED\n}\n\nenum TaskStatus {\n  PENDING\n  IN_PROGRESS\n  DONE\n}\n\nenum OTPStatus {\n  VERIFIED\n  PENDING\n}\n\nenum Role {\n  DEVELOPER\n  TEAM_LEADER\n  PROJECT_MANAGER\n}\n\nmodel Auth {\n  id    Int    @id @default(autoincrement())\n  email String @unique\n  salt  String\n  hash  String\n  role  Role   @default(DEVELOPER)\n  otp   Otp?\n\n  manager ProjectManager?\n  leader  TeamLeader?\n  dev     Developer?\n}\n\nmodel ProjectManager {\n  id          Int          @id @default(autoincrement())\n  username    String       @unique\n  lastLogin   DateTime?\n  lastLogout  DateTime?\n  authId      Int          @unique\n  auth        Auth         @relation(fields: [authId], references: [id])\n  projects    Project[]    @relation(\"ManagerProjects\")\n  teamLeaders TeamLeader[] // 👈 1-to-many with TeamLeader\n  session     Session?\n}\n\nmodel TeamLeader {\n  id         Int            @id @default(autoincrement())\n  username   String         @unique\n  lastLogin  DateTime?\n  lastLogout DateTime?\n  authId     Int            @unique\n  auth       Auth           @relation(fields: [authId], references: [id])\n  projects   Project[]      @relation(\"LeaderProjects\")\n  managerId  Int // 👈 FK to ProjectManager\n  manager    ProjectManager @relation(fields: [managerId], references: [id])\n  developers Developer[] // 👈 1-to-many with Developer\n  session    Session?\n}\n\nmodel Developer {\n  id           Int        @id @default(autoincrement())\n  username     String     @unique\n  lastLogin    DateTime?\n  lastLogout   DateTime?\n  authId       Int        @unique\n  auth         Auth       @relation(fields: [authId], references: [id])\n  tasks        Task[]\n  teamLeaderId Int // 👈 FK to TeamLeader\n  teamLeader   TeamLeader @relation(fields: [teamLeaderId], references: [id])\n  session      Session?\n}\n\nmodel Project {\n  id          Int           @id @default(autoincrement())\n  name        String\n  description String?\n  storyPoints Int?\n  status      ProjectStatus @default(NOT_STARTED)\n  createdAt   DateTime      @default(now())\n\n  managerId Int\n  leaderId  Int\n\n  manager    ProjectManager @relation(\"ManagerProjects\", fields: [managerId], references: [id])\n  teamLeader TeamLeader     @relation(\"LeaderProjects\", fields: [leaderId], references: [id])\n\n  tasks Task[]\n}\n\nmodel Task {\n  id          Int        @id @default(autoincrement())\n  title       String\n  description String?\n  status      TaskStatus @default(PENDING)\n  updatedAt   DateTime   @default(now())\n\n  projectId   Int\n  developerId Int\n\n  project   Project   @relation(fields: [projectId], references: [id])\n  developer Developer @relation(fields: [developerId], references: [id])\n}\n\nmodel Session {\n  id      Int      @id @default(autoincrement())\n  session String\n  expiry  DateTime\n\n  managerId   Int? @unique\n  leaderId    Int? @unique\n  developerId Int? @unique\n\n  manager   ProjectManager? @relation(fields: [managerId], references: [id])\n  leader    TeamLeader?     @relation(fields: [leaderId], references: [id])\n  developer Developer?      @relation(fields: [developerId], references: [id])\n}\n\nmodel Otp {\n  id     Int       @id @default(autoincrement())\n  otp    String\n  expiry DateTime\n  status OTPStatus @default(PENDING)\n\n  authId Int? @unique\n\n  auth Auth? @relation(fields: [authId], references: [id])\n}\n",
+  "inlineSchemaHash": "a9962ab308e3b883b79c6b6b0ec767a7fb23d0da507eca16f8d6ae6cc4f8829a",
   "copyEngine": true
 }
 
@@ -266,8 +265,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
+    "../generated/prisma",
     "generated/prisma",
-    "prisma",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -297,7 +296,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "generated/prisma/query_engine-windows.dll.node")
+path.join(process.cwd(), "../generated/prisma/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/prisma/schema.prisma")
+path.join(process.cwd(), "../generated/prisma/schema.prisma")
