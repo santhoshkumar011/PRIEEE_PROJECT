@@ -137,7 +137,7 @@ async function verifyOTPforLogin(req,res) {
                 res.status(200).json({
                     msg:"Success",
                     uname:uname,
-                    session:session
+                    session:session.hash
                 })
             }
             

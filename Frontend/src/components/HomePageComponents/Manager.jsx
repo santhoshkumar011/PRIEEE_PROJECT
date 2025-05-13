@@ -224,7 +224,7 @@ const Manager = () => {
                                 <span className={`text-xs px-2 py-1 rounded-full ${
                                     project.status === 'IN_PROGRESS' 
                                     ? ' text-yellow-400' 
-                                    : 'bg-green-600/20 text-green-400'
+                                    : ' text-green-400'
                                 }`}>
                                     {project.status.replace('_', ' ')}
                                 </span>
