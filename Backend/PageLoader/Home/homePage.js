@@ -23,7 +23,15 @@ async function homePage(req,res) {
                 include:{
                     tasks:{
                         include:{
-                            project:true
+                            project:{
+                                include:{
+                                    teamLeader:{
+                                        select:{
+                                            username:true
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -92,7 +100,7 @@ async function homePage(req,res) {
             })
 
         }
-        res.status(200).josn({
+        res.status(200).json({
             err:"Nee enna entha category la yum vara matra"
         })
     }

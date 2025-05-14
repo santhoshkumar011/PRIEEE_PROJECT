@@ -7,7 +7,7 @@ import { toast, Toaster } from 'sonner';
 const TeamLeader = ({ userData }) => {
     const [activeProjectType, setActiveProjectType] = useState('current');
     const [selectedProject, setSelectedProject] = useState(null);
-    const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+    const [isAddTaskModalOpen,  setIsAddTaskModalOpen] = useState(false);
     const [newTask, setNewTask] = useState({
         title: '',
         description: '',
@@ -79,6 +79,61 @@ const TeamLeader = ({ userData }) => {
             }
         }
     }, [userData]);
+
+    async function markasCompleted(selectedProject){
+         let status = false;
+        const dummy = await new Promise((resolve) => {
+            toast.promise(new Promise((resolve, reject) => {
+                fetch("http://localhost:8080/mark-as-done", {
+                    method: "POST",
+                    body: JSON.stringify({ data: selectedProject }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }).then((resp) => resp.json())
+                .then((data) => {
+                    if(data.err) {
+                        throw new Error(data.err);
+                    }
+                    resolve(data);
+                })
+                .catch((err) => reject(err));
+            }), {
+                loading: "Marking as completed... !",
+                success: (data) => {
+                    status = true;
+                    resolve();
+                    return (`Project Completed`);
+                },
+                error: (err) => {
+                    resolve();
+                    return (`${err}`);
+                },
+                style: {
+                    fontSize: "1rem",
+                    fontWeight: 200,
+                    padding: 10,
+                    color: "#ddf3ef", 
+                    backgroundColor: "#1c1b1b",
+                    borderColor: "#3b3b3b",
+                    borderStyle: "solid",
+                    borderWidth: "3px"
+                }
+            });
+        });
+        
+        if(status) {
+            // Update the projects state with the new task
+            let d1 = completedProjects
+            let d2 = currentProjects
+            
+            d2.splice(currentProjects.indexOf(selectedProject))
+            d1.push(selectedProject)
+            setCompletedProjects(d1)
+            setCurrentProjects(d2)
+            }
+    }
 
     async function handleAddTask() {
         // Validate task fields
@@ -388,6 +443,7 @@ const TeamLeader = ({ userData }) => {
                                     <div className="flex justify-between items-center mb-4">
                                         <h3 className="text-lg font-semibold">Tasks</h3>
                                         {selectedProject.status !== 'COMPLETED' && (
+                                            <div className='flex space-x-3'>
                                             <motion.button
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
@@ -397,6 +453,18 @@ const TeamLeader = ({ userData }) => {
                                                 <PlusIcon className="w-4 h-4 mr-1" />
                                                 Add Task
                                             </motion.button>
+                                            {calculateCompletion(selectedProject)==100 ?(
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => markasCompleted(selectedProject)}
+                                                className="bg-indigo-600 text-white px-3 py-1 rounded-md flex items-center"
+                                            >
+                                                <PlusIcon className="w-4 h-4 mr-1" />
+                                                Mark as completed
+                                            </motion.button>
+                                            ):(<></>)}
+                                            </div>
                                         )}
                                     </div>
                                     {selectedProject.tasks && selectedProject.tasks.length > 0 ? (
@@ -421,7 +489,7 @@ const TeamLeader = ({ userData }) => {
                                                             <span className={`text-xs px-2 py-1 rounded-full ${getTaskStatusColor(task.status)}`}>
                                                                 {task.status}
                                                             </span>
-                                                            {selectedProject.status !== 'COMPLETED' && (
+                                                            {/* {selectedProject.status !== 'COMPLETED' && (
                                                                 <div className="flex space-x-1 mt-2">
                                                                     <button 
                                                                         onClick={() => updateTaskStatus(task.id, 'NOT_STARTED')}
@@ -442,7 +510,7 @@ const TeamLeader = ({ userData }) => {
                                                                         Done
                                                                     </button>
                                                                 </div>
-                                                            )}
+                                                            )} */}
                                                         </div>
                                                     </div>
                                                 </div>

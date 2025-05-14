@@ -6,18 +6,27 @@ async function addTask(req,res) {
     try{
         let data = req.body.data;
         delete data.id
+        data.status = "PENDING"
 
-        console.dir(data)
+        // console.dir(data)
         
-        // await prisma.project.create({
-        //     data:{
-        //         ...data,
+        await prisma.task.create({
+            data:{
+                ...data,
 
-        //     }
-        // })
+            }
+        })
+        await prisma.project.updateMany({
+            where:{
+                id:data.projectId
+            },
+            data:{
+                isTaskCompleted:"YES",
+                status:"IN_PROGRESS"
+            }
+        })
         res.status(200).json({
-
-            err:"Sry error"
+            msg:"Successful"
         })
 
         return
