@@ -3,17 +3,30 @@ const prisma = new PrismaClient();
 
 async function main() {
 
+    const now = new Date()
 
-    await prisma.project.create({
+    await prisma.task.create({
         data:{
-            name:"Erp Platform",
-            description:"This is the erp portal for REC - A Responsive website for both mobile and phone",
-            storyPoints:500,
-            status:"NOT_STARTED",
-            managerId:1,
-            leaderId:1
+            title:"Deployment and maintenance",
+            description:"The app is deployed on the client site",
+            status:"DONE",
+            updatedAt:now,
+            projectId:5,
+            developerId:2
         }
     })
+
+    // await prisma.project.create({
+    //     data:{
+    //         name:"Erp for mobile ",
+    //         description:"Same erp for REC but as a mobile app",
+    //         storyPoints:500,
+    //         status:"COMPLETED",
+    //         managerId:1,
+    //         leaderId:1,
+    //         isTaskCompleted:"YES"
+    //     }
+    // })
     
     
 

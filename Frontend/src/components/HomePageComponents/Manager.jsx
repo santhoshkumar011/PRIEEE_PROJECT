@@ -1,71 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { PlusIcon, FolderOpenIcon, CheckCircleIcon, XIcon } from 'lucide-react';
+import { toast, Toaster } from 'sonner';
 
-const Manager = () => {
+const Manager = ({ userData }) => {
     const [activeProjectType, setActiveProjectType] = useState('current');
     const [selectedProject, setSelectedProject] = useState(null);
     const [isAddProjectModalOpen, setIsAddProjectModalOpen] = useState(false);
+    console.log(JSON.stringify(userData))
     const [newProject, setNewProject] = useState({
         name: '',
         description: '',
         storyPoints: '',
-        manager: '',
-        teamLeader: '',
+        managerId: userData?.id,
+        leaderId: '',
         tasks: []
     });
-
-    // Sample project data
-    const [currentProjects, setCurrentProjects] = useState([
-        { 
-            id: 1, 
-            name: 'E-commerce Platform', 
-            description: 'A comprehensive online shopping solution with advanced features',
-            storyPoints: 120,
-            status: 'IN_PROGRESS',
-            manager: 'Sarah Thompson',
-            teamLeader: 'Michael Chen',
-            tasks: [
-                { title: 'User Authentication', status: 'IN_PROGRESS' },
-                { title: 'Payment Integration', status: 'PENDING' },
-                { title: 'Product Catalog', status: 'COMPLETED' }
-            ]
-        },
-        { 
-            id: 2, 
-            name: 'Healthcare Management System', 
-            description: 'Integrated platform for patient records and medical tracking',
-            storyPoints: 85,
-            status: 'IN_PROGRESS',
-            manager: 'Dr. Emily Rodriguez',
-            teamLeader: 'David Kim',
-            tasks: [
-                { title: 'Database Design', status: 'COMPLETED' },
-                { title: 'Patient Portal', status: 'IN_PROGRESS' },
-                { title: 'Reporting Module', status: 'PENDING' }
-            ]
-        }
-    ]);
-
-    const [completedProjects, setCompletedProjects] = useState([
-        { 
-            id: 3, 
-            name: 'Social Media Analytics Tool', 
-            description: 'Advanced analytics platform for social media insights',
-            storyPoints: 200,
-            status: 'COMPLETED',
-            manager: 'Alex Johnson',
-            teamLeader: 'Rachel Green',
-            tasks: [
-                { title: 'Data Collection', status: 'COMPLETED' },
-                { title: 'Visualization', status: 'COMPLETED' },
-                { title: 'Reporting', status: 'COMPLETED' }
-            ]
-        }
-    ]);
-
-    // Updated performance data with cumulative and per-sprint views
+    
+    // Separate projects by status
+    const [currentProjects, setCurrentProjects] = useState([]);
+    const [completedProjects, setCompletedProjects] = useState([]);
+    
+    // Performance data (this would ideally come from an API)
     const [performanceData, setPerformanceData] = useState([
         { 
             name: 'Sprint 1', 
@@ -104,47 +61,115 @@ const Manager = () => {
         }
     ]);
 
-    const handleAddProject = () => {
+    // Parse project data from backend
+    useEffect(() => {
+        if (userData && userData.projects) {
+            const current = userData.projects.filter(
+                project => project.status === 'NOT_STARTED' || project.status === 'IN_PROGRESS'
+            );
+            const completed = userData.projects.filter(
+                project => project.status === 'COMPLETED'
+            );
+            
+            setCurrentProjects(current);
+            setCompletedProjects(completed);
+            
+            // Set first project as selected by default if available
+            if (current.length > 0 && !selectedProject) {
+                setSelectedProject(current[0]);
+            }
+        }
+    }, [userData]);
+
+    async function handleAddProject  ()  {
         // Validate project fields
-        if (!newProject.name || !newProject.description || !newProject.storyPoints || 
-            !newProject.manager || !newProject.teamLeader) {
+        if (!newProject.name || !newProject.description || !newProject.storyPoints || !newProject.leaderId) {
             alert('Please fill in all project details');
             return;
         }
 
-        // Create new project object
+        // In a real application, you would make an API call here
+        // For now, we'll just simulate adding to the UI
         const projectToAdd = {
             ...newProject,
-            id: currentProjects.length + 1,
-            status: 'IN_PROGRESS',
-            tasks: newProject.tasks.length > 0 
-                ? newProject.tasks.split(',').map(task => ({ 
-                    title: task.trim(), 
-                    status: 'PENDING' 
-                })) 
-                : []
+            id: Math.max(...currentProjects.map(p => p.id), 0) + 1,
+            status: 'NOT_STARTED',
+            isTaskCompleted: 'NO',
+            createdAt: new Date().toISOString(),
+            tasks: [],
+            managerId:userData.id
         };
-
-        // Add to current projects
-        setCurrentProjects([...currentProjects, projectToAdd]);
+        let status = false
+    const dummy =  await new Promise ((resolve)=>{
+      toast.promise(new Promise((resolve,reject)=>{
+        fetch("http://localhost:8080/add-project", {
+          method: "POST",
+          body: JSON.stringify({ data : projectToAdd }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }).then((resp) => resp.json())
+        .then((data)=>{
+          if(data.err){
+            throw new Error(data.err)
+          }
+          resolve(data)
+        })
+        .catch((err)=> reject(err))
+      }),{
+        loading: "Adding Project to the database ...",
+        success: (data)=>{
+          status = true
+          resolve()
+          return (`Project added successfully.. !!`)
+        },
+        error: (err) => {
+          resolve()
+          return (`${err}`)
+        },
+        style: {
+          fontSize:"1rem",
+          fontWeight:200,
+          padding:10,
+          color:"#ddf3ef", 
+          backgroundColor:"#1c1b1b",
+          borderColor:"#3b3b3b",
+          borderStyle:"solid",
+          borderWidth:"3px"
+        }
+      })
+    }) 
+    
+    if(status){
+       setCurrentProjects([...currentProjects, projectToAdd]);
 
         // Reset form and close modal
         setNewProject({
             name: '',
             description: '',
             storyPoints: '',
-            manager: '',
-            teamLeader: '',
+            managerId: userData.id,
+            leaderId: '',
             tasks: []
         });
         setIsAddProjectModalOpen(false);
+    } 
+        // Add to current projects
+       
     };
 
+    // Format status for display
+    const formatStatus = (status) => {
+        return status.replace(/_/g, ' ');
+    };
+
+    // Custom tooltip for chart
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
-                <div className="bg-[#2a2a2a] p-4 border border-[#514d4d] rounded-md shadow-lg">
+                <div className="bg-gray-800 p-4 border border-gray-600 rounded-md shadow-lg">
                     <p className="text-white font-bold">{data.name}</p>
                     <p className="text-gray-300">Sprint Story Points: {data.sprintStoryPoints}</p>
                     <p className="text-gray-300">Cumulative Story Points: {data.cumulativeStoryPoints}</p>
@@ -156,23 +181,54 @@ const Manager = () => {
         return null;
     };
 
+    // Find team leader name by ID
+    const getTeamLeaderName = (leaderId) => {
+        const leader = userData.teamLeaders.find(leader => leader.id === leaderId);
+        return leader ? leader.username : 'Not Assigned';
+    };
+
+    // Get task status color
+    const getTaskStatusColor = (status) => {
+        switch (status) {
+            case 'DONE':
+                return 'bg-green-600/20 text-green-400';
+            case 'IN_PROGRESS':
+                return 'bg-yellow-600/20 text-yellow-400';
+            default:
+                return 'bg-gray-600/20 text-gray-400';
+        }
+    };
+
+    // Get project status color
+    const getProjectStatusColor = (status) => {
+        switch (status) {
+            case 'COMPLETED':
+                return 'text-green-400';
+            case 'IN_PROGRESS':
+                return 'text-yellow-400';
+            default:
+                return 'text-gray-400';
+        }
+    };
+
     return (
         <div className="min-h-screen w-full flex" style={{ 
             background: 'linear-gradient(135deg, #2a2a2a 0%, #040404 100%)'
         }}>
+            <Toaster position='bottom-right'/>
             {/* Sidebar for Projects */}
             <motion.div 
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7 }}
-                className="w-1/4 p-8 border-r border-[#514d4d] text-white"
+                className="w-1/4 p-8 border-r border-gray-700 text-white"
             >
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold">Projects</h2>
                     <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="bg-[#fe4848] p-2 rounded-full"
+                        className="bg-red-500 p-2 rounded-full"
                         onClick={() => setIsAddProjectModalOpen(true)}
                     >
                         <PlusIcon className="w-6 h-6" />
@@ -180,13 +236,13 @@ const Manager = () => {
                 </div>
 
                 {/* Project Type Toggle */}
-                <div className="flex mb-6 bg-[#1a1a1a] rounded-full p-1">
+                <div className="flex mb-6 bg-gray-900 rounded-full p-1">
                     <button
                         onClick={() => setActiveProjectType('current')}
                         className={`flex-1 py-2 rounded-full flex items-center justify-center ${
                             activeProjectType === 'current' 
-                            ? 'bg-[#fe4848] text-white' 
-                            : 'text-gray-400 hover:bg-[#2a2a2a]'
+                            ? 'bg-red-500 text-white' 
+                            : 'text-gray-400 hover:bg-gray-800'
                         }`}
                     >
                         <FolderOpenIcon className="w-5 h-5 mr-2" />
@@ -196,8 +252,8 @@ const Manager = () => {
                         onClick={() => setActiveProjectType('completed')}
                         className={`flex-1 py-2 rounded-full flex items-center justify-center ${
                             activeProjectType === 'completed' 
-                            ? 'bg-[#fe4848] text-white' 
-                            : 'text-gray-400 hover:bg-[#2a2a2a]'
+                            ? 'bg-red-500 text-white' 
+                            : 'text-gray-400 hover:bg-gray-800'
                         }`}
                     >
                         <CheckCircleIcon className="w-5 h-5 mr-2" />
@@ -215,21 +271,21 @@ const Manager = () => {
                             whileTap={{ scale: 0.98 }}
                             className={`p-4 rounded-lg border ${
                                 selectedProject?.id === project.id 
-                                ? 'border-[#fe4848] bg-[#1a1a1a]' 
-                                : 'border-[#514d4d] hover:border-gray-600'
+                                ? 'border-red-500 bg-gray-900' 
+                                : 'border-gray-700 hover:border-gray-600'
                             } cursor-pointer transition`}
                         >
                             <div className="flex justify-between items-center">
                                 <h3 className="font-semibold text-lg">{project.name}</h3>
-                                <span className={`text-xs px-2 py-1 rounded-full ${
-                                    project.status === 'IN_PROGRESS' 
-                                    ? ' text-yellow-400' 
-                                    : ' text-green-400'
-                                }`}>
-                                    {project.status.replace('_', ' ')}
+                                <span className={`text-xs px-2 py-1 rounded-full ${getProjectStatusColor(project.status)}`}>
+                                    {formatStatus(project.status)}
                                 </span>
                             </div>
-                            <p className="text-gray-400 text-sm mt-2">{project.description}</p>
+                            <p className="text-gray-400 text-sm mt-2">
+                                {project.description.length > 80 
+                                    ? project.description.substring(0, 80) + '...' 
+                                    : project.description}
+                            </p>
                         </motion.div>
                     ))}
                 </div>
@@ -252,7 +308,7 @@ const Manager = () => {
                         </div>
 
                         <div className="grid grid-cols-3 gap-6 mb-8">
-                            <div className="bg-[#1a1a1a] p-6 rounded-lg border border-[#514d4d]">
+                            <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
                                 <h3 className="text-lg font-semibold mb-4">Project Details</h3>
                                 <div className="space-y-2">
                                     <p>
@@ -261,54 +317,73 @@ const Manager = () => {
                                     </p>
                                     <p>
                                         <span className="text-gray-400">Status:</span>{' '}
-                                        <span className="font-medium">{selectedProject.status.replace('_', ' ')}</span>
+                                        <span className="font-medium">{formatStatus(selectedProject.status)}</span>
                                     </p>
                                     <p>
                                         <span className="text-gray-400">Manager:</span>{' '}
-                                        <span className="font-medium">{selectedProject.manager}</span>
+                                        <span className="font-medium">{userData.username}</span>
                                     </p>
                                     <p>
                                         <span className="text-gray-400">Team Leader:</span>{' '}
-                                        <span className="font-medium">{selectedProject.teamLeader}</span>
+                                        <span className="font-medium">{getTeamLeaderName(selectedProject.leaderId)}</span>
+                                    </p>
+                                    <p>
+                                        <span className="text-gray-400">Created:</span>{' '}
+                                        <span className="font-medium">{new Date(selectedProject.createdAt).toLocaleDateString()}</span>
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="bg-[#1a1a1a] p-6 rounded-lg border border-[#514d4d]">
+                            <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
                                 <h3 className="text-lg font-semibold mb-4">Tasks</h3>
                                 <div className="space-y-2">
-                                    {selectedProject.tasks.map((task, index) => (
-                                        <div key={index} className="flex items-center justify-between">
-                                            <span>{task.title}</span>
-                                            <span className={`text-xs px-2 py-1 rounded-full ${
-                                                task.status === 'COMPLETED' 
-                                                ? 'bg-green-600/20 text-green-400' 
-                                                : task.status === 'IN_PROGRESS'
-                                                ? 'bg-yellow-600/20 text-yellow-400'
-                                                : 'bg-gray-600/20 text-gray-400'
-                                            }`}>
-                                                {task.status}
-                                            </span>
-                                        </div>
-                                    ))}
+                                    {selectedProject.tasks && selectedProject.tasks.length > 0 ? (
+                                        selectedProject.tasks.map((task) => (
+                                            <div key={task.id} className="flex items-center justify-between">
+                                                <div>
+                                                    <p>{task.title}</p>
+                                                    <p className="text-xs text-gray-400">{task.description}</p>
+                                                </div>
+                                                <span className={`text-xs px-2 py-1 rounded-full ${getTaskStatusColor(task.status)}`}>
+                                                    {task.status}
+                                                </span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-400">No tasks created yet</p>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="bg-[#1a1a1a] p-6 rounded-lg border border-[#514d4d]">
-                                <h3 className="text-lg font-semibold mb-4">Create New Project</h3>
+                            <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                                <h3 className="text-lg font-semibold mb-4">Actions</h3>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="w-full bg-[#fe4848] text-white py-3 rounded-lg flex items-center justify-center"
+                                    className="w-full bg-red-500 text-white py-3 rounded-lg flex items-center justify-center mb-4"
                                     onClick={() => setIsAddProjectModalOpen(true)}
                                 >
                                     <PlusIcon className="w-5 h-5 mr-2" />
                                     New Project
                                 </motion.button>
+                                
+                                {/* {selectedProject.status !== 'COMPLETED' && (
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="w-full border border-green-500 text-green-500 py-3 rounded-lg flex items-center justify-center"
+                                    >
+                                        <CheckCircleIcon className="w-5 h-5 mr-2" />
+                                        Add Task
+                                    </motion.button>
+                                )} */}
                             </div>
                         </div>
 
-                        <div className="bg-[#1a1a1a] p-6 rounded-lg border border-[#514d4d] text-white">
+                                    {selectedProject.status=="COMPLETED"?(
+
+                                    
+                        <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-white">
                             <h3 className="text-lg font-semibold mb-4">Project Performance</h3>
                             <ResponsiveContainer width="100%" height={300}>
                                 <LineChart data={performanceData}>
@@ -329,7 +404,7 @@ const Manager = () => {
                                     />
                                     <Tooltip content={<CustomTooltip />} />
                                     <Legend />
-                                     <Line 
+                                    <Line 
                                         name="Cumulative Story Points"
                                         type="monotone" 
                                         dataKey="cumulativeStoryPoints" 
@@ -341,6 +416,8 @@ const Manager = () => {
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
+                        ):(<>
+                                    </>)}
                     </motion.div>
                 ) : (
                     <div className="h-full flex items-center justify-center text-gray-400">
@@ -362,7 +439,7 @@ const Manager = () => {
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
-                            className="bg-[#1a1a1a] rounded-lg p-8 w-full max-w-2xl border border-[#514d4d]"
+                            className="bg-gray-900 rounded-lg p-8 w-full max-w-2xl border border-gray-700"
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-white">Create New Project</h2>
@@ -382,7 +459,7 @@ const Manager = () => {
                                         type="text"
                                         value={newProject.name}
                                         onChange={(e) => setNewProject({...newProject, name: e.target.value})}
-                                        className="w-full bg-[#2a2a2a] text-white p-3 rounded-lg border border-[#514d4d] focus:outline-none focus:ring-2 focus:ring-[#fe4848]"
+                                        className="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                                         placeholder="Enter project name"
                                     />
                                 </div>
@@ -392,7 +469,7 @@ const Manager = () => {
                                     <textarea 
                                         value={newProject.description}
                                         onChange={(e) => setNewProject({...newProject, description: e.target.value})}
-                                        className="w-full bg-[#2a2a2a] text-white p-3 rounded-lg border border-[#514d4d] focus:outline-none focus:ring-2 focus:ring-[#fe4848] h-24"
+                                        className="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 h-24"
                                         placeholder="Enter project description"
                                     />
                                 </div>
@@ -404,42 +481,24 @@ const Manager = () => {
                                             type="number"
                                             value={newProject.storyPoints}
                                             onChange={(e) => setNewProject({...newProject, storyPoints: e.target.value})}
-                                            className="w-full bg-[#2a2a2a] text-white p-3 rounded-lg border border-[#514d4d] focus:outline-none focus:ring-2 focus:ring-[#fe4848]"
+                                            className="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                                             placeholder="Enter story points"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-gray-400 mb-2">Tasks (comma-separated)</label>
-                                        <input 
-                                            type="text"
-                                            value={newProject.tasks}
-                                            onChange={(e) => setNewProject({...newProject, tasks: e.target.value})}
-                                            className="w-full bg-[#2a2a2a] text-white p-3 rounded-lg border border-[#514d4d] focus:outline-none focus:ring-2 focus:ring-[#fe4848]"
-                                            placeholder="Task 1, Task 2, Task 3"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-gray-400 mb-2">Project Manager</label>
-                                        <input 
-                                            type="text"
-                                            value={newProject.manager}
-                                            onChange={(e) => setNewProject({...newProject, manager: e.target.value})}
-                                            className="w-full bg-[#2a2a2a] text-white p-3 rounded-lg border border-[#514d4d] focus:outline-none focus:ring-2 focus:ring-[#fe4848]"
-                                            placeholder="Enter project manager"
-                                        />
-                                    </div>
-                                    <div>
                                         <label className="block text-gray-400 mb-2">Team Leader</label>
-                                        <input 
-                                            type="text"
-                                            value={newProject.teamLeader}
-                                            onChange={(e) => setNewProject({...newProject, teamLeader: e.target.value})}
-                                            className="w-full bg-[#2a2a2a] text-white p-3 rounded-lg border border-[#514d4d] focus:outline-none focus:ring-2 focus:ring-[#fe4848]"
-                                            placeholder="Enter team leader"
-                                        />
+                                        <select
+                                            value={newProject.leaderId}
+                                            onChange={(e) => setNewProject({...newProject, leaderId: parseInt(e.target.value)})}
+                                            className="w-full bg-gray-800 text-white p-3 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                        >
+                                            <option value="">Select Team Leader</option>
+                                            {userData.teamLeaders.map(leader => (
+                                                <option key={leader.id} value={leader.id}>
+                                                    {leader.username}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
 
@@ -458,7 +517,7 @@ const Manager = () => {
                                         onClick={handleAddProject}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="px-6 py-3 bg-[#fe4848] text-white rounded-lg"
+                                        className="px-6 py-3 bg-red-500 text-white rounded-lg"
                                     >
                                         Create Project
                                     </motion.button>

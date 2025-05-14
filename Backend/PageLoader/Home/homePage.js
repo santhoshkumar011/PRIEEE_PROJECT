@@ -44,7 +44,11 @@ async function homePage(req,res) {
                     id:ses.session.managerId
                 },
                 include:{
-                    projects:true,
+                    projects:{
+                        include:{
+                            tasks:true
+                        }
+                    },
                     teamLeaders:{
                         select:{
                             username:true,
@@ -72,7 +76,12 @@ async function homePage(req,res) {
                     id:ses.session.leaderId
                 },
                 include:{
-                    projects:true
+                    projects:{
+                        include:{
+                            tasks:true
+                        }
+                    },
+                    developers:true
                 }
             })
 

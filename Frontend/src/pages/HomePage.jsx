@@ -25,6 +25,7 @@ function HomePage(){
               throw new Error(data.err)
             }
             setAllData({...data.data,role:data.role})
+            console.log(JSON.stringify({...data.data,role:data.role}))
           })
           .catch((err)=> {
             alert(err)
@@ -35,14 +36,14 @@ function HomePage(){
         ,[])
 
     return(
-        <div className='w-screen h-screen overflow-hidden'>
+        <div className='w-screen h-screen overflow-x-hidden overflow-y-auto'>
             {
                 allData?.role=="DEV"?(
                     <Developer data={allData}/>
                 ):allData?.role=="TL"?(
-                    <TeamLeader data={allData}/>
+                    <TeamLeader userData={allData}/>
                 ):allData?.role=="MG"?(
-                    <Manager data={allData}/>
+                    <Manager userData={allData}/>
                 ):(
                     <></>
                 )

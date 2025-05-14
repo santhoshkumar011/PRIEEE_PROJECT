@@ -158,6 +158,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   storyPoints: 'storyPoints',
   status: 'status',
   createdAt: 'createdAt',
+  isTaskCompleted: 'isTaskCompleted',
   managerId: 'managerId',
   leaderId: 'leaderId'
 };
@@ -213,6 +214,11 @@ exports.ProjectStatus = exports.$Enums.ProjectStatus = {
   NOT_STARTED: 'NOT_STARTED',
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED'
+};
+
+exports.IsTaksAssigned = exports.$Enums.IsTaksAssigned = {
+  YES: 'YES',
+  NO: 'NO'
 };
 
 exports.TaskStatus = exports.$Enums.TaskStatus = {

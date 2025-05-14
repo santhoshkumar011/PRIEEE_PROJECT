@@ -67,6 +67,14 @@ export namespace $Enums {
 export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus]
 
 
+export const IsTaksAssigned: {
+  YES: 'YES',
+  NO: 'NO'
+};
+
+export type IsTaksAssigned = (typeof IsTaksAssigned)[keyof typeof IsTaksAssigned]
+
+
 export const TaskStatus: {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -97,6 +105,10 @@ export type Role = (typeof Role)[keyof typeof Role]
 export type ProjectStatus = $Enums.ProjectStatus
 
 export const ProjectStatus: typeof $Enums.ProjectStatus
+
+export type IsTaksAssigned = $Enums.IsTaksAssigned
+
+export const IsTaksAssigned: typeof $Enums.IsTaksAssigned
 
 export type TaskStatus = $Enums.TaskStatus
 
@@ -6455,6 +6467,7 @@ export namespace Prisma {
     storyPoints: number | null
     status: $Enums.ProjectStatus | null
     createdAt: Date | null
+    isTaskCompleted: $Enums.IsTaksAssigned | null
     managerId: number | null
     leaderId: number | null
   }
@@ -6466,6 +6479,7 @@ export namespace Prisma {
     storyPoints: number | null
     status: $Enums.ProjectStatus | null
     createdAt: Date | null
+    isTaskCompleted: $Enums.IsTaksAssigned | null
     managerId: number | null
     leaderId: number | null
   }
@@ -6477,6 +6491,7 @@ export namespace Prisma {
     storyPoints: number
     status: number
     createdAt: number
+    isTaskCompleted: number
     managerId: number
     leaderId: number
     _all: number
@@ -6504,6 +6519,7 @@ export namespace Prisma {
     storyPoints?: true
     status?: true
     createdAt?: true
+    isTaskCompleted?: true
     managerId?: true
     leaderId?: true
   }
@@ -6515,6 +6531,7 @@ export namespace Prisma {
     storyPoints?: true
     status?: true
     createdAt?: true
+    isTaskCompleted?: true
     managerId?: true
     leaderId?: true
   }
@@ -6526,6 +6543,7 @@ export namespace Prisma {
     storyPoints?: true
     status?: true
     createdAt?: true
+    isTaskCompleted?: true
     managerId?: true
     leaderId?: true
     _all?: true
@@ -6624,6 +6642,7 @@ export namespace Prisma {
     storyPoints: number | null
     status: $Enums.ProjectStatus
     createdAt: Date
+    isTaskCompleted: $Enums.IsTaksAssigned
     managerId: number
     leaderId: number
     _count: ProjectCountAggregateOutputType | null
@@ -6654,6 +6673,7 @@ export namespace Prisma {
     storyPoints?: boolean
     status?: boolean
     createdAt?: boolean
+    isTaskCompleted?: boolean
     managerId?: boolean
     leaderId?: boolean
     manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
@@ -6669,6 +6689,7 @@ export namespace Prisma {
     storyPoints?: boolean
     status?: boolean
     createdAt?: boolean
+    isTaskCompleted?: boolean
     managerId?: boolean
     leaderId?: boolean
     manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
@@ -6682,6 +6703,7 @@ export namespace Prisma {
     storyPoints?: boolean
     status?: boolean
     createdAt?: boolean
+    isTaskCompleted?: boolean
     managerId?: boolean
     leaderId?: boolean
     manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
@@ -6695,11 +6717,12 @@ export namespace Prisma {
     storyPoints?: boolean
     status?: boolean
     createdAt?: boolean
+    isTaskCompleted?: boolean
     managerId?: boolean
     leaderId?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "storyPoints" | "status" | "createdAt" | "managerId" | "leaderId", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "storyPoints" | "status" | "createdAt" | "isTaskCompleted" | "managerId" | "leaderId", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     manager?: boolean | ProjectManagerDefaultArgs<ExtArgs>
     teamLeader?: boolean | TeamLeaderDefaultArgs<ExtArgs>
@@ -6729,6 +6752,7 @@ export namespace Prisma {
       storyPoints: number | null
       status: $Enums.ProjectStatus
       createdAt: Date
+      isTaskCompleted: $Enums.IsTaksAssigned
       managerId: number
       leaderId: number
     }, ExtArgs["result"]["project"]>
@@ -7163,6 +7187,7 @@ export namespace Prisma {
     readonly storyPoints: FieldRef<"Project", 'Int'>
     readonly status: FieldRef<"Project", 'ProjectStatus'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
+    readonly isTaskCompleted: FieldRef<"Project", 'IsTaksAssigned'>
     readonly managerId: FieldRef<"Project", 'Int'>
     readonly leaderId: FieldRef<"Project", 'Int'>
   }
@@ -11109,6 +11134,7 @@ export namespace Prisma {
     storyPoints: 'storyPoints',
     status: 'status',
     createdAt: 'createdAt',
+    isTaskCompleted: 'isTaskCompleted',
     managerId: 'managerId',
     leaderId: 'leaderId'
   };
@@ -11248,6 +11274,20 @@ export namespace Prisma {
    * Reference to a field of type 'ProjectStatus[]'
    */
   export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'IsTaksAssigned'
+   */
+  export type EnumIsTaksAssignedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IsTaksAssigned'>
+    
+
+
+  /**
+   * Reference to a field of type 'IsTaksAssigned[]'
+   */
+  export type ListEnumIsTaksAssignedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IsTaksAssigned[]'>
     
 
 
@@ -11583,6 +11623,7 @@ export namespace Prisma {
     storyPoints?: IntNullableFilter<"Project"> | number | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFilter<"Project"> | $Enums.IsTaksAssigned
     managerId?: IntFilter<"Project"> | number
     leaderId?: IntFilter<"Project"> | number
     manager?: XOR<ProjectManagerScalarRelationFilter, ProjectManagerWhereInput>
@@ -11597,6 +11638,7 @@ export namespace Prisma {
     storyPoints?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    isTaskCompleted?: SortOrder
     managerId?: SortOrder
     leaderId?: SortOrder
     manager?: ProjectManagerOrderByWithRelationInput
@@ -11614,6 +11656,7 @@ export namespace Prisma {
     storyPoints?: IntNullableFilter<"Project"> | number | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFilter<"Project"> | $Enums.IsTaksAssigned
     managerId?: IntFilter<"Project"> | number
     leaderId?: IntFilter<"Project"> | number
     manager?: XOR<ProjectManagerScalarRelationFilter, ProjectManagerWhereInput>
@@ -11628,6 +11671,7 @@ export namespace Prisma {
     storyPoints?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    isTaskCompleted?: SortOrder
     managerId?: SortOrder
     leaderId?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
@@ -11647,6 +11691,7 @@ export namespace Prisma {
     storyPoints?: IntNullableWithAggregatesFilter<"Project"> | number | null
     status?: EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedWithAggregatesFilter<"Project"> | $Enums.IsTaksAssigned
     managerId?: IntWithAggregatesFilter<"Project"> | number
     leaderId?: IntWithAggregatesFilter<"Project"> | number
   }
@@ -12121,6 +12166,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     manager: ProjectManagerCreateNestedOneWithoutProjectsInput
     teamLeader: TeamLeaderCreateNestedOneWithoutProjectsInput
     tasks?: TaskCreateNestedManyWithoutProjectInput
@@ -12133,6 +12179,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     managerId: number
     leaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
@@ -12144,6 +12191,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     manager?: ProjectManagerUpdateOneRequiredWithoutProjectsNestedInput
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutProjectsNestedInput
     tasks?: TaskUpdateManyWithoutProjectNestedInput
@@ -12156,6 +12204,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     managerId?: IntFieldUpdateOperationsInput | number
     leaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
@@ -12168,6 +12217,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     managerId: number
     leaderId: number
   }
@@ -12178,6 +12228,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
   }
 
   export type ProjectUncheckedUpdateManyInput = {
@@ -12187,6 +12238,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     managerId?: IntFieldUpdateOperationsInput | number
     leaderId?: IntFieldUpdateOperationsInput | number
   }
@@ -12740,6 +12792,13 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type EnumIsTaksAssignedFilter<$PrismaModel = never> = {
+    equals?: $Enums.IsTaksAssigned | EnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    in?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    not?: NestedEnumIsTaksAssignedFilter<$PrismaModel> | $Enums.IsTaksAssigned
+  }
+
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -12747,6 +12806,7 @@ export namespace Prisma {
     storyPoints?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    isTaskCompleted?: SortOrder
     managerId?: SortOrder
     leaderId?: SortOrder
   }
@@ -12765,6 +12825,7 @@ export namespace Prisma {
     storyPoints?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    isTaskCompleted?: SortOrder
     managerId?: SortOrder
     leaderId?: SortOrder
   }
@@ -12776,6 +12837,7 @@ export namespace Prisma {
     storyPoints?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    isTaskCompleted?: SortOrder
     managerId?: SortOrder
     leaderId?: SortOrder
   }
@@ -12843,6 +12905,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumIsTaksAssignedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IsTaksAssigned | EnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    in?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    not?: NestedEnumIsTaksAssignedWithAggregatesFilter<$PrismaModel> | $Enums.IsTaksAssigned
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIsTaksAssignedFilter<$PrismaModel>
+    _max?: NestedEnumIsTaksAssignedFilter<$PrismaModel>
   }
 
   export type EnumTaskStatusFilter<$PrismaModel = never> = {
@@ -13581,6 +13653,10 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type EnumIsTaksAssignedFieldUpdateOperationsInput = {
+    set?: $Enums.IsTaksAssigned
+  }
+
   export type ProjectManagerUpdateOneRequiredWithoutProjectsNestedInput = {
     create?: XOR<ProjectManagerCreateWithoutProjectsInput, ProjectManagerUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: ProjectManagerCreateOrConnectWithoutProjectsInput
@@ -13879,6 +13955,13 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedEnumIsTaksAssignedFilter<$PrismaModel = never> = {
+    equals?: $Enums.IsTaksAssigned | EnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    in?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    not?: NestedEnumIsTaksAssignedFilter<$PrismaModel> | $Enums.IsTaksAssigned
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -13945,6 +14028,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumIsTaksAssignedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IsTaksAssigned | EnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    in?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IsTaksAssigned[] | ListEnumIsTaksAssignedFieldRefInput<$PrismaModel>
+    not?: NestedEnumIsTaksAssignedWithAggregatesFilter<$PrismaModel> | $Enums.IsTaksAssigned
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIsTaksAssignedFilter<$PrismaModel>
+    _max?: NestedEnumIsTaksAssignedFilter<$PrismaModel>
   }
 
   export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
@@ -14221,6 +14314,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     teamLeader: TeamLeaderCreateNestedOneWithoutProjectsInput
     tasks?: TaskCreateNestedManyWithoutProjectInput
   }
@@ -14232,6 +14326,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     leaderId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -14355,6 +14450,7 @@ export namespace Prisma {
     storyPoints?: IntNullableFilter<"Project"> | number | null
     status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFilter<"Project"> | $Enums.IsTaksAssigned
     managerId?: IntFilter<"Project"> | number
     leaderId?: IntFilter<"Project"> | number
   }
@@ -14445,6 +14541,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     manager: ProjectManagerCreateNestedOneWithoutProjectsInput
     tasks?: TaskCreateNestedManyWithoutProjectInput
   }
@@ -14456,6 +14553,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     managerId: number
     tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -15054,6 +15152,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     manager: ProjectManagerCreateNestedOneWithoutProjectsInput
     teamLeader: TeamLeaderCreateNestedOneWithoutProjectsInput
   }
@@ -15065,6 +15164,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     managerId: number
     leaderId: number
   }
@@ -15115,6 +15215,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     manager?: ProjectManagerUpdateOneRequiredWithoutProjectsNestedInput
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutProjectsNestedInput
   }
@@ -15126,6 +15227,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     managerId?: IntFieldUpdateOperationsInput | number
     leaderId?: IntFieldUpdateOperationsInput | number
   }
@@ -15391,6 +15493,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     leaderId: number
   }
 
@@ -15408,6 +15511,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     teamLeader?: TeamLeaderUpdateOneRequiredWithoutProjectsNestedInput
     tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
@@ -15419,6 +15523,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     leaderId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -15430,6 +15535,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     leaderId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -15469,6 +15575,7 @@ export namespace Prisma {
     storyPoints?: number | null
     status?: $Enums.ProjectStatus
     createdAt?: Date | string
+    isTaskCompleted?: $Enums.IsTaksAssigned
     managerId: number
   }
 
@@ -15486,6 +15593,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     manager?: ProjectManagerUpdateOneRequiredWithoutProjectsNestedInput
     tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
@@ -15497,6 +15605,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     managerId?: IntFieldUpdateOperationsInput | number
     tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -15508,6 +15617,7 @@ export namespace Prisma {
     storyPoints?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isTaskCompleted?: EnumIsTaksAssignedFieldUpdateOperationsInput | $Enums.IsTaksAssigned
     managerId?: IntFieldUpdateOperationsInput | number
   }
 

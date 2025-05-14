@@ -4,6 +4,9 @@ const { verifyOTPforLogin } = require("../Auth/otpVerify");
 const { resetPassword } = require("../Auth/resetPassword");
 const { Router } = require("express");
 const { homePage } = require("../PageLoader/Home/homePage");
+const { addProject } = require("../Project/addProject");
+const { addTask } = require("../Project/addTask");
+
 
 
 const router = new Router();
@@ -27,6 +30,14 @@ const asyncHandler = (fn) => (req, res, next) => {
 
   router.post('/verify-otp', asyncHandler(async (req, res) => {
     await verifyOTPforLogin(req,res);
+  }));
+
+  router.post('/add-project', asyncHandler(async (req, res) => {
+    await addProject(req,res)
+  }));
+
+  router.post('/add-task', asyncHandler(async (req, res) => {
+    await addTask(req,res)
   }));
 
   router.post('/home', asyncHandler(async (req, res) => {
