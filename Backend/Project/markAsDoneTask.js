@@ -2,23 +2,24 @@ const { PrismaClient } = require('../generated/prisma');
 
 const prisma = new PrismaClient();
 
-async function markAsDone(req,res) {
+async function markAsDoneTask(req,res) {
     try{
         let data = req.body.data;
         
 
-        // console.dir(data)
+        console.dir(data)
         
         
-        await prisma.project.updateMany({
+        
+        await prisma.task.updateMany({
             where:{
                 id:data.id
             },
             data:{
-                isTaskCompleted:"YES",
-                status:"COMPLETED"
+                status:data.status
             }
         })
+
         res.status(200).json({
             msg:"Successful"
         })
@@ -34,5 +35,5 @@ async function markAsDone(req,res) {
 }
 
 module.exports = {
-    markAsDone
+    markAsDoneTask
 }

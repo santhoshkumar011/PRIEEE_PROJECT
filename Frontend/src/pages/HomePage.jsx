@@ -39,7 +39,7 @@ function HomePage(){
         <div className='w-screen h-screen overflow-x-hidden overflow-y-auto'>
             {
                 allData?.role=="DEV"?(
-                    <Developer data={allData}/>
+                    <Developer userData={allData}/>
                 ):allData?.role=="TL"?(
                     <TeamLeader userData={allData}/>
                 ):allData?.role=="MG"?(

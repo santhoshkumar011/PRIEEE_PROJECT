@@ -6,6 +6,8 @@ const { Router } = require("express");
 const { homePage } = require("../PageLoader/Home/homePage");
 const { addProject } = require("../Project/addProject");
 const { addTask } = require("../Project/addTask");
+const { markAsDoneTask } = require("../Project/markAsDoneTask");
+const { markAsDone } = require("../Project/markAsDone");
 
 
 
@@ -42,6 +44,14 @@ const asyncHandler = (fn) => (req, res, next) => {
 
   router.post('/home', asyncHandler(async (req, res) => {
     await homePage(req,res);
+  }));
+
+  router.post('/mark-as-done-task', asyncHandler(async (req, res) => {
+    await markAsDoneTask(req,res);
+  }));
+
+  router.post('/mark-as-done', asyncHandler(async (req, res) => {
+    await markAsDone(req,res);
   }));
  
 
